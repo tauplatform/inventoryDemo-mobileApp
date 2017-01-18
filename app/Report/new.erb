@@ -1,0 +1,129 @@
+<div class="row page-title">
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm pull-left">Cancel</a>
+  </div>
+  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+    <h3 class="text-center">New Report</h3>
+  </div>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+  </div>
+</div>
+
+<form method="POST" action="<%= url_for :action => :create %>">
+  <input type="hidden" name="id" value="<%= @report.object %>"/>
+
+  <div class="form-group">
+    <label for="report[upc]">Upc</label>
+    <div class="input-group">
+      <input type="text" id="report[upc]" name="report[upc]" class="form-control"/>
+      <span class="input-group-btn">
+       <button type="button" id="takeBarcodeBtn" class="btn btn-default"><span class="glyphicon glyphicon-barcode"></span></button>
+      </span>
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <label for="report[productName]">Product name</label>
+    <input type="text" id="report[productName]" name="report[productName]" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="report[damageReason]">Damage reason</label>
+    <select id="report[damageReason]" name="report[damageReason]" class="form-control">
+      <option disabled selected>Please Select:</option>
+      <option>Damaged during shipping</option>
+      <option>Manufacturing Fault</option>
+
+
+
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="report[pictures]">Photos</label>
+    <div id="report[pictures]" class="row">
+
+      <div id="picture0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+        <div class="thumbnail">
+          <img src="/public/images/camera.png">
+          <input type="hidden" id="report[picture0Uri]" name="report[picture0Uri]" value=""/>
+        </div>
+      </div>
+
+      <div id="picture1" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+        <div class="thumbnail">
+          <img src="/public/images/camera.png">
+          <input type="hidden" id="report[picture1Uri]" name="report[picture1Uri]" value=""/>
+        </div>
+      </div>
+
+      <div id="takePhotoBtn" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="thumbnail">
+          <img src="/public/images/camera.png">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="report[employeeId]">Employee ID</label>
+    <input type="text" id="report[employeeId]" name="report[employeeId]" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="report[signature]">Signature</label>
+    <div id="report[signature]" class="row">
+      <div id="signatureControl" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <button type="button" id="takeSignatureBtn" class="btn btn-default btn-block">Sign it</button>
+      </div>
+
+      <div id="signature" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+        <div class="thumbnail">
+          <img src="/public/images/camera.png">
+          <input type="hidden" id="report[signatureUri]" name="report[signatureUri]" value=""/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-success btn-block">Create</button>
+</form>
+
+<script>
+    var pictureCount = 0;
+    $("#takeBarcodeBtn").on("click", function () {
+        Rho.Barcode.take({}, function (params) {
+            if (params.status === "ok") {
+                $("#report\\[upc\\]").val(params.barcode);
+            }
+        })
+    });
+
+    $("#takePhotoBtn").on("click", function () {
+        Rho.Camera.takePicture({}, function (params) {
+            if (params.status === "ok") {
+                var id = "#picture" + pictureCount;
+                $(id).removeClass("hidden");
+                $(id).find("img").attr("src", params.imageUri);
+                $(id).find("input").attr("value", params.imageUri);
+                pictureCount = pictureCount + 1;
+                if (pictureCount === 2) {
+                    $("#takePhotoBtn").addClass("hidden");
+                }
+            }
+        })
+    });
+
+    $("#takeSignatureBtn").on("click", function () {
+        var signatureFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
+        Rho.Signature.takeFullScreen({fileName: signatureFilename}, function (params) {
+            if (params.status === "ok") {
+                var id = "#signature";
+                $(id).removeClass("hidden");
+                $(id).find("img").attr("src", params.imageUri.slice(7));
+                $(id).find("input").attr("value", params.imageUri.slice(7));
+            }
+        })
+    });
+</script>

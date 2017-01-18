@@ -1,0 +1,35 @@
+<div class="row page-title">
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :show, :id => @report.object %>" class="btn btn-default btn-sm pull-left">Cancel</a>
+  </div>
+  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+    <h3 class="text-center">Edit <%= @report.upc %></h3>
+  </div>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :delete, :id => @report.object %>" class="btn btn-danger btn-sm pull-right">Delete</a>
+  </div>
+</div>
+
+<form method="POST" action="<%= url_for :action => :update %>">
+  <input type="hidden" name="id" value="<%= @report.object %>"/>
+
+
+  <div class="form-group">
+    <label for="incident[upc]">Upc</label>
+    <input type="text" id="incident[upc]" name="incident[upc]" value="<%= @report.upc %>" <%= placeholder("Upc") %> class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="incident[productName]">Productname</label>
+    <input type="text" id="incident[productName]" name="incident[productName]" value="<%= @report.productName %>" <%= placeholder("Productname") %> class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="incident[damageReason]">Damagereason</label>
+    <input type="text" id="incident[damageReason]" name="incident[damageReason]" value="<%= @report.damageReason %>" <%= placeholder("Damagereason") %> class="form-control"/>
+  </div>
+
+  <button type="submit" class="btn btn-success btn-block">Update</button>
+</form>
+
+

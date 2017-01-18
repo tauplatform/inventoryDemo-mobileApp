@@ -1,0 +1,41 @@
+#sdk: "/Users/mva/.rvm/gems/ruby-1.9.3-p551/gems/rhodes-5.5.0.8"
+sdkversion: 5.5.0
+name: damageReportDemo
+version: 1.0
+vendor: rhomobile
+build: debug
+applog: rholog.txt
+#javascript_application: true
+iphone:
+  configuration: Release
+  sdk: iphonesimulator10.2
+  #provisionprofile:
+  #codesignidentity:
+  #entitlements:
+  BundleIdentifier: com.tautechnologies.damagereportdemo
+  BundleURLScheme: damagereportdemo
+  production:
+    ipa_itunesartwork_image: "./production/iTunesArtwork.png"
+  # Note: Specifies the URL schemes the app is able to call using Rho.System.runApplication
+  #ApplicationQueriesSchemes: ["scheme1", "scheme2"]
+wp8:
+  productid: '07c45400-ba39-0134-a27f-60f81db5e3c0'
+android:
+  #manifest_template: 'AndroidManifest.erb'
+  version: 4.1.0
+  # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
+  logcatFilter: APP:I StrictMode:I DEBUG:I *:E
+
+wm:
+  #sdk: "MC3000c50b (ARMV4I)"
+  #sdk: "Windows Mobile 6.5.3 Professional DTK (ARMV4I)"
+
+win32:
+  deployqt: 1
+  deploymsvc: 1
+
+extensions: ["rhoconnect-client", "barcode", "mediacapture", "signature"]
+
+rhobundle:
+  exclude_items:
+  - thumb.db

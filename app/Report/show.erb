@@ -1,0 +1,93 @@
+<div class="row page-title">
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm pull-left">Back</a>
+  </div>
+  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+    <h3 class="text-center"><%= @report.productName %></h3>
+  </div>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+   <!----> <a href="<%= url_for :action => :edit, :id => @report.object %>" class="btn btn-primary btn-sm pull-right">Edit</a>
+  </div>
+</div>
+
+<div class="row">
+  <ul class="list-group">
+
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span pull-right><strong>Upc</strong></span>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <%= @report.upc %>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span pull-right><strong>Product Name</strong></span>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <%= @report.productName %>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span pull-right><strong>Damage Reason</strong></span>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <%= @report.damageReason %>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div><strong>Photo</strong></div>
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="thumbnail">
+            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@report.picture0Uri) %>">
+          </div>
+        </div>
+
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="thumbnail">
+            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@report.picture1Uri) %>">
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span pull-right><strong>Employee Id</strong></span>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          <%= @report.employeeId %>
+        </div>
+      </div>
+    </li>
+
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span pull-right><strong>Signature</strong></span>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="thumbnail">
+            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@report.signatureUri) %>">
+          </div>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+
+</div>

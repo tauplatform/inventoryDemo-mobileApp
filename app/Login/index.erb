@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+    <div><h3>Damage Report</h3></div>
+
+    <form method="POST" action="<%= url_for :action => :sign_in %>">
+      <% if @msg %>
+          <div class="alert alert-warning"><%= @msg %></div>
+      <% end %>
+
+      <div class="form-group">
+        <input type="text" id="login" name="login" placeholder="Login" class="form-control" value="test_user"/>
+      </div>
+
+      <div class="form-group">
+        <input type="password" id="password" name="password" placeholder="Password" class="form-control"/>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+    </form>
+  </div>
+</div>
