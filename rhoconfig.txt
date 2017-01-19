@@ -1,5 +1,5 @@
 # startup page for your application
-start_path = '/app/Login'
+start_path = '/app/InventoryItem'
 
 # path to the options page (in this case handled by javascript)
 options_path = '/app/Settings'
@@ -39,7 +39,7 @@ MaxLogFileSize=0
 logserver = 'http://rhologs.heroku.com'
 
 # log file prefix - contain human-readable text
-logname='damageReportDemo'
+logname='InventoryDemo'
 
 # Keep track of the last visited page
 KeepTrackOfLastVisitedPage = 0

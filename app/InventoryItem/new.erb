@@ -3,14 +3,14 @@
     <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm pull-left">Cancel</a>
   </div>
   <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-    <h3 class="text-center">New Report</h3>
+    <h3 class="text-center">New Item</h3>
   </div>
   <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
   </div>
 </div>
 
 <form method="POST" action="<%= url_for :action => :create %>">
-  <input type="hidden" name="id" value="<%= @report.object %>"/>
+  <input type="hidden" name="id" value="<%= @inventoryItem.object %>"/>
 
   <div class="form-group">
     <label for="report[upc]">Upc</label>

@@ -3,10 +3,10 @@
     <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm pull-left">Back</a>
   </div>
   <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-    <h3 class="text-center"><%= @report.productName %></h3>
+    <h3 class="text-center"><%= @inventoryItem.productName %></h3>
   </div>
   <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-   <!----> <a href="<%= url_for :action => :edit, :id => @report.object %>" class="btn btn-primary btn-sm pull-right">Edit</a>
+   <!----> <a href="<%= url_for :action => :edit, :id => @inventoryItem.object %>" class="btn btn-primary btn-sm pull-right">Edit</a>
   </div>
 </div>
 
@@ -19,7 +19,7 @@
           <span pull-right><strong>Upc</strong></span>
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @report.upc %>
+          <%= @inventoryItem.upc %>
         </div>
       </div>
     </li>
@@ -30,7 +30,7 @@
           <span pull-right><strong>Product Name</strong></span>
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @report.productName %>
+          <%= @inventoryItem.productName %>
         </div>
       </div>
     </li>
@@ -41,7 +41,7 @@
           <span pull-right><strong>Damage Reason</strong></span>
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @report.damageReason %>
+          <%= @inventoryItem.damageReason %>
         </div>
       </div>
     </li>
@@ -51,14 +51,14 @@
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
           <div class="thumbnail">
-            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@report.picture0Uri) %>">
+            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.picture0Uri) %>">
           </div>
         </div>
 
 
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
           <div class="thumbnail">
-            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@report.picture1Uri) %>">
+            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.picture1Uri) %>">
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <span pull-right><strong>Employee Id</strong></span>
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @report.employeeId %>
+          <%= @inventoryItem.employeeId %>
         </div>
       </div>
     </li>
@@ -82,7 +82,7 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
           <div class="thumbnail">
-            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@report.signatureUri) %>">
+            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
           </div>
         </div>
       </div>

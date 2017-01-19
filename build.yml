@@ -1,6 +1,6 @@
 #sdk: "/Users/mva/.rvm/gems/ruby-1.9.3-p551/gems/rhodes-5.5.0.8"
 sdkversion: 5.5.0
-name: damageReportDemo
+name: inventoryDemo
 version: 1.0
 vendor: rhomobile
 build: debug
@@ -12,8 +12,8 @@ iphone:
   #provisionprofile:
   #codesignidentity:
   #entitlements:
-  BundleIdentifier: com.tautechnologies.damagereportdemo
-  BundleURLScheme: damagereportdemo
+  BundleIdentifier: com.tautechnologies.inventorydemo
+  BundleURLScheme: inventorydemo
   production:
     ipa_itunesartwork_image: "./production/iTunesArtwork.png"
   # Note: Specifies the URL schemes the app is able to call using Rho.System.runApplication
