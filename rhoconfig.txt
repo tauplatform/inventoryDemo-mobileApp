@@ -1,5 +1,5 @@
 # startup page for your application
-start_path = '/app/InventoryItem'
+start_path = '/app/Login'
 
 # path to the options page (in this case handled by javascript)
 options_path = '/app/Settings'
@@ -47,7 +47,7 @@ LastVisitedPage = ''
 
 # sync server url, typically this will look like 'http://<hostname>:<port>'
 # for example: 'http://localhost:9292'
-syncserver = 'https://tau-store-server.herokuapp.com'
+syncserver = 'http://tau-store-server.herokuapp.com'
 sync_poll_interval=0
 
 # geo location inactivity timeout (in seconds)

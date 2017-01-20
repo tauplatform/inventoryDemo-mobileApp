@@ -15,18 +15,18 @@
 
 
   <div class="form-group">
-    <label for="incident[upc]">Upc</label>
+    <label for="incident[upc]">UPC</label>
     <input type="text" id="incident[upc]" name="incident[upc]" value="<%= @inventoryItem.upc %>" <%= placeholder("Upc") %> class="form-control"/>
   </div>
 
   <div class="form-group">
-    <label for="incident[productName]">Productname</label>
+    <label for="incident[productName]">Product name</label>
     <input type="text" id="incident[productName]" name="incident[productName]" value="<%= @inventoryItem.productName %>" <%= placeholder("Productname") %> class="form-control"/>
   </div>
 
   <div class="form-group">
-    <label for="incident[damageReason]">Damagereason</label>
-    <input type="text" id="incident[damageReason]" name="incident[damageReason]" value="<%= @inventoryItem.damageReason %>" <%= placeholder("Damagereason") %> class="form-control"/>
+    <label for="incident[damageReason]">Quantity</label>
+    <input type="text" id="incident[quantity]" name="incident[quantity]" value="<%= @inventoryItem.quantity %>" <%= placeholder("Quantity") %> class="form-control"/>
   </div>
 
   <button type="submit" class="btn btn-success btn-block">Update</button>

@@ -14,7 +14,7 @@ class LoginController < Rho::RhoController
     if errCode == 0
       # run sync if we were successful
       puts "error code #{errCode}";
-      Rho::WebView.navigate('/app/Report/')
+      Rho::WebView.navigate('/app/InventoryItem/')
       Rho::RhoConnectClient.doSync()
     else
       if errCode == Rho::RhoError::ERR_CUSTOMSYNCSERVER

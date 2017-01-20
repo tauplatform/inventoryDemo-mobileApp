@@ -39,7 +39,7 @@ class InventoryItemController < Rho::RhoController
     data = {}
     data['upc'] = @params['inventoryItem']['upc']
     data['productName'] = @params['inventoryItem']['productName']
-    data['damageReason'] = @params['inventoryItem']['damageReason']
+    data['quantity'] = @params['inventoryItem']['quantity']
     data['employeeId'] = @params['inventoryItem']['employeeId']
     data['picture0Uri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['picture0Uri'])
     data['picture1Uri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['picture1Uri'])

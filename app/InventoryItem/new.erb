@@ -13,9 +13,9 @@
   <input type="hidden" name="id" value="<%= @inventoryItem.object %>"/>
 
   <div class="form-group">
-    <label for="report[upc]">Upc</label>
+    <label for="inventoryItem[upc]">UPC</label>
     <div class="input-group">
-      <input type="text" id="report[upc]" name="report[upc]" class="form-control"/>
+      <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control"/>
       <span class="input-group-btn">
        <button type="button" id="takeBarcodeBtn" class="btn btn-default"><span class="glyphicon glyphicon-barcode"></span></button>
       </span>
@@ -24,37 +24,30 @@
   </div>
 
   <div class="form-group">
-    <label for="report[productName]">Product name</label>
-    <input type="text" id="report[productName]" name="report[productName]" class="form-control"/>
+    <label for="inventoryItem[productName]">Product name</label>
+    <input type="text" id="inventoryItem[productName]" name="inventoryItem[productName]" class="form-control"/>
   </div>
 
   <div class="form-group">
-    <label for="report[damageReason]">Damage reason</label>
-    <select id="report[damageReason]" name="report[damageReason]" class="form-control">
-      <option disabled selected>Please Select:</option>
-      <option>Damaged during shipping</option>
-      <option>Manufacturing Fault</option>
-
-
-
-    </select>
+    <label for="inventoryItem[quantity]">Quantity</label>
+    <input type="number" id="inventoryItem[quantity]" name="inventoryItem[quantity]" class="form-control"/>
   </div>
 
   <div class="form-group">
-    <label for="report[pictures]">Photos</label>
-    <div id="report[pictures]" class="row">
+    <label for="inventoryItem[pictures]">Photos</label>
+    <div id="inventoryItem[pictures]" class="row">
 
       <div id="picture0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
         <div class="thumbnail">
           <img src="/public/images/camera.png">
-          <input type="hidden" id="report[picture0Uri]" name="report[picture0Uri]" value=""/>
+          <input type="hidden" id="inventoryItem[picture0Uri]" name="inventoryItem[picture0Uri]" value=""/>
         </div>
       </div>
 
       <div id="picture1" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
         <div class="thumbnail">
           <img src="/public/images/camera.png">
-          <input type="hidden" id="report[picture1Uri]" name="report[picture1Uri]" value=""/>
+          <input type="hidden" id="inventoryItem[picture1Uri]" name="inventoryItem[picture1Uri]" value=""/>
         </div>
       </div>
 
@@ -67,13 +60,13 @@
   </div>
 
   <div class="form-group">
-    <label for="report[employeeId]">Employee ID</label>
-    <input type="text" id="report[employeeId]" name="report[employeeId]" class="form-control"/>
+    <label for="inventoryItem[employeeId]">Employee ID</label>
+    <input type="text" id="inventoryItem[employeeId]" name="inventoryItem[employeeId]" class="form-control"/>
   </div>
 
   <div class="form-group">
-    <label for="report[signature]">Signature</label>
-    <div id="report[signature]" class="row">
+    <label for="inventoryItem[signature]">Signature</label>
+    <div id="inventoryItem[signature]" class="row">
       <div id="signatureControl" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
         <button type="button" id="takeSignatureBtn" class="btn btn-default btn-block">Sign it</button>
       </div>
@@ -81,7 +74,7 @@
       <div id="signature" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
         <div class="thumbnail">
           <img src="/public/images/camera.png">
-          <input type="hidden" id="report[signatureUri]" name="report[signatureUri]" value=""/>
+          <input type="hidden" id="inventoryItem[signatureUri]" name="inventoryItem[signatureUri]" value=""/>
         </div>
       </div>
     </div>
@@ -95,7 +88,7 @@
     $("#takeBarcodeBtn").on("click", function () {
         Rho.Barcode.take({}, function (params) {
             if (params.status === "ok") {
-                $("#report\\[upc\\]").val(params.barcode);
+                $("#inventoryItem\\[upc\\]").val(params.barcode);
             }
         })
     });
