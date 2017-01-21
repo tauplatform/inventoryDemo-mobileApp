@@ -25,11 +25,37 @@
   </div>
 
   <div class="form-group">
-    <label for="incident[damageReason]">Quantity</label>
-    <input type="text" id="incident[quantity]" name="incident[quantity]" value="<%= @inventoryItem.quantity %>" <%= placeholder("Quantity") %> class="form-control"/>
+    <label for="incident[quantity]">Quantity</label>
+    <input type="number" id="incident[quantity]" name="incident[quantity]" value="<%= @inventoryItem.quantity %>" <%= placeholder("Quantity") %> class="form-control"/>
   </div>
+
+  <div class="form-group">
+    <label for="inventoryItem[photo]">Photos</label>
+    <div id="inventoryItem[photo]" class="row">
+
+
+      <div id="photo" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+        <div class="thumbnail">
+          <img src="/public/images/camera.png">
+          <input type="hidden" id="inventoryItem[photoUri]" name="inventoryItem[photoUri]" value=""/>
+        </div>
+      </div>
+
+
+      <div id="takePhotoBtn" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+        <div class="thumbnail">
+          <img src="/public/images/camera.png">
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <button type="submit" class="btn btn-success btn-block">Update</button>
 </form>
 
+<script>
+
+
+</script>
 

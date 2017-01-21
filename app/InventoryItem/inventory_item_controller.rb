@@ -11,7 +11,6 @@ class InventoryItemController < Rho::RhoController
 
   def show
     @inventoryItem = InventoryItem.find(@params['id'])
-    puts("show report: #{@inventoryItem}");
     if @inventoryItem
       render :action => :show, :back => url_for(:action => :index)
     else
@@ -20,6 +19,14 @@ class InventoryItemController < Rho::RhoController
   end
 
   def new
+    @hasHardwareScanner = false
+    if Rho.respond_to?(:Barcode)
+      scanners = Rho::Barcode.enumerate
+      scanners.each { |x| puts "scanner: #{x.friendlyName}" }
+      hardwareScanners = scanners.select { |each| each.friendlyName == '2D Imager' }
+      @hasHardwareScanner = hardwareScanners.size != 0
+    end
+
     @inventoryItem = InventoryItem.new
     puts "report #{@inventoryItem}"
     render :action => :new, :back => url_for(:action => :index)
@@ -41,8 +48,7 @@ class InventoryItemController < Rho::RhoController
     data['productName'] = @params['inventoryItem']['productName']
     data['quantity'] = @params['inventoryItem']['quantity']
     data['employeeId'] = @params['inventoryItem']['employeeId']
-    data['picture0Uri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['picture0Uri'])
-    data['picture1Uri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['picture1Uri'])
+    data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
     data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
     puts data
     @inventoryItem = InventoryItem.create(data)

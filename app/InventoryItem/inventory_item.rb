@@ -7,7 +7,6 @@ class InventoryItem
    enable :sync
 
   #add model specific code here
-  property :picture0Uri, :blob, :overwrite
-  property :picture1Uri, :blob, :overwrite
+  property :photoUri, :blob, :overwrite
   property :signatureUri, :blob, :overwrite
 end

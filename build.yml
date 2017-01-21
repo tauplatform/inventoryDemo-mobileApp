@@ -34,7 +34,12 @@ win32:
   deployqt: 1
   deploymsvc: 1
 
-extensions: ["rhoconnect-client", "barcode", "mediacapture", "signature"]
+extensions:
+  - rhoconnect-client
+  #- "barcode"
+  - enterprise-barcode
+  - mediacapture
+  - signature
 
 rhobundle:
   exclude_items:

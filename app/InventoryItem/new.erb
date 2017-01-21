@@ -14,12 +14,16 @@
 
   <div class="form-group">
     <label for="inventoryItem[upc]">UPC</label>
-    <div class="input-group">
-      <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control"/>
-      <span class="input-group-btn">
-       <button type="button" id="takeBarcodeBtn" class="btn btn-default"><span class="glyphicon glyphicon-barcode"></span></button>
-      </span>
-    </div>
+    <% if @hasHardwareScanner %>
+        <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control"/>
+    <% else %>
+        <div class="input-group">
+          <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control"/>
+          <span class="input-group-btn">
+            <button type="button" id="takeBarcodeBtn" class="btn btn-default "><span class="glyphicon glyphicon-barcode"></span></button>
+          </span>
+        </div>
+    <% end %>
 
   </div>
 
@@ -34,20 +38,13 @@
   </div>
 
   <div class="form-group">
-    <label for="inventoryItem[pictures]">Photos</label>
-    <div id="inventoryItem[pictures]" class="row">
+    <label for="inventoryItem[photo]">Photos</label>
+    <div id="inventoryItem[photo]" class="row">
 
-      <div id="picture0" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+      <div id="photo" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
         <div class="thumbnail">
-          <img src="/public/images/camera.png">
-          <input type="hidden" id="inventoryItem[picture0Uri]" name="inventoryItem[picture0Uri]" value=""/>
-        </div>
-      </div>
-
-      <div id="picture1" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
-        <div class="thumbnail">
-          <img src="/public/images/camera.png">
-          <input type="hidden" id="inventoryItem[picture1Uri]" name="inventoryItem[picture1Uri]" value=""/>
+          <img src="">
+          <input type="hidden" id="inventoryItem[photoUri]" name="inventoryItem[photoUri]" value=""/>
         </div>
       </div>
 
@@ -84,29 +81,66 @@
 </form>
 
 <script>
-    var pictureCount = 0;
-    $("#takeBarcodeBtn").on("click", function () {
-        Rho.Barcode.take({}, function (params) {
+    var lastScannedCode;
+    var qty = 0;
+
+    // Barcode scanner routines
+
+    var barcodeCallback = function (code) {
+        if (lastScannedCode === code) {
+            qty++;
+        } else {
+            $("#inventoryItem\\[upc\\]").val(code);
+            lastScannedCode = code;
+            qty = 1;
+        }
+        $("#inventoryItem\\[quantity\\]").val(qty);
+    };
+
+    var barcodeHardwareScannerCallback = function (params) {
+        if (params.data != null) {
+            barcodeCallback(params.data);
+        }
+    };
+
+    var barcodeCameraScannerCallback = function (params) {
+        if (params.status === "ok") {
+            barcodeCallback(params.barcode);
+        }
+    };
+
+    var hasHardwareScanner = false;
+    var scanners = Rho.Barcode.enumerate();
+    var i;
+    for (i = 0; i < scanners.length; i++) {
+        if (scanners[i].friendlyName === "2D Imager") {
+            hasHardwareScanner = true;
+            break;
+        }
+    }
+
+    if (hasHardwareScanner) {
+        scanners[i].enable({}, barcodeHardwareScannerCallback)
+    } else {
+        $("#takeBarcodeBtn").on("click", function () {
+            Rho.Barcode.take({}, barcodeCameraScannerCallback)
+        });
+    }
+
+    // Camera routines
+    $("#takePhotoBtn").on("click", function () {
+        Rho.Camera.takePicture({}, function (params) {
             if (params.status === "ok") {
-                $("#inventoryItem\\[upc\\]").val(params.barcode);
+                var id = "#photo";
+                $(id).removeClass("hidden");
+                $(id).find("img").attr("src", params.imageUri);
+                $(id).find("input").attr("value", params.imageUri);
+                $("#takePhotoBtn").addClass("hidden");
             }
         })
     });
 
-    $("#takePhotoBtn").on("click", function () {
-        Rho.Camera.takePicture({}, function (params) {
-            if (params.status === "ok") {
-                var id = "#picture" + pictureCount;
-                $(id).removeClass("hidden");
-                $(id).find("img").attr("src", params.imageUri);
-                $(id).find("input").attr("value", params.imageUri);
-                pictureCount = pictureCount + 1;
-                if (pictureCount === 2) {
-                    $("#takePhotoBtn").addClass("hidden");
-                }
-            }
-        })
-    });
+    // Signature routines
 
     $("#takeSignatureBtn").on("click", function () {
         var signatureFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
