@@ -1,11 +1,11 @@
 <div class="row page-title">
-  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm pull-left">Cancel</a>
+  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :index %>" class="btn btn-warning btn-sm btn-block">Cancel</a>
   </div>
-  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-    <h3 class="text-center">New Item</h3>
+  <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
+    <h4 class="text-center">New Item</h4>
   </div>
-  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
   </div>
 </div>
 
@@ -41,10 +41,13 @@
     <label for="inventoryItem[photo]">Photos</label>
     <div id="inventoryItem[photo]" class="row">
 
-      <div id="photo" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+      <div id="photo" class="col-lg- col-md-4 col-sm-4 col-xs-4 hidden">
         <div class="thumbnail">
           <img src="">
           <input type="hidden" id="inventoryItem[photoUri]" name="inventoryItem[photoUri]" value=""/>
+          <div class="caption">
+            <button id="deletePhotoBtn" type="button" class="btn btn-danger btn-xs btn-block">Del</button>
+          </div>
         </div>
       </div>
 
@@ -70,7 +73,7 @@
 
       <div id="signature" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
         <div class="thumbnail">
-          <img src="/public/images/camera.png">
+          <img src="">
           <input type="hidden" id="inventoryItem[signatureUri]" name="inventoryItem[signatureUri]" value=""/>
         </div>
       </div>
@@ -81,65 +84,88 @@
 </form>
 
 <script>
-    var lastScannedCode;
-    var qty = 0;
 
     // Barcode scanner routines
+    (function () {
+        var lastScannedCode;
+        var barcodeCallback = function (code) {
+            var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
+            if (isNaN(qty)) {
+                qty = 0;
+            }
+            console.log("qty", qty);
+            console.log("lastScannedCode", lastScannedCode);
+            console.log("code", code);
+            console.log(lastScannedCode === code);
+            if (lastScannedCode === code) {
+                qty++;
+            } else {
+                $("#inventoryItem\\[upc\\]").val(code);
+                lastScannedCode = code;
+                qty = 1;
+            }
+            $("#inventoryItem\\[quantity\\]").val(qty);
+        };
 
-    var barcodeCallback = function (code) {
-        if (lastScannedCode === code) {
-            qty++;
+        var barcodeHardwareScannerCallback = function (params) {
+            if (params.data != null) {
+                barcodeCallback(params.data);
+            }
+        };
+
+        var barcodeCameraScannerCallback = function (params) {
+            if (params.status === "ok") {
+                barcodeCallback(params.barcode);
+            }
+        };
+
+        var hasHardwareScanner = false;
+        var scanners = []
+        try {
+            scanners = Rho.Barcode.enumerate();
+        }
+        catch (e) {
+            console.log("Barcode API is not found");
+        }
+        var i;
+        for (i = 0; i < scanners.length; i++) {
+            if (scanners[i].friendlyName === "2D Imager") {
+                hasHardwareScanner = true;
+                break;
+            }
+        }
+
+        if (hasHardwareScanner) {
+            scanners[i].enable({}, barcodeHardwareScannerCallback)
         } else {
-            $("#inventoryItem\\[upc\\]").val(code);
-            lastScannedCode = code;
-            qty = 1;
+            $("#takeBarcodeBtn").on("click", function () {
+                Rho.Barcode.take({}, barcodeCameraScannerCallback)
+            });
         }
-        $("#inventoryItem\\[quantity\\]").val(qty);
-    };
-
-    var barcodeHardwareScannerCallback = function (params) {
-        if (params.data != null) {
-            barcodeCallback(params.data);
-        }
-    };
-
-    var barcodeCameraScannerCallback = function (params) {
-        if (params.status === "ok") {
-            barcodeCallback(params.barcode);
-        }
-    };
-
-    var hasHardwareScanner = false;
-    var scanners = Rho.Barcode.enumerate();
-    var i;
-    for (i = 0; i < scanners.length; i++) {
-        if (scanners[i].friendlyName === "2D Imager") {
-            hasHardwareScanner = true;
-            break;
-        }
-    }
-
-    if (hasHardwareScanner) {
-        scanners[i].enable({}, barcodeHardwareScannerCallback)
-    } else {
-        $("#takeBarcodeBtn").on("click", function () {
-            Rho.Barcode.take({}, barcodeCameraScannerCallback)
-        });
-    }
+    })();
 
     // Camera routines
-    $("#takePhotoBtn").on("click", function () {
-        Rho.Camera.takePicture({}, function (params) {
-            if (params.status === "ok") {
-                var id = "#photo";
-                $(id).removeClass("hidden");
-                $(id).find("img").attr("src", params.imageUri);
-                $(id).find("input").attr("value", params.imageUri);
-                $("#takePhotoBtn").addClass("hidden");
-            }
-        })
-    });
+    (function () {
+        $("#takePhotoBtn").on("click", function () {
+            Rho.Camera.takePicture({}, function (params) {
+                if (params.status === "ok") {
+                    $("#photo").removeClass("hidden");
+                    $("#photo").find("img").attr("src", params.imageUri);
+                    $("#photo").find("input").attr("value", params.imageUri);
+                    $("#takePhotoBtn").addClass("hidden");
+                }
+            })
+        });
 
+
+        $("#deletePhotoBtn").on("click", function () {
+            $("#takePhotoBtn").removeClass("hidden");
+            $("#photo").addClass("hidden");
+            $("#photo").find("img").attr("src", "");
+            $("#photo").find("input").attr("value", "");
+        });
+
+    })();
     // Signature routines
 
     $("#takeSignatureBtn").on("click", function () {

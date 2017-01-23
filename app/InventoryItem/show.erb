@@ -1,12 +1,12 @@
 <div class="row page-title">
-  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm pull-left">Back</a>
+  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm btn-block">Back</a>
   </div>
-  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-    <h3 class="text-center"><%= @inventoryItem.productName %></h3>
+  <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
+    <h4 class="text-center"><%= @inventoryItem.productName %></h4>
   </div>
-  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :edit, :id => @inventoryItem.object %>" class="btn btn-primary btn-sm pull-right">Edit</a>
+  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :edit, :id => @inventoryItem.object %>" class="btn btn-primary btn-sm btn-block">Edit</a>
   </div>
 </div>
 
@@ -47,15 +47,21 @@
     </li>
 
     <li class="list-group-item">
-      <div><strong>Photo</strong></div>
       <div class="row">
-        <% if @inventoryItem.photoUri %>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <span pull-right><strong>Photo</strong></span>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <% if @inventoryItem.photoUri %>
               <div class="thumbnail">
                 <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.photoUri) %>">
               </div>
-            </div>
-        <% end %>
+          <% else %>
+              &lt;none&gt;
+          <% end %>
+        </div>
+
       </div>
     </li>
 
@@ -82,7 +88,7 @@
                 <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
               </div>
           <% else %>
-              ---
+              &lt;none&gt;
           <% end %>
         </div>
 

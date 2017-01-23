@@ -4,6 +4,15 @@ require 'helpers/browser_helper'
 class InventoryItemController < Rho::RhoController
   include BrowserHelper
 
+  def initialize
+    @hasHardwareScanner = false
+    if Rho.respond_to?(:Barcode)
+      scanners = Rho::Barcode.enumerate
+      hardwareScanners = scanners.select { |each| each.friendlyName == '2D Imager' }
+      @hasHardwareScanner = hardwareScanners.size != 0
+    end
+  end
+
   def index
     @inventoryItems = InventoryItem.find(:all)
     render
@@ -19,14 +28,6 @@ class InventoryItemController < Rho::RhoController
   end
 
   def new
-    @hasHardwareScanner = false
-    if Rho.respond_to?(:Barcode)
-      scanners = Rho::Barcode.enumerate
-      scanners.each { |x| puts "scanner: #{x.friendlyName}" }
-      hardwareScanners = scanners.select { |each| each.friendlyName == '2D Imager' }
-      @hasHardwareScanner = hardwareScanners.size != 0
-    end
-
     @inventoryItem = InventoryItem.new
     puts "report #{@inventoryItem}"
     render :action => :new, :back => url_for(:action => :index)
@@ -42,7 +43,6 @@ class InventoryItemController < Rho::RhoController
   end
 
   def create
-    puts "create params #{@params}"
     data = {}
     data['upc'] = @params['inventoryItem']['upc']
     data['productName'] = @params['inventoryItem']['productName']
@@ -50,7 +50,6 @@ class InventoryItemController < Rho::RhoController
     data['employeeId'] = @params['inventoryItem']['employeeId']
     data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
     data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
-    puts data
     @inventoryItem = InventoryItem.create(data)
     puts "create: inventoryItem = #{@inventoryItem}"
     redirect :action => :index
@@ -58,7 +57,16 @@ class InventoryItemController < Rho::RhoController
 
   def update
     @inventoryItem = InventoryItem.find(@params['id'])
-    @inventoryItem.update_attributes(@params['inventoryItem']) if @inventoryItem
+
+    data = {}
+    data['upc'] = @params['inventoryItem']['upc']
+    data['productName'] = @params['inventoryItem']['productName']
+    data['quantity'] = @params['inventoryItem']['quantity']
+    data['employeeId'] = @params['inventoryItem']['employeeId']
+    data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
+    data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
+    puts "update: #{data}"
+    @inventoryItem.update_attributes(data) if @inventoryItem
     redirect :action => :index
   end
 

@@ -1,12 +1,12 @@
 <div class="row page-title">
-  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :show, :id => @inventoryItem.object %>" class="btn btn-default btn-sm pull-left">Cancel</a>
+  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :show, :id => @inventoryItem.object %>" class="btn btn-warning btn-sm btn-block">Cancel</a>
   </div>
-  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-    <h3 class="text-center">Edit <%= @inventoryItem.productName %></h3>
+  <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
+    <h4 class="text-center">Edit <%= @inventoryItem.productName %></h4>
   </div>
-  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :delete, :id => @inventoryItem.object %>" class="btn btn-danger btn-sm pull-right">Delete</a>
+  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+    <a href="<%= url_for :action => :delete, :id => @inventoryItem.object %>" class="btn btn-danger btn-sm btn-block">Delete</a>
   </div>
 </div>
 
@@ -15,36 +15,67 @@
 
 
   <div class="form-group">
-    <label for="incident[upc]">UPC</label>
-    <input type="text" id="incident[upc]" name="incident[upc]" value="<%= @inventoryItem.upc %>" <%= placeholder("Upc") %> class="form-control"/>
+    <label for="inventoryItem[upc]">UPC</label>
+    <% if @hasHardwareScanner %>
+        <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control" value="<%= @inventoryItem.upc %>"/>
+    <% else %>
+        <div class="input-group">
+          <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control" value="<%= @inventoryItem.upc %>"/>
+          <span class="input-group-btn">
+            <button type="button" id="takeBarcodeBtn" class="btn btn-default "><span class="glyphicon glyphicon-barcode"></span></button>
+          </span>
+        </div>
+    <% end %>
   </div>
 
   <div class="form-group">
-    <label for="incident[productName]">Product name</label>
-    <input type="text" id="incident[productName]" name="incident[productName]" value="<%= @inventoryItem.productName %>" <%= placeholder("Productname") %> class="form-control"/>
+    <label for="inventoryItem[productName]">Product name</label>
+    <input type="text" id="inventoryItem[productName]" name="inventoryItem[productName]" value="<%= @inventoryItem.productName %>" <%= placeholder("Productname") %> class="form-control"/>
   </div>
 
   <div class="form-group">
-    <label for="incident[quantity]">Quantity</label>
-    <input type="number" id="incident[quantity]" name="incident[quantity]" value="<%= @inventoryItem.quantity %>" <%= placeholder("Quantity") %> class="form-control"/>
+    <label for="inventoryItem[quantity]">Quantity</label>
+    <input type="number" id="inventoryItem[quantity]" name="inventoryItem[quantity]" value="<%= @inventoryItem.quantity %>" <%= placeholder("Quantity") %> class="form-control"/>
   </div>
 
   <div class="form-group">
     <label for="inventoryItem[photo]">Photos</label>
     <div id="inventoryItem[photo]" class="row">
 
-
-      <div id="photo" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+      <div id="photo" class="col-lg- col-md-4 col-sm-4 col-xs-4">
         <div class="thumbnail">
-          <img src="/public/images/camera.png">
-          <input type="hidden" id="inventoryItem[photoUri]" name="inventoryItem[photoUri]" value=""/>
+          <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.photoUri) %>">
+          <input type="hidden" id="inventoryItem[photoUri]" name="inventoryItem[photoUri]" value="<%= @inventoryItem.photoUri %>"/>
+          <div class="caption">
+            <button id="deletePhotoBtn" type="button" class="btn btn-danger  btn-xs btn-block">Del</button>
+          </div>
         </div>
       </div>
-
 
       <div id="takePhotoBtn" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
         <div class="thumbnail">
           <img src="/public/images/camera.png">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="inventoryItem[employeeId]">Employee ID</label>
+    <input type="text" id="inventoryItem[employeeId]" name="inventoryItem[employeeId]" class="form-control" value="<%= @inventoryItem.employeeId %>"/>
+  </div>
+
+  <div class="form-group">
+    <label for="inventoryItem[signature]">Signature</label>
+    <div id="inventoryItem[signature]" class="row">
+      <div id="signatureControl" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <button type="button" id="takeSignatureBtn" class="btn btn-default btn-block">Sign it</button>
+      </div>
+
+      <div id="signature" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="thumbnail">
+          <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
+          <input type="hidden" id="inventoryItem[signatureUri]" name="inventoryItem[signatureUri]" value="<%= @inventoryItem.signatureUri %>"/>
         </div>
       </div>
     </div>
@@ -56,6 +87,98 @@
 
 <script>
 
+    // Barcode scanner routines
+    (function () {
+        var lastScannedCode;
 
+        var barcodeCallback = function (code) {
+            var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
+            if (isNaN(qty)) {
+                qty = 0;
+            }
+
+            if (lastScannedCode === code) {
+                qty++;
+            } else {
+                $("#inventoryItem\\[upc\\]").val(code);
+                lastScannedCode = code;
+                qty = 1;
+            }
+            $("#inventoryItem\\[quantity\\]").val(qty);
+        };
+
+        var barcodeHardwareScannerCallback = function (params) {
+            if (params.data != null) {
+                barcodeCallback(params.data);
+            }
+        };
+
+        var barcodeCameraScannerCallback = function (params) {
+            if (params.status === "ok") {
+                barcodeCallback(params.barcode);
+            }
+        };
+
+        var hasHardwareScanner = false;
+        var scanners = []
+        try {
+            scanners = Rho.Barcode.enumerate();
+        }
+        catch (e) {
+            console.log("Barcode API is not found");
+        }
+        var i;
+        for (i = 0; i < scanners.length; i++) {
+            if (scanners[i].friendlyName === "2D Imager") {
+                hasHardwareScanner = true;
+                break;
+            }
+        }
+
+        if (hasHardwareScanner) {
+            scanners[i].enable({}, barcodeHardwareScannerCallback)
+        } else {
+            $("#takeBarcodeBtn").on("click", function () {
+                Rho.Barcode.take({}, barcodeCameraScannerCallback)
+            });
+        }
+    })();
+
+    // Camera routines
+    (function () {
+        $("#takePhotoBtn").on("click", function () {
+            Rho.Camera.takePicture({}, function (params) {
+                if (params.status === "ok") {
+                    $("#photo").removeClass("hidden");
+                    $("#photo").find("img").attr("src", params.imageUri);
+                    $("#photo").find("input").attr("value", params.imageUri);
+                    $("#takePhotoBtn").addClass("hidden");
+                }
+            })
+        });
+
+
+        $("#deletePhotoBtn").on("click", function () {
+            $("#takePhotoBtn").removeClass("hidden");
+            $("#photo").addClass("hidden");
+            $("#photo").find("img").attr("src", "");
+            $("#photo").find("input").attr("value", "");
+        });
+
+    })();
+
+    // Signature routines
+
+    $("#takeSignatureBtn").on("click", function () {
+        var signatureFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
+        Rho.Signature.takeFullScreen({fileName: signatureFilename}, function (params) {
+            if (params.status === "ok") {
+                var id = "#signature";
+                $(id).removeClass("hidden");
+                $(id).find("img").attr("src", params.imageUri.slice(7));
+                $(id).find("input").attr("value", params.imageUri.slice(7));
+            }
+        })
+    });
 </script>
 
