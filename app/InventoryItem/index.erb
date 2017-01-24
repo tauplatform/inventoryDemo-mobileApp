@@ -1,12 +1,6 @@
 <div class="row page-title">
   <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <% if Rho::RhoConnectClient.isLoggedIn %>
-        <a href="<%= url_for :controller => :Settings, :action => :do_sync %>" class="btn btn-primary btn-sm btn-block">
-          Sync
-        </a>
-        <% else%>
-        <a href="<%= url_for :controller => :Settings, :action => :login %>" class="btn btn-primary btn-sm  btn-block ">Login</a>
-    <% end %>
+
   </div>
   <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
     <h4 class="text-center">Inventory Items</h4>
