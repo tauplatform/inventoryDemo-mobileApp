@@ -109,7 +109,7 @@ class SettingsController < Rho::RhoController
       elsif err_code == Rho::RhoError::ERR_UNATHORIZED
         Rho::WebView.navigate(url_for :action => :login, :query => {:msg => "Server credentials are expired"})
       elsif err_code != Rho::RhoError::ERR_CUSTOMSYNCSERVER
-        Rho::WebView.executeJavascript("toastr.error(#{@msg}, \"DB Sync\");")
+        Rho::WebView.executeJavascript("toastr.error(\"#{@msg}\", \"DB Sync\");")
       end
     end
   end
