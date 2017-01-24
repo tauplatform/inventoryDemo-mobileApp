@@ -98,7 +98,6 @@ $(document).ready(function () {
 
 // User input validation
     (function () {
-        toastr.options.newestOnTop = false;
         var validateUserInput = function (element) {
             toastr.remove();
             if ($(element).find("#inventoryItem\\[upc\\]").val() === "") {

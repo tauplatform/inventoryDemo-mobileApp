@@ -77,14 +77,14 @@ class SettingsController < Rho::RhoController
 
   def sync_notify
     status = @params['status'] ? @params['status'] : ''
-
+    puts "sync params: #{@params}"
     # un-comment to show a debug status pop-up
     # Rho::Notification.showStatus( "Status", "#{@params['source_name']} : #{status}", Rho::RhoMessages.get_message('hide'))
 
     if status == "in_progress"
-      # do nothing
+      Rho::WebView.executeJavascript('toastr.info("Sync is in progress", "DB Sync");')
     elsif status == "complete"
-      Rho::WebView.navigate('/app/InventoryItem/') if @params['sync_type'] != 'bulk'
+      Rho::WebView.executeJavascript('toastr.success("Sync has being completed", "DB Sync");')
     elsif status == "error"
 
       if @params['server_errors'] && @params['server_errors']['create-error']
@@ -109,7 +109,7 @@ class SettingsController < Rho::RhoController
       elsif err_code == Rho::RhoError::ERR_UNATHORIZED
         Rho::WebView.navigate(url_for :action => :login, :query => {:msg => "Server credentials are expired"})
       elsif err_code != Rho::RhoError::ERR_CUSTOMSYNCSERVER
-        Rho::WebView.navigate(url_for :action => :err_sync, :query => {:msg => @msg})
+        Rho::WebView.executeJavascript("toastr.error(#{@msg}, \"DB Sync\");")
       end
     end
   end
