@@ -1,8 +1,8 @@
-$(document).ready(function () {
-// Barcode scanner routines
-    (function () {
+$(document).ready(function() {
+    // Barcode scanner routines
+    (function() {
         var lastScannedCode;
-        var barcodeCallback = function (code) {
+        var barcodeCallback = function(code) {
             var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
             if (isNaN(qty)) {
                 qty = 0;
@@ -21,13 +21,13 @@ $(document).ready(function () {
             $("#inventoryItem\\[quantity\\]").val(qty);
         };
 
-        var barcodeHardwareScannerCallback = function (params) {
+        var barcodeHardwareScannerCallback = function(params) {
             if (params.data != null) {
                 barcodeCallback(params.data);
             }
         };
 
-        var barcodeCameraScannerCallback = function (params) {
+        var barcodeCameraScannerCallback = function(params) {
             if (params.status === "ok") {
                 barcodeCallback(params.barcode);
             }
@@ -52,27 +52,28 @@ $(document).ready(function () {
         if (hasHardwareScanner) {
             scanners[i].enable({}, barcodeHardwareScannerCallback)
         } else {
-            $("#takeBarcodeBtn").on("click", function () {
+            $("#takeBarcodeBtn").on("click", function() {
                 Rho.Barcode.take({}, barcodeCameraScannerCallback)
             });
         }
     })();
 
-// Camera routines
-    (function () {
-        $("#takePhotoBtn").on("click", function () {
-            Rho.Camera.takePicture({}, function (params) {
+    // Camera routines
+    (function() {
+        $("#takePhotoBtn").on("click", function() {
+            var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
+            Rho.Camera.takePicture({ fileName: photoFilename }, function(params) {
                 if (params.status === "ok") {
                     $("#photo").removeClass("hidden");
-                    $("#photo").find("img").attr("src", params.imageUri);
-                    $("#photo").find("input").attr("value", params.imageUri);
+                    $("#photo").find("img").attr("src", params.imageUri.slice(1));
+                    $("#photo").find("input").attr("value", params.imageUri.slice(1));
                     $("#takePhotoBtn").addClass("hidden");
                 }
             })
         });
 
 
-        $("#deletePhotoBtn").on("click", function () {
+        $("#deletePhotoBtn").on("click", function() {
             $("#takePhotoBtn").removeClass("hidden");
             $("#photo").addClass("hidden");
             $("#photo").find("img").attr("src", "");
@@ -81,12 +82,12 @@ $(document).ready(function () {
 
     })();
 
-// Signature routines
-    (function () {
-        $("#takeSignatureBtn").on("click", function () {
+    // Signature routines
+    (function() {
+        $("#takeSignatureBtn").on("click", function() {
             var signatureFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
-            Rho.Signature.takeFullScreen({fileName: signatureFilename}, function (params) {
-                if (params.status === "ok") {
+            Rho.Signature.takeFullScreen({ fileName: signatureFilename }, function(params) {
+            if (params.status === "ok") {
                     var id = "#signature";
                     $(id).removeClass("hidden");
                     $(id).find("img").attr("src", params.imageUri.slice(7));
@@ -96,9 +97,9 @@ $(document).ready(function () {
         })
     })();
 
-// User input validation
-    (function () {
-        var validateUserInput = function (element) {
+    // User input validation
+    (function() {
+        var validateUserInput = function(element) {
             toastr.remove();
             if ($(element).find("#inventoryItem\\[upc\\]").val() === "") {
                 toastr.error("Field \"UPC\" must be filled", 'Error!');
@@ -127,7 +128,7 @@ $(document).ready(function () {
             return true;
         };
 
-        $("form").submit(function (e) {
+        $("form").submit(function(e) {
             e.preventDefault();
             var form = this;
             if (validateUserInput(form)) {
