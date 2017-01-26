@@ -13,7 +13,6 @@ class InventoryItemController < Rho::RhoController
   end
 
   def index
-    # @menu = [{label: 'back', action: "callback:#{url_for(action: :callback_back)}"}]
     @inventoryItems = InventoryItem.find(:all)
     render
   end

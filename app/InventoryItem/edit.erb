@@ -1,12 +1,12 @@
 <div class="row page-title">
   <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :show, :id => @inventoryItem.object %>" class="btn btn-warning btn-sm btn-block">Cancel</a>
+    <a href="<%= url_for :action => :show, :id => @inventoryItem.object %>" class="btn btn-warning btn-sm pull-left">Cancel</a>
   </div>
   <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
     <h4 class="text-center">Edit <%= @inventoryItem.productName %></h4>
   </div>
   <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :delete, :id => @inventoryItem.object %>" class="btn btn-danger btn-sm btn-block">Delete</a>
+    <a href="<%= url_for :action => :delete, :id => @inventoryItem.object %>" class="btn btn-danger btn-sm pull-left">Delete</a>
   </div>
 </div>
 

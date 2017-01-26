@@ -69,7 +69,7 @@ class SettingsController < Rho::RhoController
   def logout
     Rho::RhoConnectClient.logout
     @msg = "You have been logged out."
-    render :action => :login
+    Rho::WebView.navigate Rho::Application.startURI
   end
 
   def reset
