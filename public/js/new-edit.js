@@ -53,8 +53,9 @@ $(document).ready(function () {
                 var scannerName = scanners[i].friendlyName;
                 if (((scannerName == null) && (storedName === "")) || (scannerName == storedName)) {
                     scanner = scanners[i];
-                    break;
+                    //break;
                 }
+                scanners[i].disable()
             }
         }
         if (scanner.scannerType !== "Camera") {
