@@ -21,9 +21,11 @@ class SettingsController < Rho::RhoController
   end
 
   def barcodeScannerChoosed(scanner)
-    return '' unless Rho::Config.isPropertyExists('barcodeScanner')
-    selected_name = Rho::Config.getPropertyString('barcodeScanner')
-    scanner.friendlyName.to_s == selected_name ? 'checked' : ''
+    if Rho::Config.isPropertyExists('barcodeScanner')
+      selected_name = Rho::Config.getPropertyString('barcodeScanner')
+      return scanner.friendlyName.to_s == selected_name ? 'checked' : ''
+    end
+    scanner.friendlyName == Rho::Barcode.getDefault.friendlyName ? 'checked' : ''
   end
 
   def login
