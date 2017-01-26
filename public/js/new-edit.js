@@ -69,16 +69,22 @@ $(document).ready(function () {
 // Camera routines
     (function () {
         $("#takePhotoBtn").on("click", function () {
-            Rho.Camera.takePicture({}, function (params) {
+            var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
+            Rho.Camera.takePicture({fileName: photoFilename}, function (params) {
                 if (params.status === "ok") {
+                    var imagePath = params.imageUri;
+                    if (Rho.System.platform === Rho.System.PLATFORM_WM_CE) {
+                        imagePath = params.imageUri.slice(1)
+                    }
+
                     $("#photo").removeClass("hidden");
-                    $("#photo").find("img").attr("src", params.imageUri);
-                    $("#photo").find("input").attr("value", params.imageUri);
+                    $("#photo").find("img").attr("src", imagePath);
+                    $("#photo").find("input").attr("value", imagePath);
                     $("#takePhotoBtn").addClass("hidden");
                 }
             })
         });
-git stash
+
 
         $("#deletePhotoBtn").on("click", function () {
             $("#takePhotoBtn").removeClass("hidden");
