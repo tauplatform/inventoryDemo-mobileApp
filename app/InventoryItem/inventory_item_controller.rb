@@ -4,13 +4,12 @@ require 'helpers/browser_helper'
 class InventoryItemController < Rho::RhoController
   include BrowserHelper
 
-  def initialize
-    @hasHardwareScanner = false
-    if Rho.respond_to?(:Barcode)
-      scanners = Rho::Barcode.enumerate
-      hardwareScanners = scanners.select { |each| each.friendlyName == '2D Imager' }
-      @hasHardwareScanner = hardwareScanners.size != 0
-    end
+  def hardware_scanner_selected?
+    hardware_scanner_selected = Rho::Barcode.getDefault.scannerType != 'Camera'
+    return hardware_scanner_selected unless Rho::Config.isPropertyExists('barcodeScanner')
+
+    stored_name = Rho::Config.getPropertyString('barcodeScanner')
+    return Rho::Barcode.enumerate.any? { |each| each.friendlyName.to_s == stored_name && each.scannerType != 'Camera' }
   end
 
   def index
@@ -30,7 +29,6 @@ class InventoryItemController < Rho::RhoController
 
   def new
     @inventoryItem = InventoryItem.new
-    puts "report #{@inventoryItem}"
     render :action => :new, :back => url_for(:action => :index)
   end
 
@@ -52,7 +50,6 @@ class InventoryItemController < Rho::RhoController
     data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
     data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
     @inventoryItem = InventoryItem.create(data)
-    puts "create: inventoryItem = #{@inventoryItem}"
     redirect :action => :index
   end
 
@@ -66,7 +63,6 @@ class InventoryItemController < Rho::RhoController
     data['employeeId'] = @params['inventoryItem']['employeeId']
     data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
     data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
-    puts "update: #{data}"
     @inventoryItem.update_attributes(data) if @inventoryItem
     redirect :action => :index
   end

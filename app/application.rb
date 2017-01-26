@@ -8,7 +8,7 @@ class AppApplication < Rho::RhoApplication
     # @default_menu = {}
 
     #To remove default toolbar uncomment next line:
-    @@toolbar = nil
+    #@@toolbar = nil
     super
 
 

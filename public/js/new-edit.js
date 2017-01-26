@@ -1,6 +1,17 @@
 $(document).ready(function () {
 // Barcode scanner routines
     (function () {
+        var scanners = [];
+        try {
+            scanners = Rho.Barcode.enumerate();
+
+        }
+        catch (e) {
+            console.log("Barcode API is not found");
+            return;
+        }
+
+
         var lastScannedCode;
         var barcodeCallback = function (code) {
             var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
@@ -33,27 +44,24 @@ $(document).ready(function () {
             }
         };
 
-        var hasHardwareScanner = false;
-        var scanners = []
-        try {
-            scanners = Rho.Barcode.enumerate();
-        }
-        catch (e) {
-            console.log("Barcode API is not found");
-        }
-        var i;
-        for (i = 0; i < scanners.length; i++) {
-            if (scanners[i].friendlyName === "2D Imager") {
-                hasHardwareScanner = true;
-                break;
+        var scanner = Rho.Barcode.getDefault();
+
+
+        if (Rho.Config.isPropertyExists("barcodeScanner")) {
+            var storedName = Rho.Config.getPropertyString("barcodeScanner");
+            for (var i = 0; i < scanners.length; i++) {
+                var scannerName = scanners[i].friendlyName;
+                if (((scannerName == null) && (storedName === "")) || (scannerName == storedName)) {
+                    scanner = scanners[i];
+                    break;
+                }
             }
         }
-
-        if (hasHardwareScanner) {
-            scanners[i].enable({}, barcodeHardwareScannerCallback)
+        if (scanner.scannerType !== "Camera") {
+            scanner.enable({}, barcodeHardwareScannerCallback)
         } else {
             $("#takeBarcodeBtn").on("click", function () {
-                Rho.Barcode.take({}, barcodeCameraScannerCallback)
+                scanner.take({}, barcodeCameraScannerCallback)
             });
         }
     })();
@@ -70,7 +78,7 @@ $(document).ready(function () {
                 }
             })
         });
-
+git stash
 
         $("#deletePhotoBtn").on("click", function () {
             $("#takePhotoBtn").removeClass("hidden");

@@ -16,7 +16,7 @@
 
   <div class="form-group">
     <label for="inventoryItem[upc]">UPC</label>
-    <% if @hasHardwareScanner %>
+    <% if hardware_scanner_selected? %>
         <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control" value="<%= @inventoryItem.upc %>"/>
     <% else %>
         <div class="input-group">

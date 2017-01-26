@@ -6,11 +6,25 @@ require 'helpers/browser_helper'
 class SettingsController < Rho::RhoController
   include BrowserHelper
 
+
   def index
     @msg = @params['msg']
     render
   end
 
+  def barcodeScannerName(scanner)
+    if scanner.friendlyName == Rho::Barcode.getDefault.friendlyName
+      return "#{scanner.friendlyName} (default)"
+    else
+      scanner.friendlyName
+    end
+  end
+
+  def barcodeScannerChoosed(scanner)
+    return '' unless Rho::Config.isPropertyExists('barcodeScanner')
+    selected_name = Rho::Config.getPropertyString('barcodeScanner')
+    scanner.friendlyName.to_s == selected_name ? 'checked' : ''
+  end
 
   def login
     @msg = @params['msg']
@@ -77,7 +91,6 @@ class SettingsController < Rho::RhoController
 
   def sync_notify
     status = @params['status'] ? @params['status'] : ''
-    puts "sync params: #{@params}"
     # un-comment to show a debug status pop-up
     # Rho::Notification.showStatus( "Status", "#{@params['source_name']} : #{status}", Rho::RhoMessages.get_message('hide'))
 
