@@ -87,7 +87,7 @@ class SettingsController < Rho::RhoController
   def do_sync
     Rho::RhoConnectClient.doSync
     @msg = "Sync has been triggered."
-    redirect :action => :index, :query => {:msg => @msg}
+    redirect :action => :wait, :query => {:msg => @msg}
   end
 
   def sync_notify
@@ -99,6 +99,7 @@ class SettingsController < Rho::RhoController
       Rho::WebView.executeJavascript('toastr.info("Sync is in progress", "DB Sync");')
     elsif status == "complete"
       Rho::WebView.executeJavascript('toastr.success("Sync has being completed", "DB Sync");')
+      Rho::WebView.navigate (url_for :controller => "InventoryItem", :action => :index)
     elsif status == "error"
 
       if @params['server_errors'] && @params['server_errors']['create-error']

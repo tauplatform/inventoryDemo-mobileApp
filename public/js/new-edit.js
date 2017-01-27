@@ -100,12 +100,23 @@ $(document).ready(function () {
     (function () {
         $("#takeSignatureBtn").on("click", function () {
             var signatureFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
+
             Rho.Signature.takeFullScreen({fileName: signatureFilename}, function (params) {
                 if (params.status === "ok") {
+	//alert(params.imageUri);
+
                     var id = "#signature";
                     $(id).removeClass("hidden");
-                    $(id).find("img").attr("src", params.imageUri.slice(7));
-                    $(id).find("input").attr("value", params.imageUri.slice(7));
+
+	img_path = "";
+	if (Rho.System.platform === Rho.System.PLATFORM_IOS) {
+                        img_path = params.imageUri;
+                    }
+	else {
+                        img_path = params.imageUri.slice(7);
+	}
+                    $(id).find("img").attr("src", img_path);
+                    $(id).find("input").attr("value", img_path);
                 }
             })
         })

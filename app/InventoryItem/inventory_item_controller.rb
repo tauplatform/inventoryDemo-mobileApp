@@ -5,6 +5,10 @@ class InventoryItemController < Rho::RhoController
   include BrowserHelper
 
   def hardware_scanner_selected?
+    if Rho::System.platform == Rho::System::PLATFORM_IOS
+        return false
+    end
+
     hardware_scanner_selected = Rho::Barcode.getDefault.scannerType != 'Camera'
     return hardware_scanner_selected unless Rho::Config.isPropertyExists('barcodeScanner')
 

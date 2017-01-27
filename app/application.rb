@@ -8,7 +8,22 @@ class AppApplication < Rho::RhoApplication
     # @default_menu = {}
 
     #To remove default toolbar uncomment next line:
-    @@toolbar = nil
+
+
+    if System::get_property('platform') == 'APPLE'
+        toolbarz = [
+          {:action => :back,    :icon => '/public/images/back_btn.png'},
+          {:action => :separator},
+          {:action => :home,    :icon => '/public/images/home_btn.png'},
+          {:action => "app/Settings/do_sync",    :icon => '/public/images/sync_btn.png'},
+          {:action => :refresh },
+          {:action => :options,    :icon => '/public/images/gears.png'}
+        ]
+      @@toolbar = toolbarz
+    else
+        @@toolbar = nil
+    end
+
     super
 
 
@@ -16,6 +31,6 @@ class AppApplication < Rho::RhoApplication
      #Rho::RhoConnectClient.setObjectNotification("/app/Settings/sync_notify")
      Rho::RhoConnectClient.setNotification('*', "/app/Settings/sync_notify", '')
 
-    
+
   end
 end
