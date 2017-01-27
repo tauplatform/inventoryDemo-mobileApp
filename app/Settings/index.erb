@@ -62,7 +62,7 @@
           <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <select id="barcodeScanner" class="form-control">
               <% Rho::Barcode.enumerate.each do |scanner| %>
-                  <option value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>><%= barcodeScannerName(scanner) %></option>
+                  <option value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>><%= "#{scanner.friendlyName} (#{scanner.scannerType})" %></option>
               <% end %>
             </select>
           </div>
@@ -79,9 +79,18 @@
 
 <script>
     $(document).ready(function () {
-        var id = "#barcodeScanner";
-        $(id).change(function () {
-            Rho.Config.setPropertyString("<%= @barcode_scanner_property_name %>", $(id).val(), true);
+        $("#barcodeScanner").change(function () {
+            var value = $("#barcodeScanner").val();
+            Rho.Barcode.getDefault().disable();
+            var scanners = Rho.Barcode.enumerate();
+            for (var i = 0; i < scanners.length; i++) {
+                var scannerName = scanners[i].friendlyName != null ? scanners[i].friendlyName : "";
+                if (scannerName == value) {
+                    Rho.Barcode.setDefault(scanners[i]);
+                    break;
+                }
+            }
+            Rho.Config.setPropertyString("<%= @barcode_scanner_property_name %>", value, true);
         });
     })
 </script>

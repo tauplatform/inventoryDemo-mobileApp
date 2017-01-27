@@ -1,34 +1,20 @@
 $(document).ready(function () {
 // Barcode scanner routines
     (function () {
-        var scanners = [];
-        try {
-            scanners = Rho.Barcode.enumerate();
 
-        }
-        catch (e) {
-            console.log("Barcode API is not found");
-            return;
-        }
-
-
-        var lastScannedCode;
-        var barcodeCallback = function (code) {
+        var barcodeCallback = function (newCode) {
+            var code = $("#inventoryItem\\[upc\\]").val();
             var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
+
             if (isNaN(qty)) {
                 qty = 0;
             }
-            console.log("qty", qty);
-            console.log("lastScannedCode", lastScannedCode);
-            console.log("code", code);
-            console.log(lastScannedCode === code);
-            if (lastScannedCode === code) {
-                qty++;
-            } else {
-                $("#inventoryItem\\[upc\\]").val(code);
-                lastScannedCode = code;
-                qty = 1;
+
+            if (code !== newCode) {
+                $("#inventoryItem\\[upc\\]").val(newCode);
+                qty = 0;
             }
+            qty++;
             $("#inventoryItem\\[quantity\\]").val(qty);
         };
 
@@ -45,19 +31,6 @@ $(document).ready(function () {
         };
 
         var scanner = Rho.Barcode.getDefault();
-
-
-        if (Rho.Config.isPropertyExists("barcodeScanner")) {
-            var storedName = Rho.Config.getPropertyString("barcodeScanner");
-            for (var i = 0; i < scanners.length; i++) {
-                var scannerName = scanners[i].friendlyName;
-                if (((scannerName == null) && (storedName === "")) || (scannerName == storedName)) {
-                    scanner = scanners[i];
-                    //break;
-                }
-                scanners[i].disable()
-            }
-        }
         if (scanner.scannerType !== "Camera") {
             scanner.enable({}, barcodeHardwareScannerCallback)
         } else {

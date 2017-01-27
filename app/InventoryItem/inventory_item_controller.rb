@@ -5,18 +5,28 @@ class InventoryItemController < Rho::RhoController
   include BrowserHelper
 
   def hardware_scanner_selected?
-    if Rho::System.platform == Rho::System::PLATFORM_IOS
-        return false
+    return false if Rho::System.platform == Rho::System::PLATFORM_IOS
+    Rho::Barcode.getDefault.scannerType != 'Camera'
+  end
+
+  def barcode_scanner_callback
+    unless @params['data'].nil?
+      item = InventoryItem.find(:first, :conditions => {'upc' => @params['data']})
+      if item.nil?
+#        WebView.navigate url_for :action => :new, :upc => @params['data']
+        WebView.navigate url_for :action => :new, :query => {:upc => @params['data']}
+      else
+        WebView.navigate url_for :action => :show, :id => item.object
+      end
     end
-
-    hardware_scanner_selected = Rho::Barcode.getDefault.scannerType != 'Camera'
-    return hardware_scanner_selected unless Rho::Config.isPropertyExists('barcodeScanner')
-
-    stored_name = Rho::Config.getPropertyString('barcodeScanner')
-    return Rho::Barcode.enumerate.any? { |each| each.friendlyName.to_s == stored_name && each.scannerType != 'Camera' }
   end
 
   def index
+    if self.hardware_scanner_selected?
+      Rho::Barcode.getDefault.enable({}, url_for(:action => :barcode_scanner_callback))
+    end
+
+
     @inventoryItems = InventoryItem.find(:all)
     render
   end
