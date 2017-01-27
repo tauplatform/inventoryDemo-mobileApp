@@ -1,50 +1,54 @@
-$(document).ready(function () {
-// Barcode scanner routines
-    (function () {
+$(document).ready(function() {
+    // Barcode scanner routines
+    // (function () {
 
-        var barcodeCallback = function (newCode) {
-            var code = $("#inventoryItem\\[upc\\]").val();
-            var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
+    var barcodeCallback = function(newCode) {
+        var code = $("#inventoryItem\\[upc\\]").val();
+        var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
 
-            if (isNaN(qty)) {
-                qty = 0;
-            }
-
-            if (code !== newCode) {
-                $("#inventoryItem\\[upc\\]").val(newCode);
-                qty = 0;
-            }
-            qty++;
-            $("#inventoryItem\\[quantity\\]").val(qty);
-        };
-
-        var barcodeHardwareScannerCallback = function (params) {
-            if (params.data != null) {
-                barcodeCallback(params.data);
-            }
-        };
-
-        var barcodeCameraScannerCallback = function (params) {
-            if (params.status === "ok") {
-                barcodeCallback(params.barcode);
-            }
-        };
-
-        var scanner = Rho.Barcode.getDefault();
-        if (scanner.scannerType !== "Camera") {
-            scanner.enable({}, barcodeHardwareScannerCallback)
-        } else {
-            $("#takeBarcodeBtn").on("click", function () {
-                scanner.take({}, barcodeCameraScannerCallback)
-            });
+        if (isNaN(qty)) {
+            qty = 0;
         }
-    })();
 
-// Camera routines
-    (function () {
-        $("#takePhotoBtn").on("click", function () {
+        if (code !== newCode) {
+            $("#inventoryItem\\[upc\\]").val(newCode);
+            qty = 0;
+        }
+        qty++;
+        $("#inventoryItem\\[quantity\\]").val(qty);
+    };
+
+    var barcodeHardwareScannerCallback = function(params) {
+        if (params.data != null) {
+            barcodeCallback(params.data);
+        }
+    };
+
+    var barcodeCameraScannerCallback = function(params) {
+        if (params.status === "ok") {
+            barcodeCallback(params.barcode);
+        }
+    };
+
+    var scanner = Rho.Barcode.getDefault();
+    if (scanner.scannerType !== "Camera") {
+        scanner.disable()
+        scanner.enable({}, barcodeHardwareScannerCallback)
+    } else {
+        $("#takeBarcodeBtn").on("click", function() {
+            scanner.take({}, barcodeCameraScannerCallback)
+        });
+    }
+    //  })();
+
+    // Camera routines
+    (function() {
+        $("#takePhotoBtn").on("click", function() {
+            if (scanner.scannerType !== "Camera") {
+                scanner.disable()
+            }
             var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
-            Rho.Camera.takePicture({fileName: photoFilename}, function (params) {
+            Rho.Camera.takePicture({ fileName: photoFilename }, function(params) {
                 if (params.status === "ok") {
                     var imagePath = params.imageUri;
                     if (Rho.System.platform === Rho.System.PLATFORM_WM_CE) {
@@ -56,11 +60,14 @@ $(document).ready(function () {
                     $("#photo").find("input").attr("value", imagePath);
                     $("#takePhotoBtn").addClass("hidden");
                 }
+                if (scanner.scannerType !== "Camera") {
+                    scanner.enable({}, barcodeHardwareScannerCallback)
+                }
             })
         });
 
 
-        $("#deletePhotoBtn").on("click", function () {
+        $("#deletePhotoBtn").on("click", function() {
             $("#takePhotoBtn").removeClass("hidden");
             $("#photo").addClass("hidden");
             $("#photo").find("img").attr("src", "");
@@ -69,25 +76,25 @@ $(document).ready(function () {
 
     })();
 
-// Signature routines
-    (function () {
-        $("#takeSignatureBtn").on("click", function () {
+    // Signature routines
+    (function() {
+        $("#takeSignatureBtn").on("click", function() {
             var signatureFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
 
-            Rho.Signature.takeFullScreen({fileName: signatureFilename}, function (params) {
+            Rho.Signature.takeFullScreen({ fileName: signatureFilename }, function(params) {
                 if (params.status === "ok") {
-	//alert(params.imageUri);
+                    //alert(params.imageUri);
 
                     var id = "#signature";
                     $(id).removeClass("hidden");
 
-	img_path = "";
-	if (Rho.System.platform === Rho.System.PLATFORM_IOS) {
+                    img_path = "";
+                    if (Rho.System.platform === Rho.System.PLATFORM_IOS) {
                         img_path = params.imageUri;
                     }
-	else {
+                    else {
                         img_path = params.imageUri.slice(7);
-	}
+                    }
                     $(id).find("img").attr("src", img_path);
                     $(id).find("input").attr("value", img_path);
                 }
@@ -95,9 +102,9 @@ $(document).ready(function () {
         })
     })();
 
-// User input validation
-    (function () {
-        var validateUserInput = function (element) {
+    // User input validation
+    (function() {
+        var validateUserInput = function(element) {
             toastr.remove();
             if ($(element).find("#inventoryItem\\[upc\\]").val() === "") {
                 toastr.error("Field \"UPC\" must be filled", 'Error!');
@@ -126,7 +133,7 @@ $(document).ready(function () {
             return true;
         };
 
-        $("form").submit(function (e) {
+        $("form").submit(function(e) {
             e.preventDefault();
             var form = this;
             if (validateUserInput(form)) {
