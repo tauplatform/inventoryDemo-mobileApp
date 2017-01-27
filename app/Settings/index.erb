@@ -60,35 +60,28 @@
             <span pull-right>Barcode scanner:</span>
           </div>
           <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <% Rho::Barcode.enumerate.each do |scanner| %>
-                <label class="radio-inline" style="margin: 1em">
-                  <input type="radio" name="barcodeScanner" value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>>
-                  <%= barcodeScannerName(scanner) %>
-                </label>
-            <% end %>
+            <select id="barcodeScanner" class="form-control">
+              <% Rho::Barcode.enumerate.each do |scanner| %>
+                  <option value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>><%= barcodeScannerName(scanner) %></option>
+              <% end %>
+            </select>
           </div>
         </div>
-      </li>
-
-
     </div>
+    </li>
+
 
   </div>
 
 </div>
 
+</div>
+
 <script>
     $(document).ready(function () {
-
-//        $("#scannerSelection").change(function () {
-//            alert($("#scannerSelection").val());
-//            Rho.Config.setPropertyString("barcodeScanner", $("#scannerSelection").val(), true);
-//        });
-
-        $('input').on('change', function () {
-            var value = $('input[name=barcodeScanner]:checked').val();
-            Rho.Config.setPropertyString("barcodeScanner", value, true);
+        var id = "#barcodeScanner";
+        $(id).change(function () {
+            Rho.Config.setPropertyString("<%= @barcode_scanner_property_name %>", $(id).val(), true);
         });
-
     })
 </script>

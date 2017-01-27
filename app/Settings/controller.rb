@@ -6,6 +6,9 @@ require 'helpers/browser_helper'
 class SettingsController < Rho::RhoController
   include BrowserHelper
 
+  def initialize
+    @barcode_scanner_property_name = 'barcodeScanner'
+  end
 
   def index
     @msg = @params['msg']
@@ -13,19 +16,15 @@ class SettingsController < Rho::RhoController
   end
 
   def barcodeScannerName(scanner)
-    if scanner.friendlyName == Rho::Barcode.getDefault.friendlyName
-      return "#{scanner.friendlyName} (default)"
-    else
-      scanner.friendlyName
-    end
+    "#{scanner.friendlyName} (#{scanner.scannerType})"
   end
 
   def barcodeScannerChoosed(scanner)
-    if Rho::Config.isPropertyExists('barcodeScanner')
-      selected_name = Rho::Config.getPropertyString('barcodeScanner')
-      return scanner.friendlyName.to_s == selected_name ? 'checked' : ''
+    if Rho::Config.isPropertyExists(@barcode_scanner_property_name)
+      selected_name = Rho::Config.getPropertyString(@barcode_scanner_property_name)
+      return scanner.friendlyName.to_s == selected_name ? 'selected' : ''
     end
-    scanner.friendlyName == Rho::Barcode.getDefault.friendlyName ? 'checked' : ''
+    scanner.friendlyName.to_s == Rho::Barcode.getDefault.friendlyName.to_s ? 'selected' : ''
   end
 
   def login
