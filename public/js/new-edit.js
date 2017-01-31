@@ -88,7 +88,7 @@ $(document).ready(function() {
                     var id = "#signature";
                     $(id).removeClass("hidden");
 
-                    img_path = "";
+                    var img_path;
                     if (Rho.System.platform === Rho.System.PLATFORM_IOS) {
                         img_path = params.imageUri;
                     }
