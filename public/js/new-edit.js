@@ -59,6 +59,30 @@ $(document).ready(function() {
                     $("#photo").find("img").attr("src", imagePath);
                     $("#photo").find("input").attr("value", imagePath);
                     $("#takePhotoBtn").addClass("hidden");
+                    $("#choosePhotoBtn").addClass("hidden");
+                }
+                if (scanner.scannerType !== "Camera") {
+                    scanner.enable({}, barcodeHardwareScannerCallback)
+                }
+            })
+        });
+        $("#choosePhotoBtn").on("click", function() {
+            if (scanner.scannerType !== "Camera") {
+                scanner.disable()
+            }
+            var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
+            Rho.Camera.choosePicture({ fileName: photoFilename }, function(params) {
+                if (params.status === "ok") {
+                    var imagePath = params.imageUri;
+                    if (Rho.System.platform === Rho.System.PLATFORM_WM_CE) {
+                        imagePath = params.imageUri.slice(1)
+                    }
+
+                    $("#photo").removeClass("hidden");
+                    $("#photo").find("img").attr("src", imagePath);
+                    $("#photo").find("input").attr("value", imagePath);
+                    $("#takePhotoBtn").addClass("hidden");
+                    $("#choosePhotoBtn").addClass("hidden");
                 }
                 if (scanner.scannerType !== "Camera") {
                     scanner.enable({}, barcodeHardwareScannerCallback)
@@ -67,12 +91,15 @@ $(document).ready(function() {
         });
 
 
+
         $("#deletePhotoBtn").on("click", function() {
             $("#takePhotoBtn").removeClass("hidden");
+            $("#choosePhotoBtn").removeClass("hidden");
             $("#photo").addClass("hidden");
             $("#photo").find("img").attr("src", "");
             $("#photo").find("input").attr("value", "");
         });
+
 
     })();
 
