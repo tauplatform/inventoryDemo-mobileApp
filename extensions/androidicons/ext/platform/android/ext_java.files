@@ -1,0 +1,9 @@
+ext/platform/android/generated/src/com/rho/androidicons/AndroidiconsBase.java
+ext/platform/android/generated/src/com/rho/androidicons/AndroidiconsFactorySingleton.java
+ext/platform/android/generated/src/com/rho/androidicons/AndroidiconsSingletonBase.java
+ext/platform/android/generated/src/com/rho/androidicons/IAndroidicons.java
+ext/platform/android/generated/src/com/rho/androidicons/IAndroidiconsFactory.java
+ext/platform/android/generated/src/com/rho/androidicons/IAndroidiconsSingleton.java
+ext/platform/android/src/com/rho/androidicons/Androidicons.java
+ext/platform/android/src/com/rho/androidicons/AndroidiconsFactory.java
+ext/platform/android/src/com/rho/androidicons/AndroidiconsSingleton.java
