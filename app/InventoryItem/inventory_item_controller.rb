@@ -22,10 +22,11 @@ class InventoryItemController < Rho::RhoController
   end
 
   def index
-    if self.hardware_scanner_selected?
-      Rho::Barcode.getDefault.enable({}, url_for(:action => :barcode_scanner_callback))
+    if Rho.const_defined?(:Barcode)
+      if self.hardware_scanner_selected?
+        Rho::Barcode.getDefault.enable({}, url_for(:action => :barcode_scanner_callback))
+      end
     end
-
 
     @inventoryItems = InventoryItem.find(:all)
     render
