@@ -1,7 +1,0 @@
-ext/platform/android/generated/jni/Androidicons.cpp
-ext/platform/android/generated/jni/androidicons_ruby_wrap.cpp
-ext/platform/android/generated/jni/androidicons_js_wrap.cpp
-ext/platform/android/jni/Androidicons_impl.cpp
-ext/shared/generated/androidicons_api_init.cpp
-ext/shared/generated/androidicons_js_api.cpp
-ext/shared/generated/androidicons_ruby_api.c

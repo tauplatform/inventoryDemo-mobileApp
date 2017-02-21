@@ -8,14 +8,12 @@ applog: rholog.txt
 #javascript_application: true
 iphone:
   configuration: Release
-  sdk: iphoneos10.2
+  sdk: latest
   #provisionprofile:
   #codesignidentity:
   #entitlements:
   BundleIdentifier: com.tautechnologies.inventorydemo
   BundleURLScheme: inventorydemo
-  production:
-    ipa_itunesartwork_image: "./production/iTunesArtwork.png"
   info_plist_data:
     NSAppTransportSecurity:
       NSAllowsArbitraryLoads: true
@@ -34,7 +32,6 @@ android:
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
     - enterprise-barcode
-    - androidicons
 
 wm:
   extensions:
