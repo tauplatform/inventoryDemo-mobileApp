@@ -8,11 +8,7 @@ applog: rholog.txt
 #javascript_application: true
 iphone:
   configuration: Release
-<<<<<<< Updated upstream
   sdk: latest
-=======
-  sdk: iphonesimulator10.2
->>>>>>> Stashed changes
   #provisionprofile:
   #codesignidentity:
   #entitlements:
