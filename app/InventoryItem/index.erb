@@ -1,24 +1,10 @@
-<div class="row page-title">
-  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <% if Rho::RhoConnectClient.isLoggedIn %>
-        <a href="<%= url_for :controller => :Settings, :action => :logout %>" class="btn btn-warning btn-sm pull-left">
-          Logout
-        </a>
-    <% else %>
-        <a href="<%= url_for :controller => :Settings, :action => :login %>" class="btn btn-primary btn-sm pull-left">
-          Login
-        </a>
-    <% end %>
-  </div>
-  <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
-    <h4 class="text-center">Inventory Items</h4>
-  </div>
-  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :new %>" class="btn btn-success btn-sm  btn-block">New</a>
-  </div>
+<div id="header">
+  <span id="button-menu" class="glyphicon glyphicon-menu-hamburger"></span>
+  <span class="title">Items</span>
+  <a href="<%= url_for :action => :new %>" class="btn btn-primary pull-right">New</a>
 </div>
 
-<div class="row list-group">
+<div class="list-group">
   <% @inventoryItems.each do |item| %>
 
       <a href="<%= url_for :action => :show, :id => item.object %>" class="list-group-item">
@@ -30,4 +16,5 @@
       </a>
 
   <% end %>
+
 </div>

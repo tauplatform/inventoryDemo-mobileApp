@@ -8,7 +8,11 @@ applog: rholog.txt
 #javascript_application: true
 iphone:
   configuration: Release
+<<<<<<< Updated upstream
   sdk: latest
+=======
+  sdk: iphonesimulator10.2
+>>>>>>> Stashed changes
   #provisionprofile:
   #codesignidentity:
   #entitlements:
@@ -28,10 +32,11 @@ wp8:
 android:
   manifest_template: 'AndroidManifest.erb'
   version: 4.1.0
+  android_title: 0
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
-    - enterprise-barcode
+    #- enterprise-barcode
 
 wm:
   extensions:
@@ -47,8 +52,7 @@ win32:
 
 extensions:
   - rhoconnect-client
-  #- "barcode"
-  #- enterprise-barcode
+  - barcode
   - mediacapture
   - signature
 

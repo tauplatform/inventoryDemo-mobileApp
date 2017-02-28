@@ -1,8 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Barcode scanner routines
-    // (function () {
 
-    var barcodeCallback = function(newCode) {
+    var barcodeCallback = function (newCode) {
         var code = $("#inventoryItem\\[upc\\]").val();
         var qty = parseInt($("#inventoryItem\\[quantity\\]").val());
 
@@ -18,37 +17,55 @@ $(document).ready(function() {
         $("#inventoryItem\\[quantity\\]").val(qty);
     };
 
-    var barcodeHardwareScannerCallback = function(params) {
+    var barcodeHardwareScannerCallback = function (params) {
         if (params.data != null) {
             barcodeCallback(params.data);
         }
     };
 
-    var barcodeCameraScannerCallback = function(params) {
+    var barcodeCameraScannerCallback = function (params) {
         if (params.status === "ok") {
             barcodeCallback(params.barcode);
         }
     };
 
-    var scanner = Rho.Barcode.getDefault();
-    if (scanner.scannerType !== "Camera") {
-        scanner.disable()
-        scanner.enable({}, barcodeHardwareScannerCallback)
-    } else {
-        $("#takeBarcodeBtn").on("click", function() {
-            scanner.take({}, barcodeCameraScannerCallback)
-        });
-    }
-    //  })();
+    var disableDefaultBarcodeScannerIfHardware = function () {
+        try {
+            var scanner = Rho.Barcode.getDefault();
+            if (scanner.scannerType !== "Camera") {
+                scanner.disable();
+            }
+        }
+        catch (e) {
+            console.error("The routines with Rho.Barcode has raised the error: " + e)
+        }
+    };
+
+    var setCallbackForDefaultBarcodeScanner = function () {
+        try {
+            var scanner = Rho.Barcode.getDefault();
+            if (scanner.scannerType !== "Camera") {
+                disableDefaultBarcodeScannerIfHardware();
+                scanner.enable({}, barcodeHardwareScannerCallback)
+            } else {
+                $("#takeBarcodeBtn").on("click", function () {
+                    scanner.take({}, barcodeCameraScannerCallback)
+                });
+            }
+        }
+        catch (e) {
+            console.error("The routines with Rho.Barcode has raised the error: " + e)
+        }
+    };
+
+    setCallbackForDefaultBarcodeScanner();
 
     // Camera routines
-    (function() {
-        $("#takePhotoBtn").on("click", function() {
-            if (scanner.scannerType !== "Camera") {
-                scanner.disable()
-            }
+    (function () {
+        $("#takePhotoBtn").on("click", function () {
+            disableDefaultBarcodeScannerIfHardware();
             var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
-            Rho.Camera.takePicture({ fileName: photoFilename }, function(params) {
+            Rho.Camera.takePicture({fileName: photoFilename}, function (params) {
                 if (params.status === "ok") {
                     var imagePath = params.imageUri;
                     if (Rho.System.platform === Rho.System.PLATFORM_WM_CE) {
@@ -61,17 +78,12 @@ $(document).ready(function() {
                     $("#takePhotoBtn").addClass("hidden");
                     $("#choosePhotoBtn").addClass("hidden");
                 }
-                if (scanner.scannerType !== "Camera") {
-                    scanner.enable({}, barcodeHardwareScannerCallback)
-                }
+                setCallbackForDefaultBarcodeScanner();
             })
         });
-        $("#choosePhotoBtn").on("click", function() {
-            if (scanner.scannerType !== "Camera") {
-                scanner.disable()
-            }
+        $("#choosePhotoBtn").on("click", function () {
             var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
-            Rho.Camera.choosePicture({ fileName: photoFilename }, function(params) {
+            Rho.Camera.choosePicture({fileName: photoFilename}, function (params) {
                 if (params.status === "ok") {
                     var imagePath = params.imageUri;
                     if (Rho.System.platform === Rho.System.PLATFORM_WM_CE) {
@@ -84,31 +96,24 @@ $(document).ready(function() {
                     $("#takePhotoBtn").addClass("hidden");
                     $("#choosePhotoBtn").addClass("hidden");
                 }
-                if (scanner.scannerType !== "Camera") {
-                    scanner.enable({}, barcodeHardwareScannerCallback)
-                }
             })
         });
 
-
-
-        $("#deletePhotoBtn").on("click", function() {
+        $("#deletePhotoBtn").on("click", function () {
             $("#takePhotoBtn").removeClass("hidden");
             $("#choosePhotoBtn").removeClass("hidden");
             $("#photo").addClass("hidden");
             $("#photo").find("img").attr("src", "");
             $("#photo").find("input").attr("value", "");
         });
-
-
     })();
 
     // Signature routines
-    (function() {
-        $("#takeSignatureBtn").on("click", function() {
+    (function () {
+        $("#takeSignatureBtn").on("click", function () {
             var signatureFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
 
-            Rho.Signature.takeFullScreen({ fileName: signatureFilename }, function(params) {
+            Rho.Signature.takeFullScreen({fileName: signatureFilename}, function (params) {
                 if (params.status === "ok") {
                     //alert(params.imageUri);
 
@@ -130,8 +135,8 @@ $(document).ready(function() {
     })();
 
     // User input validation
-    (function() {
-        var validateUserInput = function(element) {
+    (function () {
+        var validateUserInput = function (element) {
             toastr.remove();
             if ($(element).find("#inventoryItem\\[upc\\]").val() === "") {
                 toastr.error("Field \"UPC\" must be filled", 'Error!');
@@ -160,7 +165,7 @@ $(document).ready(function() {
             return true;
         };
 
-        $("form").submit(function(e) {
+        $("form").submit(function (e) {
             e.preventDefault();
             var form = this;
             if (validateUserInput(form)) {
@@ -168,6 +173,9 @@ $(document).ready(function() {
             }
         });
 
+        $("#done-button").on("click", function () {
+            $("form").submit();
+        });
+    })();
 
-    })()
 });

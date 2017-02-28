@@ -15,14 +15,16 @@ class SettingsController < Rho::RhoController
     render
   end
 
+  def do_back
+    Rho::WebView.navigateBack()
+  end
+
   def barcodeScannerChoosed(scanner)
     puts "Rho::Barcode.getDefault.friendlyName #{Rho::Barcode.getDefault.friendlyName}"
-=begin
     if Rho::Config.isPropertyExists(@barcode_scanner_property_name)
       selected_name = Rho::Config.getPropertyString(@barcode_scanner_property_name)
       return scanner.friendlyName.to_s == selected_name ? 'selected' : ''
     end
-=end
     scanner.friendlyName== Rho::Barcode.getDefault.friendlyName ? 'selected' : ''
   end
 
@@ -87,6 +89,10 @@ class SettingsController < Rho::RhoController
     Rho::RhoConnectClient.doSync
     @msg = "Sync has been triggered."
     redirect :action => :wait, :query => {:msg => @msg}
+  end
+
+  def do_quit
+    Rho::Application.quit()
   end
 
   def sync_notify

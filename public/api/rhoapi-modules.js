@@ -3658,6 +3658,519 @@ var EB = Rho;
     
 
 })(Rho.jQuery, Rho, Rho.util);
+// Module Rho.Camera
+
+
+(function ($, rho, rhoUtil) {
+    'use strict';
+
+    var moduleNS = 'Rho.Camera';
+    var apiReq = rhoUtil.apiReqFor(moduleNS);
+
+
+    // === Camera class definition ===
+
+    function Camera() {
+        var id = null;
+        this.getId = function () {return id;};
+
+        if (1 == arguments.length && arguments[0][rhoUtil.rhoIdParam()]) {
+            if (moduleNS != arguments[0][rhoUtil.rhoClassParam()]) {
+                throw "Wrong class instantiation!";
+            }
+            id = arguments[0][rhoUtil.rhoIdParam()];
+        } else {
+            id = rhoUtil.nextId();
+            // constructor methods are following:
+            
+        }
+    };
+
+    // === Camera instance properties ===
+
+    rhoUtil.createPropsProxy(Camera.prototype, [
+        { propName: 'cameraType', propAccess: 'r' }
+      , { propName: 'maxWidth', propAccess: 'r' }
+      , { propName: 'maxHeight', propAccess: 'r' }
+      , { propName: 'supportedSizeList', propAccess: 'r' }
+      , { propName: 'desiredWidth', propAccess: 'rw' }
+      , { propName: 'desiredHeight', propAccess: 'rw' }
+      , { propName: 'fileName', propAccess: 'rw' }
+      , { propName: 'compressionFormat', propAccess: 'rw' }
+      , { propName: 'outputFormat', propAccess: 'rw' }
+      , { propName: 'colorModel', propAccess: 'rw' }
+      , { propName: 'enableEditing', propAccess: 'rw' }
+      , { propName: 'flashMode', propAccess: 'rw' }
+      , { propName: 'saveToDeviceGallery', propAccess: 'rw' }
+      , { propName: 'captureSound', propAccess: 'rw' }
+      , { propName: 'previewLeft', propAccess: 'rw' }
+      , { propName: 'previewTop', propAccess: 'rw' }
+      , { propName: 'previewWidth', propAccess: 'rw' }
+      , { propName: 'previewHeight', propAccess: 'rw' }
+      , { propName: 'useSystemViewfinder', propAccess: 'rw' }
+      , { propName: 'useRealBitmapResize', propAccess: 'rw' }
+      , { propName: 'useRotationBitmapByEXIF', propAccess: 'rw' }
+      , { propName: 'aimMode', propAccess: 'rw' }
+    ], apiReq, function(){ return this.getId(); });
+
+    // === Camera instance methods ===
+
+    rhoUtil.createMethodsProxy(Camera.prototype, [
+    
+          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+          { methodName: 'takePicture', nativeName: 'takePicture', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+        , { methodName: 'showPreview', nativeName: 'showPreview', valueCallbackIndex: 1 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'hidePreview', nativeName: 'hidePreview', valueCallbackIndex: 0 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'capture', nativeName: 'capture', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+          // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
+        , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* const rho::Vector<rho::String>& */ arrayofNames, /* optional function */ oResult)
+        , { methodName: 'getProperties', nativeName: 'getProperties', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'getAllProperties', nativeName: 'getAllProperties', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+          // function(/* const rho::String& */ propertyName, /* const rho::String& */ propertyValue, /* optional function */ oResult)
+        , { methodName: 'setProperty', nativeName: 'setProperty', valueCallbackIndex: 2 }
+    
+          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+        , { methodName: 'setProperties', nativeName: 'setProperties', valueCallbackIndex: 1 }
+    
+    ], apiReq, function(){ return this.getId(); });
+
+    
+
+    rhoUtil.createRawPropsProxy(Camera.prototype, [
+    ]);
+
+    // === Camera constants ===
+
+    
+            Camera.AIM_OFF = 'off'; 
+    
+            Camera.AIM_ON = 'on'; 
+    
+            Camera.CAMERA_TYPE_BACK = 'back'; 
+    
+            Camera.CAMERA_TYPE_COLOR = 'color'; 
+    
+            Camera.CAMERA_TYPE_FRONT = 'front'; 
+    
+            Camera.CAMERA_TYPE_IMAGER = 'imager'; 
+    
+            Camera.COLOR_MODEL_GRAYSCALE = 'grayscale'; 
+    
+            Camera.COLOR_MODEL_RGB = 'rgb'; 
+    
+            Camera.COMPRESSION_FORMAT_JPG = 'jpg'; 
+    
+            Camera.COMPRESSION_FORMAT_PNG = 'png'; 
+    
+            Camera.FLASH_AUTO = 'auto'; 
+    
+            Camera.FLASH_OFF = 'off'; 
+    
+            Camera.FLASH_ON = 'on'; 
+    
+            Camera.FLASH_RED_EYE = 'redEye'; 
+    
+            Camera.FLASH_TORCH = 'torch'; 
+    
+            Camera.OUTPUT_FORMAT_DATAURI = 'dataUri'; 
+    
+            Camera.OUTPUT_FORMAT_IMAGE = 'image'; 
+    
+            Camera.OUTPUT_FORMAT_IMAGE_PATH = 'imagePath'; 
+    
+
+
+
+    // === Camera static properties ===
+
+    rhoUtil.createPropsProxy(Camera, [
+    ], apiReq);
+
+    // === Camera static methods ===
+
+    rhoUtil.createMethodsProxy(Camera, [
+    
+          // function(/* optional function */ oResult)
+          { methodName: 'enumerate', nativeName: 'enumerate', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+          // function(/* const rho::String& */ cameraType, /* optional function */ oResult)
+        , { methodName: 'getCameraByType', nativeName: 'getCameraByType', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+        , { methodName: 'choosePicture', nativeName: 'choosePicture', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* const rho::String& */ pathToImage, /* optional function */ oResult)
+        , { methodName: 'copyImageToDeviceGallery', nativeName: 'copyImageToDeviceGallery', valueCallbackIndex: 1 }
+    
+    ], apiReq);
+
+    // === Camera default instance support ===
+    
+
+        rhoUtil.createPropsProxy(Camera, [
+            { propName: 'defaultInstance:getDefault:setDefault', propAccess: 'rw', customSet: function(obj) { if(!obj || 'function' != typeof obj.getId){ throw 'Default object should provide getId method!' }; Camera.setDefaultID(obj.getId()); } }
+          , { propName: 'defaultID:getDefaultID:setDefaultID', propAccess: 'rw' }
+        ], apiReq);
+
+        Camera.getId = function() {
+            return Camera.getDefaultID();
+        }
+
+        // === Camera default instance properties ===
+
+        rhoUtil.createPropsProxy(Camera, [
+            { propName: 'cameraType', propAccess: 'r' }
+          , { propName: 'maxWidth', propAccess: 'r' }
+          , { propName: 'maxHeight', propAccess: 'r' }
+          , { propName: 'supportedSizeList', propAccess: 'r' }
+          , { propName: 'desiredWidth', propAccess: 'rw' }
+          , { propName: 'desiredHeight', propAccess: 'rw' }
+          , { propName: 'fileName', propAccess: 'rw' }
+          , { propName: 'compressionFormat', propAccess: 'rw' }
+          , { propName: 'outputFormat', propAccess: 'rw' }
+          , { propName: 'colorModel', propAccess: 'rw' }
+          , { propName: 'enableEditing', propAccess: 'rw' }
+          , { propName: 'flashMode', propAccess: 'rw' }
+          , { propName: 'saveToDeviceGallery', propAccess: 'rw' }
+          , { propName: 'captureSound', propAccess: 'rw' }
+          , { propName: 'previewLeft', propAccess: 'rw' }
+          , { propName: 'previewTop', propAccess: 'rw' }
+          , { propName: 'previewWidth', propAccess: 'rw' }
+          , { propName: 'previewHeight', propAccess: 'rw' }
+          , { propName: 'useSystemViewfinder', propAccess: 'rw' }
+          , { propName: 'useRealBitmapResize', propAccess: 'rw' }
+          , { propName: 'useRotationBitmapByEXIF', propAccess: 'rw' }
+          , { propName: 'aimMode', propAccess: 'rw' }
+        ], apiReq, function(){ return this.getId(); });
+
+        // === Camera default instance methods ===
+
+        rhoUtil.createMethodsProxy(Camera, [
+        
+              // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+              { methodName: 'takePicture', nativeName: 'takePicture', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+        
+              // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+            , { methodName: 'showPreview', nativeName: 'showPreview', valueCallbackIndex: 1 }
+        
+              // function(/* optional function */ oResult)
+            , { methodName: 'hidePreview', nativeName: 'hidePreview', valueCallbackIndex: 0 }
+        
+              // function(/* optional function */ oResult)
+            , { methodName: 'capture', nativeName: 'capture', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+        
+              // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
+            , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+        
+              // function(/* const rho::Vector<rho::String>& */ arrayofNames, /* optional function */ oResult)
+            , { methodName: 'getProperties', nativeName: 'getProperties', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+        
+              // function(/* optional function */ oResult)
+            , { methodName: 'getAllProperties', nativeName: 'getAllProperties', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+        
+              // function(/* const rho::String& */ propertyName, /* const rho::String& */ propertyValue, /* optional function */ oResult)
+            , { methodName: 'setProperty', nativeName: 'setProperty', valueCallbackIndex: 2 }
+        
+              // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+            , { methodName: 'setProperties', nativeName: 'setProperties', valueCallbackIndex: 1 }
+        
+        ], apiReq, function(){ return this.getId(); });
+
+        // will reuse already defined methods
+        rhoUtil.createRawPropsProxy(Camera, [
+        ]);
+
+    
+
+    rhoUtil.namespace(moduleNS, Camera);
+
+    
+
+    
+
+})(Rho.jQuery, Rho, Rho.util);
+// Module Rho.Videocapture
+
+
+(function ($, rho, rhoUtil) {
+    'use strict';
+
+    var moduleNS = 'Rho.Videocapture';
+    var apiReq = rhoUtil.apiReqFor(moduleNS);
+
+
+    // === Videocapture class definition ===
+
+    function Videocapture() {
+        var id = null;
+        this.getId = function () {return id;};
+
+        if (1 == arguments.length && arguments[0][rhoUtil.rhoIdParam()]) {
+            if (moduleNS != arguments[0][rhoUtil.rhoClassParam()]) {
+                throw "Wrong class instantiation!";
+            }
+            id = arguments[0][rhoUtil.rhoIdParam()];
+        } else {
+            id = rhoUtil.nextId();
+            // constructor methods are following:
+            
+        }
+    };
+
+    // === Videocapture instance properties ===
+
+    rhoUtil.createPropsProxy(Videocapture.prototype, [
+        { propName: 'duration', propAccess: 'rw' }
+      , { propName: 'fileName', propAccess: 'rw' }
+      , { propName: 'saveToGallery', propAccess: 'rw' }
+      , { propName: 'resolution', propAccess: 'rw' }
+    ], apiReq, function(){ return this.getId(); });
+
+    // === Videocapture instance methods ===
+
+    rhoUtil.createMethodsProxy(Videocapture.prototype, [
+    
+          // function(/* optional function */ oResult)
+          { methodName: 'start', nativeName: 'start', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'stop', nativeName: 'stop', valueCallbackIndex: 0 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'cancel', nativeName: 'cancel', valueCallbackIndex: 0 }
+    
+          // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
+        , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* const rho::Vector<rho::String>& */ arrayofNames, /* optional function */ oResult)
+        , { methodName: 'getProperties', nativeName: 'getProperties', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'getAllProperties', nativeName: 'getAllProperties', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+          // function(/* const rho::String& */ propertyName, /* const rho::String& */ propertyValue, /* optional function */ oResult)
+        , { methodName: 'setProperty', nativeName: 'setProperty', valueCallbackIndex: 2 }
+    
+          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+        , { methodName: 'setProperties', nativeName: 'setProperties', valueCallbackIndex: 1 }
+    
+    ], apiReq, function(){ return this.getId(); });
+
+    
+
+    rhoUtil.createRawPropsProxy(Videocapture.prototype, [
+    ]);
+
+    // === Videocapture constants ===
+
+    
+            Videocapture.HIGH = 'high'; 
+    
+            Videocapture.LOW = 'low'; 
+    
+
+
+
+    // === Videocapture static properties ===
+
+    rhoUtil.createPropsProxy(Videocapture, [
+    ], apiReq);
+
+    // === Videocapture static methods ===
+
+    rhoUtil.createMethodsProxy(Videocapture, [
+    
+          // function(/* optional function */ oResult)
+          { methodName: 'enumerate', nativeName: 'enumerate', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+    ], apiReq);
+
+    // === Videocapture default instance support ===
+    
+
+        rhoUtil.createPropsProxy(Videocapture, [
+            { propName: 'defaultInstance:getDefault:setDefault', propAccess: 'rw', customSet: function(obj) { if(!obj || 'function' != typeof obj.getId){ throw 'Default object should provide getId method!' }; Videocapture.setDefaultID(obj.getId()); } }
+          , { propName: 'defaultID:getDefaultID:setDefaultID', propAccess: 'rw' }
+        ], apiReq);
+
+        Videocapture.getId = function() {
+            return Videocapture.getDefaultID();
+        }
+
+        // === Videocapture default instance properties ===
+
+        rhoUtil.createPropsProxy(Videocapture, [
+            { propName: 'duration', propAccess: 'rw' }
+          , { propName: 'fileName', propAccess: 'rw' }
+          , { propName: 'saveToGallery', propAccess: 'rw' }
+          , { propName: 'resolution', propAccess: 'rw' }
+        ], apiReq, function(){ return this.getId(); });
+
+        // === Videocapture default instance methods ===
+
+        rhoUtil.createMethodsProxy(Videocapture, [
+        
+              // function(/* optional function */ oResult)
+              { methodName: 'start', nativeName: 'start', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+        
+              // function(/* optional function */ oResult)
+            , { methodName: 'stop', nativeName: 'stop', valueCallbackIndex: 0 }
+        
+              // function(/* optional function */ oResult)
+            , { methodName: 'cancel', nativeName: 'cancel', valueCallbackIndex: 0 }
+        
+              // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
+            , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+        
+              // function(/* const rho::Vector<rho::String>& */ arrayofNames, /* optional function */ oResult)
+            , { methodName: 'getProperties', nativeName: 'getProperties', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+        
+              // function(/* optional function */ oResult)
+            , { methodName: 'getAllProperties', nativeName: 'getAllProperties', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+        
+              // function(/* const rho::String& */ propertyName, /* const rho::String& */ propertyValue, /* optional function */ oResult)
+            , { methodName: 'setProperty', nativeName: 'setProperty', valueCallbackIndex: 2 }
+        
+              // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+            , { methodName: 'setProperties', nativeName: 'setProperties', valueCallbackIndex: 1 }
+        
+        ], apiReq, function(){ return this.getId(); });
+
+        // will reuse already defined methods
+        rhoUtil.createRawPropsProxy(Videocapture, [
+        ]);
+
+    
+
+    rhoUtil.namespace(moduleNS, Videocapture);
+
+    
+
+    
+
+})(Rho.jQuery, Rho, Rho.util);
+// Module Rho.Signature
+
+
+(function ($, rho, rhoUtil) {
+    'use strict';
+
+    var moduleNS = 'Rho.Signature';
+    var apiReq = rhoUtil.apiReqFor(moduleNS);
+
+
+    // === Signature class definition ===
+
+    function Signature() {
+        var id = null;
+        this.getId = function () {return id;};
+
+        if (1 == arguments.length && arguments[0][rhoUtil.rhoIdParam()]) {
+            if (moduleNS != arguments[0][rhoUtil.rhoClassParam()]) {
+                throw "Wrong class instantiation!";
+            }
+            id = arguments[0][rhoUtil.rhoIdParam()];
+        } else {
+            id = rhoUtil.nextId();
+            // constructor methods are following:
+            
+        }
+    };
+
+    // === Signature instance properties ===
+
+    rhoUtil.createPropsProxy(Signature.prototype, [
+    ], apiReq, function(){ return this.getId(); });
+
+    // === Signature instance methods ===
+
+    rhoUtil.createMethodsProxy(Signature.prototype, [
+    
+    ], apiReq, function(){ return this.getId(); });
+
+    
+
+    rhoUtil.createRawPropsProxy(Signature.prototype, [
+    ]);
+
+    // === Signature constants ===
+
+    
+            Signature.COMPRESSION_FORMAT_BMP = 'bmp'; 
+    
+            Signature.COMPRESSION_FORMAT_JPG = 'jpg'; 
+    
+            Signature.COMPRESSION_FORMAT_PNG = 'png'; 
+    
+            Signature.OUTPUT_FORMAT_DATAURI = 'dataUri'; 
+    
+            Signature.OUTPUT_FORMAT_IMAGE = 'image'; 
+    
+
+
+
+    // === Signature static properties ===
+
+    rhoUtil.createPropsProxy(Signature, [
+        { propName: 'compressionFormat', propAccess: 'rw' }
+      , { propName: 'outputFormat', propAccess: 'rw' }
+      , { propName: 'fileName', propAccess: 'rw' }
+      , { propName: 'border', propAccess: 'rw' }
+      , { propName: 'penColor', propAccess: 'rw' }
+      , { propName: 'penWidth', propAccess: 'rw' }
+      , { propName: 'bgColor', propAccess: 'rw' }
+      , { propName: 'left', propAccess: 'rw' }
+      , { propName: 'top', propAccess: 'rw' }
+      , { propName: 'width', propAccess: 'rw' }
+      , { propName: 'height', propAccess: 'rw' }
+    ], apiReq);
+
+    // === Signature static methods ===
+
+    rhoUtil.createMethodsProxy(Signature, [
+    
+          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+          { methodName: 'takeFullScreen', nativeName: 'takeFullScreen', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
+    
+          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
+        , { methodName: 'show', nativeName: 'show', valueCallbackIndex: 1 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'capture', nativeName: 'capture', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'clear', nativeName: 'clear', valueCallbackIndex: 0 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'hide', nativeName: 'hide', valueCallbackIndex: 0 }
+    
+          // function(/* optional function */ oResult)
+        , { methodName: 'setVectorCallback', nativeName: 'setVectorCallback', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+    
+    ], apiReq);
+
+    // === Signature default instance support ===
+    
+
+    rhoUtil.namespace(moduleNS, Signature);
+
+    
+
+    
+
+})(Rho.jQuery, Rho, Rho.util);
 // Module Rho.Barcode
 
 
@@ -4432,19 +4945,19 @@ var EB = Rho;
     
 
 })(Rho.jQuery, Rho, Rho.util);
-// Module Rho.Camera
+// Module Rho.Androidicons
 
 
 (function ($, rho, rhoUtil) {
     'use strict';
 
-    var moduleNS = 'Rho.Camera';
+    var moduleNS = 'Rho.Androidicons';
     var apiReq = rhoUtil.apiReqFor(moduleNS);
 
 
-    // === Camera class definition ===
+    // === Androidicons class definition ===
 
-    function Camera() {
+    function Androidicons() {
         var id = null;
         this.getId = function () {return id;};
 
@@ -4460,48 +4973,24 @@ var EB = Rho;
         }
     };
 
-    // === Camera instance properties ===
+    // === Androidicons instance properties ===
 
-    rhoUtil.createPropsProxy(Camera.prototype, [
-        { propName: 'cameraType', propAccess: 'r' }
-      , { propName: 'maxWidth', propAccess: 'r' }
-      , { propName: 'maxHeight', propAccess: 'r' }
-      , { propName: 'supportedSizeList', propAccess: 'r' }
-      , { propName: 'desiredWidth', propAccess: 'rw' }
-      , { propName: 'desiredHeight', propAccess: 'rw' }
-      , { propName: 'fileName', propAccess: 'rw' }
-      , { propName: 'compressionFormat', propAccess: 'rw' }
-      , { propName: 'outputFormat', propAccess: 'rw' }
-      , { propName: 'colorModel', propAccess: 'rw' }
-      , { propName: 'enableEditing', propAccess: 'rw' }
-      , { propName: 'flashMode', propAccess: 'rw' }
-      , { propName: 'saveToDeviceGallery', propAccess: 'rw' }
-      , { propName: 'captureSound', propAccess: 'rw' }
-      , { propName: 'previewLeft', propAccess: 'rw' }
-      , { propName: 'previewTop', propAccess: 'rw' }
-      , { propName: 'previewWidth', propAccess: 'rw' }
-      , { propName: 'previewHeight', propAccess: 'rw' }
-      , { propName: 'useSystemViewfinder', propAccess: 'rw' }
-      , { propName: 'useRealBitmapResize', propAccess: 'rw' }
-      , { propName: 'useRotationBitmapByEXIF', propAccess: 'rw' }
-      , { propName: 'aimMode', propAccess: 'rw' }
+    rhoUtil.createPropsProxy(Androidicons.prototype, [
+        { propName: 'simpleStringProperty', propAccess: 'rw' }
     ], apiReq, function(){ return this.getId(); });
 
-    // === Camera instance methods ===
+    // === Androidicons instance methods ===
 
-    rhoUtil.createMethodsProxy(Camera.prototype, [
-    
-          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-          { methodName: 'takePicture', nativeName: 'takePicture', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-    
-          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-        , { methodName: 'showPreview', nativeName: 'showPreview', valueCallbackIndex: 1 }
+    rhoUtil.createMethodsProxy(Androidicons.prototype, [
     
           // function(/* optional function */ oResult)
-        , { methodName: 'hidePreview', nativeName: 'hidePreview', valueCallbackIndex: 0 }
+          { methodName: 'getPlatformName', nativeName: 'getPlatformName', valueCallbackIndex: 0 }
     
-          // function(/* optional function */ oResult)
-        , { methodName: 'capture', nativeName: 'capture', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+          // function(/* int */ a, /* int */ b, /* optional function */ oResult)
+        , { methodName: 'calcSumm', nativeName: 'calcSumm', valueCallbackIndex: 2 }
+    
+          // function(/* const rho::String& */ a, /* const rho::String& */ b, /* optional function */ oResult)
+        , { methodName: 'joinStrings', nativeName: 'joinStrings', valueCallbackIndex: 2 }
     
           // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
         , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
@@ -4522,128 +5011,59 @@ var EB = Rho;
 
     
 
-    rhoUtil.createRawPropsProxy(Camera.prototype, [
+    rhoUtil.createRawPropsProxy(Androidicons.prototype, [
     ]);
 
-    // === Camera constants ===
+    // === Androidicons constants ===
 
-    
-            Camera.AIM_OFF = 'off'; 
-    
-            Camera.AIM_ON = 'on'; 
-    
-            Camera.CAMERA_TYPE_BACK = 'back'; 
-    
-            Camera.CAMERA_TYPE_COLOR = 'color'; 
-    
-            Camera.CAMERA_TYPE_FRONT = 'front'; 
-    
-            Camera.CAMERA_TYPE_IMAGER = 'imager'; 
-    
-            Camera.COLOR_MODEL_GRAYSCALE = 'grayscale'; 
-    
-            Camera.COLOR_MODEL_RGB = 'rgb'; 
-    
-            Camera.COMPRESSION_FORMAT_JPG = 'jpg'; 
-    
-            Camera.COMPRESSION_FORMAT_PNG = 'png'; 
-    
-            Camera.FLASH_AUTO = 'auto'; 
-    
-            Camera.FLASH_OFF = 'off'; 
-    
-            Camera.FLASH_ON = 'on'; 
-    
-            Camera.FLASH_RED_EYE = 'redEye'; 
-    
-            Camera.FLASH_TORCH = 'torch'; 
-    
-            Camera.OUTPUT_FORMAT_DATAURI = 'dataUri'; 
-    
-            Camera.OUTPUT_FORMAT_IMAGE = 'image'; 
-    
-            Camera.OUTPUT_FORMAT_IMAGE_PATH = 'imagePath'; 
     
 
 
 
-    // === Camera static properties ===
+    // === Androidicons static properties ===
 
-    rhoUtil.createPropsProxy(Camera, [
+    rhoUtil.createPropsProxy(Androidicons, [
     ], apiReq);
 
-    // === Camera static methods ===
+    // === Androidicons static methods ===
 
-    rhoUtil.createMethodsProxy(Camera, [
+    rhoUtil.createMethodsProxy(Androidicons, [
     
           // function(/* optional function */ oResult)
           { methodName: 'enumerate', nativeName: 'enumerate', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
     
-          // function(/* const rho::String& */ cameraType, /* optional function */ oResult)
-        , { methodName: 'getCameraByType', nativeName: 'getCameraByType', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-    
-          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-        , { methodName: 'choosePicture', nativeName: 'choosePicture', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-    
-          // function(/* const rho::String& */ pathToImage, /* optional function */ oResult)
-        , { methodName: 'copyImageToDeviceGallery', nativeName: 'copyImageToDeviceGallery', valueCallbackIndex: 1 }
-    
     ], apiReq);
 
-    // === Camera default instance support ===
+    // === Androidicons default instance support ===
     
 
-        rhoUtil.createPropsProxy(Camera, [
-            { propName: 'defaultInstance:getDefault:setDefault', propAccess: 'rw', customSet: function(obj) { if(!obj || 'function' != typeof obj.getId){ throw 'Default object should provide getId method!' }; Camera.setDefaultID(obj.getId()); } }
+        rhoUtil.createPropsProxy(Androidicons, [
+            { propName: 'defaultInstance:getDefault:setDefault', propAccess: 'rw', customSet: function(obj) { if(!obj || 'function' != typeof obj.getId){ throw 'Default object should provide getId method!' }; Androidicons.setDefaultID(obj.getId()); } }
           , { propName: 'defaultID:getDefaultID:setDefaultID', propAccess: 'rw' }
         ], apiReq);
 
-        Camera.getId = function() {
-            return Camera.getDefaultID();
+        Androidicons.getId = function() {
+            return Androidicons.getDefaultID();
         }
 
-        // === Camera default instance properties ===
+        // === Androidicons default instance properties ===
 
-        rhoUtil.createPropsProxy(Camera, [
-            { propName: 'cameraType', propAccess: 'r' }
-          , { propName: 'maxWidth', propAccess: 'r' }
-          , { propName: 'maxHeight', propAccess: 'r' }
-          , { propName: 'supportedSizeList', propAccess: 'r' }
-          , { propName: 'desiredWidth', propAccess: 'rw' }
-          , { propName: 'desiredHeight', propAccess: 'rw' }
-          , { propName: 'fileName', propAccess: 'rw' }
-          , { propName: 'compressionFormat', propAccess: 'rw' }
-          , { propName: 'outputFormat', propAccess: 'rw' }
-          , { propName: 'colorModel', propAccess: 'rw' }
-          , { propName: 'enableEditing', propAccess: 'rw' }
-          , { propName: 'flashMode', propAccess: 'rw' }
-          , { propName: 'saveToDeviceGallery', propAccess: 'rw' }
-          , { propName: 'captureSound', propAccess: 'rw' }
-          , { propName: 'previewLeft', propAccess: 'rw' }
-          , { propName: 'previewTop', propAccess: 'rw' }
-          , { propName: 'previewWidth', propAccess: 'rw' }
-          , { propName: 'previewHeight', propAccess: 'rw' }
-          , { propName: 'useSystemViewfinder', propAccess: 'rw' }
-          , { propName: 'useRealBitmapResize', propAccess: 'rw' }
-          , { propName: 'useRotationBitmapByEXIF', propAccess: 'rw' }
-          , { propName: 'aimMode', propAccess: 'rw' }
+        rhoUtil.createPropsProxy(Androidicons, [
+            { propName: 'simpleStringProperty', propAccess: 'rw' }
         ], apiReq, function(){ return this.getId(); });
 
-        // === Camera default instance methods ===
+        // === Androidicons default instance methods ===
 
-        rhoUtil.createMethodsProxy(Camera, [
-        
-              // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-              { methodName: 'takePicture', nativeName: 'takePicture', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-        
-              // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-            , { methodName: 'showPreview', nativeName: 'showPreview', valueCallbackIndex: 1 }
+        rhoUtil.createMethodsProxy(Androidicons, [
         
               // function(/* optional function */ oResult)
-            , { methodName: 'hidePreview', nativeName: 'hidePreview', valueCallbackIndex: 0 }
+              { methodName: 'getPlatformName', nativeName: 'getPlatformName', valueCallbackIndex: 0 }
         
-              // function(/* optional function */ oResult)
-            , { methodName: 'capture', nativeName: 'capture', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
+              // function(/* int */ a, /* int */ b, /* optional function */ oResult)
+            , { methodName: 'calcSumm', nativeName: 'calcSumm', valueCallbackIndex: 2 }
+        
+              // function(/* const rho::String& */ a, /* const rho::String& */ b, /* optional function */ oResult)
+            , { methodName: 'joinStrings', nativeName: 'joinStrings', valueCallbackIndex: 2 }
         
               // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
             , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
@@ -4663,282 +5083,12 @@ var EB = Rho;
         ], apiReq, function(){ return this.getId(); });
 
         // will reuse already defined methods
-        rhoUtil.createRawPropsProxy(Camera, [
+        rhoUtil.createRawPropsProxy(Androidicons, [
         ]);
 
     
 
-    rhoUtil.namespace(moduleNS, Camera);
-
-    
-
-    
-
-})(Rho.jQuery, Rho, Rho.util);
-// Module Rho.Videocapture
-
-
-(function ($, rho, rhoUtil) {
-    'use strict';
-
-    var moduleNS = 'Rho.Videocapture';
-    var apiReq = rhoUtil.apiReqFor(moduleNS);
-
-
-    // === Videocapture class definition ===
-
-    function Videocapture() {
-        var id = null;
-        this.getId = function () {return id;};
-
-        if (1 == arguments.length && arguments[0][rhoUtil.rhoIdParam()]) {
-            if (moduleNS != arguments[0][rhoUtil.rhoClassParam()]) {
-                throw "Wrong class instantiation!";
-            }
-            id = arguments[0][rhoUtil.rhoIdParam()];
-        } else {
-            id = rhoUtil.nextId();
-            // constructor methods are following:
-            
-        }
-    };
-
-    // === Videocapture instance properties ===
-
-    rhoUtil.createPropsProxy(Videocapture.prototype, [
-        { propName: 'duration', propAccess: 'rw' }
-      , { propName: 'fileName', propAccess: 'rw' }
-      , { propName: 'saveToGallery', propAccess: 'rw' }
-      , { propName: 'resolution', propAccess: 'rw' }
-    ], apiReq, function(){ return this.getId(); });
-
-    // === Videocapture instance methods ===
-
-    rhoUtil.createMethodsProxy(Videocapture.prototype, [
-    
-          // function(/* optional function */ oResult)
-          { methodName: 'start', nativeName: 'start', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
-    
-          // function(/* optional function */ oResult)
-        , { methodName: 'stop', nativeName: 'stop', valueCallbackIndex: 0 }
-    
-          // function(/* optional function */ oResult)
-        , { methodName: 'cancel', nativeName: 'cancel', valueCallbackIndex: 0 }
-    
-          // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
-        , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-    
-          // function(/* const rho::Vector<rho::String>& */ arrayofNames, /* optional function */ oResult)
-        , { methodName: 'getProperties', nativeName: 'getProperties', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-    
-          // function(/* optional function */ oResult)
-        , { methodName: 'getAllProperties', nativeName: 'getAllProperties', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
-    
-          // function(/* const rho::String& */ propertyName, /* const rho::String& */ propertyValue, /* optional function */ oResult)
-        , { methodName: 'setProperty', nativeName: 'setProperty', valueCallbackIndex: 2 }
-    
-          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-        , { methodName: 'setProperties', nativeName: 'setProperties', valueCallbackIndex: 1 }
-    
-    ], apiReq, function(){ return this.getId(); });
-
-    
-
-    rhoUtil.createRawPropsProxy(Videocapture.prototype, [
-    ]);
-
-    // === Videocapture constants ===
-
-    
-            Videocapture.HIGH = 'high'; 
-    
-            Videocapture.LOW = 'low'; 
-    
-
-
-
-    // === Videocapture static properties ===
-
-    rhoUtil.createPropsProxy(Videocapture, [
-    ], apiReq);
-
-    // === Videocapture static methods ===
-
-    rhoUtil.createMethodsProxy(Videocapture, [
-    
-          // function(/* optional function */ oResult)
-          { methodName: 'enumerate', nativeName: 'enumerate', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
-    
-    ], apiReq);
-
-    // === Videocapture default instance support ===
-    
-
-        rhoUtil.createPropsProxy(Videocapture, [
-            { propName: 'defaultInstance:getDefault:setDefault', propAccess: 'rw', customSet: function(obj) { if(!obj || 'function' != typeof obj.getId){ throw 'Default object should provide getId method!' }; Videocapture.setDefaultID(obj.getId()); } }
-          , { propName: 'defaultID:getDefaultID:setDefaultID', propAccess: 'rw' }
-        ], apiReq);
-
-        Videocapture.getId = function() {
-            return Videocapture.getDefaultID();
-        }
-
-        // === Videocapture default instance properties ===
-
-        rhoUtil.createPropsProxy(Videocapture, [
-            { propName: 'duration', propAccess: 'rw' }
-          , { propName: 'fileName', propAccess: 'rw' }
-          , { propName: 'saveToGallery', propAccess: 'rw' }
-          , { propName: 'resolution', propAccess: 'rw' }
-        ], apiReq, function(){ return this.getId(); });
-
-        // === Videocapture default instance methods ===
-
-        rhoUtil.createMethodsProxy(Videocapture, [
-        
-              // function(/* optional function */ oResult)
-              { methodName: 'start', nativeName: 'start', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
-        
-              // function(/* optional function */ oResult)
-            , { methodName: 'stop', nativeName: 'stop', valueCallbackIndex: 0 }
-        
-              // function(/* optional function */ oResult)
-            , { methodName: 'cancel', nativeName: 'cancel', valueCallbackIndex: 0 }
-        
-              // function(/* const rho::String& */ propertyName, /* optional function */ oResult)
-            , { methodName: 'getProperty', nativeName: 'getProperty', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-        
-              // function(/* const rho::Vector<rho::String>& */ arrayofNames, /* optional function */ oResult)
-            , { methodName: 'getProperties', nativeName: 'getProperties', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-        
-              // function(/* optional function */ oResult)
-            , { methodName: 'getAllProperties', nativeName: 'getAllProperties', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
-        
-              // function(/* const rho::String& */ propertyName, /* const rho::String& */ propertyValue, /* optional function */ oResult)
-            , { methodName: 'setProperty', nativeName: 'setProperty', valueCallbackIndex: 2 }
-        
-              // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-            , { methodName: 'setProperties', nativeName: 'setProperties', valueCallbackIndex: 1 }
-        
-        ], apiReq, function(){ return this.getId(); });
-
-        // will reuse already defined methods
-        rhoUtil.createRawPropsProxy(Videocapture, [
-        ]);
-
-    
-
-    rhoUtil.namespace(moduleNS, Videocapture);
-
-    
-
-    
-
-})(Rho.jQuery, Rho, Rho.util);
-// Module Rho.Signature
-
-
-(function ($, rho, rhoUtil) {
-    'use strict';
-
-    var moduleNS = 'Rho.Signature';
-    var apiReq = rhoUtil.apiReqFor(moduleNS);
-
-
-    // === Signature class definition ===
-
-    function Signature() {
-        var id = null;
-        this.getId = function () {return id;};
-
-        if (1 == arguments.length && arguments[0][rhoUtil.rhoIdParam()]) {
-            if (moduleNS != arguments[0][rhoUtil.rhoClassParam()]) {
-                throw "Wrong class instantiation!";
-            }
-            id = arguments[0][rhoUtil.rhoIdParam()];
-        } else {
-            id = rhoUtil.nextId();
-            // constructor methods are following:
-            
-        }
-    };
-
-    // === Signature instance properties ===
-
-    rhoUtil.createPropsProxy(Signature.prototype, [
-    ], apiReq, function(){ return this.getId(); });
-
-    // === Signature instance methods ===
-
-    rhoUtil.createMethodsProxy(Signature.prototype, [
-    
-    ], apiReq, function(){ return this.getId(); });
-
-    
-
-    rhoUtil.createRawPropsProxy(Signature.prototype, [
-    ]);
-
-    // === Signature constants ===
-
-    
-            Signature.COMPRESSION_FORMAT_BMP = 'bmp'; 
-    
-            Signature.COMPRESSION_FORMAT_JPG = 'jpg'; 
-    
-            Signature.COMPRESSION_FORMAT_PNG = 'png'; 
-    
-            Signature.OUTPUT_FORMAT_DATAURI = 'dataUri'; 
-    
-            Signature.OUTPUT_FORMAT_IMAGE = 'image'; 
-    
-
-
-
-    // === Signature static properties ===
-
-    rhoUtil.createPropsProxy(Signature, [
-        { propName: 'compressionFormat', propAccess: 'rw' }
-      , { propName: 'outputFormat', propAccess: 'rw' }
-      , { propName: 'fileName', propAccess: 'rw' }
-      , { propName: 'border', propAccess: 'rw' }
-      , { propName: 'penColor', propAccess: 'rw' }
-      , { propName: 'penWidth', propAccess: 'rw' }
-      , { propName: 'bgColor', propAccess: 'rw' }
-      , { propName: 'left', propAccess: 'rw' }
-      , { propName: 'top', propAccess: 'rw' }
-      , { propName: 'width', propAccess: 'rw' }
-      , { propName: 'height', propAccess: 'rw' }
-    ], apiReq);
-
-    // === Signature static methods ===
-
-    rhoUtil.createMethodsProxy(Signature, [
-    
-          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-          { methodName: 'takeFullScreen', nativeName: 'takeFullScreen', persistentCallbackIndex: 1, valueCallbackIndex: 3 }
-    
-          // function(/* const rho::Hashtable<rho::String, rho::String>& */ propertyMap, /* optional function */ oResult)
-        , { methodName: 'show', nativeName: 'show', valueCallbackIndex: 1 }
-    
-          // function(/* optional function */ oResult)
-        , { methodName: 'capture', nativeName: 'capture', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
-    
-          // function(/* optional function */ oResult)
-        , { methodName: 'clear', nativeName: 'clear', valueCallbackIndex: 0 }
-    
-          // function(/* optional function */ oResult)
-        , { methodName: 'hide', nativeName: 'hide', valueCallbackIndex: 0 }
-    
-          // function(/* optional function */ oResult)
-        , { methodName: 'setVectorCallback', nativeName: 'setVectorCallback', persistentCallbackIndex: 0, valueCallbackIndex: 2 }
-    
-    ], apiReq);
-
-    // === Signature default instance support ===
-    
-
-    rhoUtil.namespace(moduleNS, Signature);
+    rhoUtil.namespace(moduleNS, Androidicons);
 
     
 

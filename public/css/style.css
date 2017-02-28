@@ -1,8 +1,30 @@
-.page-title  {
+#panel {
+    margin-bottom: 70px;
+}
+
+#header {
+    height: 70px;
+    padding-top: 10px;
+}
+
+#header .glyphicon {
+    margin-right: 1em;
+    padding-top: 10px;
+    font-size: 1.5em
+}
+
+#header .title {
+    font-size: 1.5em;
+}
+
+#header .btn {
+    width: 60px;
+}
+
+.page-title {
     margin-top: 10px;
     margin-bottom: 20px;
 }
-
 
 .page-title .btn {
     margin-top: 5px;
@@ -10,4 +32,46 @@
 
 button[type=submit] {
     margin-bottom: 30px;
+}
+
+#menu .list-group {
+    margin-top: 70px;
+}
+
+.slideout-menu {
+    position: fixed;
+    top: 0px;
+    bottom: 0;
+    width: 256px;
+    min-height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    z-index: 0;
+    display: none;
+}
+
+.slideout-menu-left {
+    left: 0;
+}
+
+.slideout-menu-right {
+    right: 0;
+}
+
+.slideout-panel {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    background-color: #FFF; /* A background-color is required */
+    min-height: 100vh;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+    overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+    display: block;
 }
