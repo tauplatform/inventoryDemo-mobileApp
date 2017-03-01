@@ -1,8 +1,6 @@
 <div id="header">
-  <span id="button-menu" class="glyphicon glyphicon-menu-hamburger"></span>
-  <a href="<%= url_for :action => :do_back %>"><span id="button-back" class="glyphicon glyphicon-menu-left"></span></a>
-  <span class="title">Edit Item</span>
-  <a id="done-button" href="#" class="btn btn-primary pull-right">Done</a>
+  <a href="<%= url_for :action => :do_back %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
+  <span class="title pull-left">Settings</span>
 </div>
 
 <% if @msg %>
@@ -24,22 +22,6 @@
     <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
     Reset Database
   </a>
-  <a href="<%= url_for :action => :do_sync %>" class="list-group-item">
-    <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-    Perform Sync
-  </a>
-  <% if Rho::RhoConnectClient.isLoggedIn %>
-      <a href="<%= url_for :action => :logout %>" class="list-group-item">
-        <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-        Logout
-      </a>
-
-  <% else %>
-      <a href="<%= url_for :action => :login %>" class="list-group-item">
-        <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-        Login
-      </a>
-  <% end %>
   <li class="list-group-item">
     <div class="row">
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
