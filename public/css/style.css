@@ -21,6 +21,16 @@
     width: 60px;
 }
 
+.navbar-fixed-bottom .container {
+    padding: 5px;
+    vertical-align: middle;
+}
+
+.navbar-fixed-bottom span {
+    padding-left: 20px;
+
+}
+
 button[type=submit] {
     margin-bottom: 30px;
 }
