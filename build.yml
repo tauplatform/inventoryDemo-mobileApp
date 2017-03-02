@@ -11,12 +11,13 @@ applog: rholog.txt
 #javascript_application: true
 iphone:
   configuration: Release
-  sdk: iphonesimulator10.2
+  sdk: latest
   #provisionprofile:
   #codesignidentity:
   #entitlements:
   BundleIdentifier: com.tautechnologies.inventorydemo
   BundleURLScheme: inventorydemo
+  http_connection_domains: ["tau-store-server.herokuapp.com"]
   info_plist_data:
     NSAppTransportSecurity:
       NSAllowsArbitraryLoads: true
