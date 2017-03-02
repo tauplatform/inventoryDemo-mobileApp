@@ -47,16 +47,21 @@
 </nav>
 
 <script>
-    var slideout = new Slideout({
-        'panel': document.getElementById('panel'),
-        'menu': document.getElementById('menu'),
-        'padding': 256,
-        'tolerance': 70
-    });
+    (function () {
+        var slideout = new Slideout({
+            'panel': document.getElementById('panel'),
+            'menu': document.getElementById('menu'),
+            'padding': 256,
+            'tolerance': 70
+        });
 
-    document.querySelector('#button-menu').addEventListener('click', function () {
-        slideout.toggle();
-    });
+        var menuButton = document.querySelector('#button-menu');
+        if (menuButton != null) {
+            document.querySelector('#button-menu').addEventListener('click', function () {
+                slideout.toggle();
+            });
+        }
+    })();
 </script>
 
 
