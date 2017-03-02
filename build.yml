@@ -1,7 +1,9 @@
+#sdk: "../rhodes"
 #sdk: "/Users/mva/.rvm/gems/ruby-1.9.3-p551/gems/rhodes-5.5.0.8"
 #sdk: "/Users/mva/projects/rhomobile/rhodes"
 sdkversion: 5.5.0
 name: inventoryDemo
+#app_type: rhoelements
 version: 1.0
 vendor: rhomobile
 build: debug
@@ -38,7 +40,8 @@ android:
 
 wm:
   extensions:
-    - enterprise-barcode
+    - barcode
+    - webkit
   #sdk: "MC3000c50b (ARMV4I)"
   #sdk: "Windows Mobile 6.5.3 Professional DTK (ARMV4I)"
 
