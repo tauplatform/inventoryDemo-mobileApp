@@ -1,13 +1,78 @@
-.page-title  {
-    margin-top: 10px;
-    margin-bottom: 20px;
+#panel {
+    margin-bottom: 70px;
 }
 
+#header {
+    height: 70px;
+    margin-top: 10px;
+}
 
-.page-title .btn {
-    margin-top: 5px;
+#header img {
+    width: 32px;
+    height: 32px;
+    margin-right: 1em;
+}
+
+#header .title {
+    font-size: 1.5em;
+}
+
+#header .btn {
+    width: 60px;
+}
+
+.navbar-fixed-bottom .container {
+    padding: 5px;
+    vertical-align: middle;
+}
+
+.navbar-fixed-bottom span {
+    padding-left: 20px;
+
 }
 
 button[type=submit] {
     margin-bottom: 30px;
+}
+
+#menu .list-group {
+    margin-top: 70px;
+}
+
+.slideout-menu {
+    position: fixed;
+    top: 0px;
+    bottom: 0;
+    width: 256px;
+    min-height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    z-index: 0;
+    display: none;
+}
+
+.slideout-menu-left {
+    left: 0;
+}
+
+.slideout-menu-right {
+    right: 0;
+}
+
+.slideout-panel {
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    background-color: #FFF; /* A background-color is required */
+    min-height: 100vh;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+    overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+    display: block;
 }

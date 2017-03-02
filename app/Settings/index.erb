@@ -1,80 +1,41 @@
-<div class="container-fluid">
-
-  <div class="row">
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    </div>
-    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-      <h3 class="text-center">Settings</h3>
-    </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="list-group">
-
-      <% if @msg %>
-          <div class="alert alert-danger"><%= @msg %></div>
-      <% end %>
-
-
-
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <span pull-right>Client ID:</span>
-          </div>
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <%= Rhom::Rhom::client_id %>
-          </div>
-        </div>
-      </li>
-
-      <a href="<%= url_for :action => :reset %>" class="list-group-item">
-        <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-        Reset Database
-      </a>
-
-      <a href="<%= url_for :action => :do_sync %>" class="list-group-item">
-        <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-        Perform Sync
-      </a>
-
-      <% if Rho::RhoConnectClient.isLoggedIn %>
-          <a href="<%= url_for :action => :logout %>" class="list-group-item">
-            <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-            Logout
-          </a>
-
-      <% else %>
-          <a href="<%= url_for :action => :login %>" class="list-group-item">
-            <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-            Login
-          </a>
-      <% end %>
-
-
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <span pull-right>Barcode scanner:</span>
-          </div>
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <select id="barcodeScanner" class="form-control">
-              <% Rho::Barcode.enumerate.each do |scanner| %>
-                  <option value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>><%= "#{scanner.friendlyName}" %></option>
-              <% end %>
-            </select>
-          </div>
-        </div>
-    </div>
-    </li>
-
-
-  </div>
-
+<div id="header">
+  <a href="<%= url_for :action => :do_back %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
+  <span class="title pull-left">Settings</span>
 </div>
 
+<% if @msg %>
+    <div class="alert alert-danger"><%= @msg %></div>
+<% end %>
+
+<div class="list-group">
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <span pull-right>Client ID:</span>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <%= Rhom::Rhom::client_id %>
+      </div>
+    </div>
+  </li>
+  <a href="<%= url_for :action => :reset %>" class="list-group-item">
+    <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
+    Reset Database
+  </a>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <span pull-right>Barcode scanner:</span>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <select id="barcodeScanner" class="form-control">
+          <% Rho::Barcode.enumerate.each do |scanner| %>
+              <option value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>><%= "#{scanner.friendlyName}" %></option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  </li>
 </div>
 
 <script>

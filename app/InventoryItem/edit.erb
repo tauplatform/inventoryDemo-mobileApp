@@ -1,13 +1,7 @@
-<div class="row page-title">
-  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :show, :id => @inventoryItem.object %>" class="btn btn-warning btn-sm pull-left">Cancel</a>
-  </div>
-  <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
-    <h4 class="text-center">Edit <%= @inventoryItem.productName %></h4>
-  </div>
-  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :delete, :id => @inventoryItem.object %>" class="btn btn-danger btn-sm pull-right">Delete</a>
-  </div>
+<div id="header">
+  <a href="<%= url_for :action => :do_back %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
+  <span class="title pull-left">Edit Item</span>
+  <a id="done-button" href="#" class="btn btn-primary btn-sm pull-right">Done</a>
 </div>
 
 <form method="POST" action="<%= url_for :action => :update %>">
@@ -88,8 +82,8 @@
     </div>
   </div>
 
-
-  <button type="submit" class="btn btn-success btn-block">Update</button>
 </form>
+
+<a href="<%= url_for :action => :delete, :id => @inventoryItem.object %>" class="btn btn-danger btn-block">Delete</a>
 
 <script src="/public/js/new-edit.js" type="text/javascript"></script>

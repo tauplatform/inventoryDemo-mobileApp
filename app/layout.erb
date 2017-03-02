@@ -12,13 +12,59 @@
   <script src="/public/jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
   <script src="/public/bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="/public/toastr/toastr.min.js" type="text/javascript"></script>
+  <script src="/public/slideout/slideout.min.js" type="text/javascript"></script>
   <script src="/public/api/rhoapi-modules.js" type="text/javascript"></script>
 </head>
 
 <body>
-<div class="container-fluid">
+
+<nav id="menu">
+  <div class="list-group">
+
+    <% if Rho::RhoConnectClient.isLoggedIn %>
+        <a href="<%= url_for :controller => :Settings, :action => :logout %>" class="list-group-item">Log out</a>
+        <a href="<%= url_for :controller => :Settings, :action => :do_sync %>" class="list-group-item">Sync</a>
+    <% else %>
+        <a href="<%= url_for :controller => :Settings, :action => :login %>" class="list-group-item">Log in</a>
+    <% end %>
+
+    <a href="<%= url_for :controller => :Settings, :action => :index %>" class="list-group-item">Settings</a>
+    <a href="<%= url_for :controller => :Settings, :action => :about %>" class="list-group-item">About</a>
+    <a href="<%= url_for :controller => :Settings, :action => :do_quit %>" class="list-group-item">Quit</a>
+  </div>
+</nav>
+
+
+<div id="panel" class="container-fluid">
   <%= @content %>
 </div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+  <div class="container text-center">
+    <img src="/public/images/logo.png" height="36px" with="36px">
+    <span>Inventory Demo by  <a href="/app/Settings/about"><strong>Tau-Technologies</strong></a></span>
+  </div>
+</nav>
+
+<script>
+    (function () {
+        var slideout = new Slideout({
+            'panel': document.getElementById('panel'),
+            'menu': document.getElementById('menu'),
+            'padding': 256,
+            'tolerance': 70
+        });
+
+        var menuButton = document.querySelector('#button-menu');
+        if (menuButton != null) {
+            document.querySelector('#button-menu').addEventListener('click', function () {
+                slideout.toggle();
+            });
+        }
+    })();
+</script>
+
+
 </body>
 
 </html>

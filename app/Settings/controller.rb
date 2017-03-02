@@ -15,14 +15,16 @@ class SettingsController < Rho::RhoController
     render
   end
 
+  def do_back
+    Rho::WebView.navigateBack()
+  end
+
   def barcodeScannerChoosed(scanner)
     puts "Rho::Barcode.getDefault.friendlyName #{Rho::Barcode.getDefault.friendlyName}"
-=begin
     if Rho::Config.isPropertyExists(@barcode_scanner_property_name)
       selected_name = Rho::Config.getPropertyString(@barcode_scanner_property_name)
       return scanner.friendlyName.to_s == selected_name ? 'selected' : ''
     end
-=end
     scanner.friendlyName== Rho::Barcode.getDefault.friendlyName ? 'selected' : ''
   end
 
@@ -45,7 +47,6 @@ class SettingsController < Rho::RhoController
       if !@msg || @msg.length == 0
         @msg = Rho::RhoError.new(errCode).message
       end
-
       Rho::WebView.navigate (url_for :action => :login, :query => {:msg => @msg})
     end
   end
@@ -89,44 +90,15 @@ class SettingsController < Rho::RhoController
     redirect :action => :wait, :query => {:msg => @msg}
   end
 
+  def do_quit
+    Rho::Application.quit()
+  end
+
   def sync_notify
-    status = @params['status'] ? @params['status'] : ''
-    # un-comment to show a debug status pop-up
-    # Rho::Notification.showStatus( "Status", "#{@params['source_name']} : #{status}", Rho::RhoMessages.get_message('hide'))
-
-    if status == "in_progress"
-      Rho::WebView.executeJavascript('toastr.info("Sync is in progress", "DB Sync");')
-    elsif status == "complete"
-      Rho::WebView.executeJavascript('toastr.success("Sync has being completed", "DB Sync");')
-      Rho::WebView.navigate (url_for :controller => "InventoryItem", :action => :index)
-    elsif status == "error"
-
-      if @params['server_errors'] && @params['server_errors']['create-error']
-        Rho::RhoConnectClient.on_sync_create_error(
-            @params['source_name'], @params['server_errors']['create-error'].keys, :recreate)
-      end
-
-      if @params['server_errors'] && @params['server_errors']['update-error']
-        Rho::RhoConnectClient.on_sync_update_error(
-            @params['source_name'], @params['server_errors']['update-error'], :retry)
-      end
-
-      err_code = @params['error_code'].to_i
-      rho_error = Rho::RhoError.new(err_code)
-
-      @msg = @params['error_message'] if err_code == Rho::RhoError::ERR_CUSTOMSYNCSERVER
-      @msg = rho_error.message unless @msg && @msg.length > 0
-
-      if rho_error.unknown_client?(@params['error_message'])
-        Rhom::Rhom.database_client_reset
-        Rho::RhoConnectClient.doSync
-      elsif err_code == Rho::RhoError::ERR_UNATHORIZED
-        Rho::WebView.navigate(url_for :action => :login, :query => {:msg => "Server credentials are expired"})
-      elsif err_code != Rho::RhoError::ERR_CUSTOMSYNCSERVER
-        puts "DB SYBC ERROR #{@msg}"
-        # Rho::WebView.executeJavascript("toastr.error(\"#{@msg}\", \"DB Sync\");")
-      end
-    end
+    puts(@params.to_json);
+    cmd = "addNotification('#{@params.to_json}');"
+    puts(cmd)
+    Rho::WebView.executeJavascript(cmd)
   end
 
 

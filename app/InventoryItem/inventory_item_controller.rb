@@ -5,8 +5,11 @@ class InventoryItemController < Rho::RhoController
   include BrowserHelper
 
   def hardware_scanner_selected?
-    return false if Rho::System.platform == Rho::System::PLATFORM_IOS
-    Rho::Barcode.getDefault.scannerType != 'Camera'
+    if Rho.const_defined?(:Barcode)
+      return false if Rho::System.platform == Rho::System::PLATFORM_IOS
+      return Rho::Barcode.getDefault.scannerType != 'Camera'
+    end
+    return false
   end
 
   def barcode_scanner_callback
@@ -22,13 +25,19 @@ class InventoryItemController < Rho::RhoController
   end
 
   def index
-    if self.hardware_scanner_selected?
-      Rho::Barcode.getDefault.enable({}, url_for(:action => :barcode_scanner_callback))
+    if Rho.const_defined?(:Barcode)
+      if self.hardware_scanner_selected?
+        Rho::Barcode.getDefault.enable({}, url_for(:action => :barcode_scanner_callback))
+      end
     end
 
-
     @inventoryItems = InventoryItem.find(:all)
+    # @inventoryItems = (1..100).collect { |each| InventoryItem.new(:productName => each.to_s) }
     render
+  end
+
+  def do_back
+    Rho::WebView.navigateBack()
   end
 
   def show

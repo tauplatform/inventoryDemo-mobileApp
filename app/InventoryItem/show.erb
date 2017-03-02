@@ -1,100 +1,94 @@
-<div class="row page-title">
-  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm btn-block">Back</a>
-  </div>
-  <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
-    <h4 class="text-center"><%= @inventoryItem.productName %></h4>
-  </div>
-  <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
-    <a href="<%= url_for :action => :edit, :id => @inventoryItem.object %>" class="btn btn-primary btn-sm btn-block">Edit</a>
-  </div>
+<div id="header">
+  <a href="<%= url_for :action => :do_back %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
+  <span class="title pull-left"><%= @inventoryItem.productName %></span>
+  <a href="<%= url_for :action => :edit, :id => @inventoryItem.object %>" class="btn btn-primary btn-sm pull-right">Edit</a>
 </div>
 
-<div class="row">
-  <ul class="list-group">
 
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <span pull-right><strong>UPC</strong></span>
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @inventoryItem.upc %>
-        </div>
+<ul class="list-group">
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span pull-right><strong>UPC</strong></span>
       </div>
-    </li>
-
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <span pull-right><strong>Product Name</strong></span>
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @inventoryItem.productName %>
-        </div>
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <%= @inventoryItem.upc %>
       </div>
-    </li>
+    </div>
+  </li>
 
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <span pull-right><strong>Quantity</strong></span>
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @inventoryItem.quantity %>
-        </div>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span pull-right><strong>Product Name</strong></span>
       </div>
-    </li>
-
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <span pull-right><strong>Photo</strong></span>
-        </div>
-
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-          <% if @inventoryItem.photoUri %>
-              <div class="thumbnail">
-                <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.photoUri) %>">
-              </div>
-          <% else %>
-              &lt;none&gt;
-          <% end %>
-        </div>
-
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <%= @inventoryItem.productName %>
       </div>
-    </li>
+    </div>
+  </li>
 
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <span pull-right><strong>Employee Id</strong></span>
-        </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          <%= @inventoryItem.employeeId %>
-        </div>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span pull-right><strong>Quantity</strong></span>
       </div>
-    </li>
-
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-          <span pull-right><strong>Signature</strong></span>
-        </div>
-
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-          <% if @inventoryItem.signatureUri %>
-              <div class="thumbnail">
-                <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
-              </div>
-          <% else %>
-              &lt;none&gt;
-          <% end %>
-        </div>
-
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <%= @inventoryItem.quantity %>
       </div>
-    </li>
+    </div>
+  </li>
 
-  </ul>
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span pull-right><strong>Photo</strong></span>
+      </div>
 
-</div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <% if @inventoryItem.photoUri %>
+            <div class="thumbnail">
+              <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.photoUri) %>">
+            </div>
+        <% else %>
+            &lt;none&gt;
+        <% end %>
+      </div>
+
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span pull-right><strong>Employee Id</strong></span>
+      </div>
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+        <%= @inventoryItem.employeeId %>
+      </div>
+    </div>
+  </li>
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <span pull-right><strong>Signature</strong></span>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <% if @inventoryItem.signatureUri %>
+            <div class="thumbnail">
+              <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
+            </div>
+        <% else %>
+            &lt;none&gt;
+        <% end %>
+      </div>
+
+    </div>
+  </li>
+
+</ul>
+
+</di
