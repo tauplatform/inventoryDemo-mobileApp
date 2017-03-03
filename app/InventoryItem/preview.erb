@@ -1,0 +1,6 @@
+<div id="header">
+  <a href="<%= url_for :action => :do_back %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
+  <span class="title pull-left">Preview</span>
+</div>
+
+<img src="<%= Rho::Application.expandDatabaseBlobFilePath(@params['imageUri']) %>" class="img-responsive">

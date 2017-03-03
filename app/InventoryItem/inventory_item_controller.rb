@@ -16,7 +16,6 @@ class InventoryItemController < Rho::RhoController
     unless @params['data'].nil?
       item = InventoryItem.find(:first, :conditions => {'upc' => @params['data']})
       if item.nil?
-#        WebView.navigate url_for :action => :new, :upc => @params['data']
         WebView.navigate url_for :action => :new, :query => {:upc => @params['data']}
       else
         WebView.navigate url_for :action => :show, :id => item.object
