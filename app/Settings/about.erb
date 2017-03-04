@@ -9,4 +9,10 @@
   mobile data terminals from various manufactures and features like barcode scanner reading, NFC, mobile printing, etc.
 </p>
 
-<p class="text-center"><a  href="http://www.tau-technologies.com">www.tau-technologies.com</a></p>
+<p class="text-center"><a  onClick="open_tau_website();" style="cursor: pointer; cursor: hand;">www.tau-technologies.com</a></p>
+
+<script>
+    function open_tau_website() {
+        $.get("/app/Settings/open_tau_website");
+    }
+</script>

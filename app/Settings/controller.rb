@@ -99,5 +99,8 @@ class SettingsController < Rho::RhoController
     Rho::WebView.executeJavascript(cmd)
   end
 
+  def open_tau_website
+      Rho::System.openUrl("http://tau-technologies.com")
+  end
 
 end
