@@ -48,6 +48,11 @@ class InventoryItemController < Rho::RhoController
     end
   end
 
+  def photo_view
+    @inventoryItem = InventoryItem.find(@params['id'])
+    render :action => :photo_view, :back => url_for(:action => :index)
+  end
+
   def new
     @inventoryItem = InventoryItem.new
     render :action => :new, :back => url_for(:action => :index)

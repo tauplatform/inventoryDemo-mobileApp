@@ -1,0 +1,6 @@
+<div id="header">
+  <a href="<%= url_for :action => :show, :id => @inventoryItem.object %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
+  <span class="title pull-left">Product's photo</span>
+</div>
+
+<img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.photoUri) %>" class="img-responsive">
