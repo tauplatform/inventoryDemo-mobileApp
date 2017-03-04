@@ -52,9 +52,10 @@ class SettingsController < Rho::RhoController
   def do_login
     if @params['login'] and @params['password']
       begin
-        Rho::RhoConnectClient.login(@params['login'], @params['password'], (url_for :action => :login_callback))
+        @@login = @params['login']
+        @@password  = @params['password']
         @response['headers']['Wait-Page'] = 'true'
-        render :action => :wait
+        render :action => :wait_login
       rescue Rho::RhoError => e
         @msg = e.message
         render :action => :login
@@ -83,9 +84,23 @@ class SettingsController < Rho::RhoController
   end
 
   def do_sync
-    Rho::RhoConnectClient.doSync
+    #Rho::RhoConnectClient.doSync
     @msg = "Sync has been triggered."
     redirect :action => :wait, :query => {:msg => @msg}
+  end
+
+  def execute_sync
+      puts "execute.sync !"
+      # executed from wait webpage - do not execute it manually !
+      Rho::RhoConnectClient.doSync
+  end
+
+  def execute_login
+      # executed from wait_login webpage - do not execute it manually !
+      #puts "execute_login with ["+@@login.to_s+"]:["+@@password.to_s+"]"
+      Rho::RhoConnectClient.login(@@login, @@password, (url_for :action => :login_callback))
+      @@login = nil
+      @@password  = nil
   end
 
   def do_quit
@@ -97,6 +112,10 @@ class SettingsController < Rho::RhoController
     cmd = "addNotification('#{@params.to_json}');"
     puts(cmd)
     Rho::WebView.executeJavascript(cmd)
+    if (@params["status"] == "error") && (@params["error_code"] == "7")
+        #user is not logged in
+        Rho::RhoConnectClient.logout
+    end
   end
 
   def open_tau_website

@@ -1,17 +1,15 @@
 <div id="header">
   <a href="<%= url_for :action => :do_back %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
-  <span class="title pull-left">Database Sync</span>
+  <span class="title pull-left">Login ...</span>
 </div>
 
 <h4 class="text-center">Please, wait</h4>
 <div id="notifications"></div>
 
-<a id="ok-button" href="<%= url_for :action => :do_back %>" class="btn btn-default btn-block hidden">OK</a>
-
 <script src="/public/js/sync.js" type="text/javascript"></script>
 
 <script>
     $(document).ready(function () {
-        $.get("/app/Settings/execute_sync");
+        $.get("/app/Settings/execute_login");
     })
 </script>

@@ -10,6 +10,7 @@ var addNotification = function (aString) {
         case("ok"):
             element.addClass("alert-success");
             text = text + "Sync completed for " + item.source_name;
+            $("#ok-button").removeClass("hidden");
             break;
         case("error"):
             switch (item.error_code) {
@@ -32,7 +33,7 @@ var addNotification = function (aString) {
                     text = text + "No server response";
                     break;
                 case("7"):
-                    text = text + "Client is not logged in";
+                    text = text + "Client is not logged in. Please re-login !";
                     break;
                 case("8"):
                     text = text + "Custom sync server error";
@@ -44,7 +45,8 @@ var addNotification = function (aString) {
                     text = text + "Unknown error";
             }
             element.addClass("text-danger");
-            text = text + item.error_message;
+            text = text + " : " +item.error_message;
+            $("#ok-button").removeClass("hidden");
             break;
         case("complete"):
             element.addClass("text-success");
