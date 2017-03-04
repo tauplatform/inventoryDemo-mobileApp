@@ -65,7 +65,13 @@ $(document).ready(function () {
         $("#takePhotoBtn").on("click", function () {
             disableDefaultBarcodeScannerIfHardware();
             var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
-            Rho.Camera.takePicture({fileName: photoFilename}, function (params) {
+            var options = {
+                fileName: photoFilename,
+                desiredWidth: 1024,
+                desiredHeight: 1024,
+                enableEditing: false
+            };
+            Rho.Camera.takePicture(options, function (params) {
                 if (params.status === "ok") {
                     var imagePath = params.imageUri;
                     if (Rho.System.platform === Rho.System.PLATFORM_WM_CE) {
@@ -83,7 +89,13 @@ $(document).ready(function () {
         });
         $("#choosePhotoBtn").on("click", function () {
             var photoFilename = Rho.RhoFile.join(Rho.Application.databaseBlobFolder, new Date().getTime().toString());
-            Rho.Camera.choosePicture({fileName: photoFilename}, function (params) {
+            var options = {
+                fileName: photoFilename,
+                desiredWidth: 1024,
+                desiredHeight: 1024,
+                enableEditing: false
+            };
+            Rho.Camera.choosePicture(options, function (params) {
                 if (params.status === "ok") {
                     var imagePath = params.imageUri;
                     if (Rho.System.platform === Rho.System.PLATFORM_WM_CE) {
