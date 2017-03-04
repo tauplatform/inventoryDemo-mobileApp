@@ -19,18 +19,21 @@
 <body>
 
 <nav id="menu">
-  <div class="list-group">
+  <div class="menu-list">
 
     <% if Rho::RhoConnectClient.isLoggedIn %>
-        <a href="<%= url_for :controller => :Settings, :action => :logout %>" class="list-group-item">Log out</a>
-        <a href="<%= url_for :controller => :Settings, :action => :do_sync %>" class="list-group-item">Sync</a>
+        <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :logout %>">Log out</a>
+        <hr>
+        <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :do_sync %>">Sync</a>
     <% else %>
-        <a href="<%= url_for :controller => :Settings, :action => :login %>" class="list-group-item">Log in</a>
+        <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :login %>">Log in</a>
     <% end %>
-
-    <a href="<%= url_for :controller => :Settings, :action => :index %>" class="list-group-item">Settings</a>
-    <a href="<%= url_for :controller => :Settings, :action => :about %>" class="list-group-item">About</a>
-    <a href="<%= url_for :controller => :Settings, :action => :do_quit %>" class="list-group-item">Quit</a>
+    <hr>
+    <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :index %>">Settings</a>
+    <hr>
+    <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :about %>">About</a>
+    <hr>
+    <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :do_quit %>">Quit</a>
   </div>
 </nav>
 
