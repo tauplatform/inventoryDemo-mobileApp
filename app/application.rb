@@ -14,6 +14,8 @@ class AppApplication < Rho::RhoApplication
 
     # Uncomment to set sync notification callback to /app/Settings/sync_notify.
     #Rho::RhoConnectClient.setObjectNotification("/app/Settings/sync_notify")
-    Rho::RhoConnectClient.setNotification('*', "/app/Settings/sync_notify", '')
+    # we should remove all saved login info when application start - user should enter login info again
+    Rho::RhoConnectClient.logout
+    Rho::RhoConnectClient.setNotification('*', "/app/Settings/sync_notify")
   end
 end
