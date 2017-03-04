@@ -108,8 +108,11 @@ class SettingsController < Rho::RhoController
   end
 
   def sync_notify
-    puts(@params.to_json);
-    cmd = "addNotification('#{@params.to_json}');"
+    puts("Settings.sync_notify params="+@params.to_json);
+    cmd = @params.to_json
+    # can not use gsub because _'_ is special command symbol for gsub !
+    cmd = cmd.split("'").join("\\'")
+    cmd = "addNotification('#{cmd}');"
     puts(cmd)
     Rho::WebView.executeJavascript(cmd)
     if (@params["status"] == "error") && (@params["error_code"] == "7")
