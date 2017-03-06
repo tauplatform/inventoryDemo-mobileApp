@@ -39,6 +39,25 @@ class InventoryItemController < Rho::RhoController
     Rho::WebView.navigateBack()
   end
 
+  def do_search
+    query = "%#{@params['query']}%"
+    @inventoryItems = InventoryItem.find(:all,
+                                         :conditions => {
+                                             {
+                                                 :func => 'UPPER',
+                                                 :name => 'productName',
+                                                 :op => 'LIKE'
+                                             } => query,
+                                             {
+                                                 :func => 'UPPER',
+                                                 :name => 'upc',
+                                                 :op => 'LIKE'
+                                             } => query,
+                                         },
+                                         :op => 'OR')
+    render(partial: 'item_list', locals: {:items => @inventoryItems})
+  end
+
   def show
     @inventoryItem = InventoryItem.find(@params['id'])
     if @inventoryItem

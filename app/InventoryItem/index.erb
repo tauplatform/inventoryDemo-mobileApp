@@ -4,17 +4,50 @@
   <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-sm pull-right">New</a>
 </div>
 
-<div class="list-group">
-  <% @inventoryItems.each do |item| %>
-
-      <a href="<%= url_for :action => :show, :id => item.object %>" class="list-group-item">
-        <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true" style="margin-top: 1em"></span>
-        <span class="pull-right" style="margin-top: 1em; margin-right: 1em"><%= item.quantity %> pcs</span>
-        <%= item.productName %><br/>
-        <small><%= item.upc %></small>
-        <br/>
-      </a>
-
-  <% end %>
-
+<div class="input-group">
+  <input id="search" type="text" class="form-control" placeholder="Search for...">
+  <span class="input-group-btn">
+    <button id="clear" class="btn btn-default" type="button">
+      <span class="glyphicon glyphicon-remove"></span>
+    </button>
+  </span>
 </div>
+
+<div>&nbsp;</div>
+<div id="item-list">
+  <%= render :partial => 'item_list', :locals => {:items => @inventoryItems} %>
+</div>
+
+<script>
+    (function () {
+        var timeoutId;
+        var timeout = 500;
+
+        var serverRequest = function (query) {
+            $.ajax({
+                type: "post",
+                dataType: "html",
+                url: "<%= url_for :action => :do_search %>",
+                cache: false,
+                data: {query: query}
+            })
+                .done(function (html) {
+                    $("#item-list").html(html);
+                });
+        };
+
+        $("#search").bind("input", function (anEvent) {
+            if (timeoutId != null) {
+                clearTimeout(timeoutId);
+            }
+            timeoutId = setTimeout(function () {
+                serverRequest($(anEvent.target).val());
+            }, timeout);
+        });
+
+        $("#clear").on("click", function () {
+            $("#search").val("");
+            serverRequest("");
+        });
+    })();
+</script>
