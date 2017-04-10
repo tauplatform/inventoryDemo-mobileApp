@@ -17,7 +17,7 @@ iphone:
   #entitlements:
   BundleIdentifier: com.tautechnologies.inventorydemo
   BundleURLScheme: inventorydemo
-  http_connection_domains: ["tau-store-server.herokuapp.com"]
+  http_connection_domains: ["inventory-demo-rhoconnect.herokuapp.com", "taulogservice.herokuapp.com"]
   info_plist_data:
     NSAppTransportSecurity:
       NSAllowsArbitraryLoads: true
