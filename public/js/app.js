@@ -79,8 +79,7 @@ app.onPageBeforeAnimation("items", function () {
     }
 
     $$(".view-item").on("click", function (e) {
-        console.log(e);
-        var id = $$(e.target).data("item-id");
+        var id = $$(e.currentTarget).data("item-id");
         var item = getItem(id);
         mainView.router.loadPage({url: 'view-item.html', context: {item: item}});
     });
