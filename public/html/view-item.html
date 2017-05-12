@@ -2,7 +2,13 @@
 
     <div class="navbar">
         <div class="navbar-inner">
+            <div class="left">
+                <a href="items.html" class="back link icon-only">
+                    <i class="icon icon-back"></i>
+                </a>
+            </div>
             <div class="center">View item</div>
+            <div class="right"></div>
         </div>
     </div>
 
@@ -43,7 +49,7 @@
                     <div class="item-content">
                         <div class="item-inner">
                             <div class="item-title label">Photo</div>
-                            <div>
+                            <div style="text-align: right">
                                 <a href="view-photo.html" data-context='{"photoSrc": "{{item.photoSrc}}", "item": "{{item}}"}'>
                                     <img src="{{item.photoSrc}}" class="photo-preview" style="width:auto; height:auto; max-width: 80%;">
                                 </a>
