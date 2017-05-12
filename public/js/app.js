@@ -156,7 +156,7 @@ app.onPageBeforeAnimation("new-item", function () {
         var qty = Number.parseInt($$("#qty").val());
         qty = Number.isNaN(qty) ? 0 : qty;
         item.quantity = $$("#qty").val();
-        item.photoUri = $$("#photo-uri").val();
+        item.photoUri = $$(".photo-uri").find("input").val();
         $$.ajax({
             url: '/app/InventoryItem/create',
             async: false,
