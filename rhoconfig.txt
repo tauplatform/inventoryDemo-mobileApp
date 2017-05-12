@@ -1,5 +1,6 @@
 # startup page for your application
-start_path = '/app/InventoryItem'
+#start_path = '/app/InventoryItem'
+start_path = '/public/html/index.html'
 
 # path to the options page (in this case handled by javascript)
 options_path = '/app/Settings'
@@ -14,7 +15,7 @@ rhobundle_zip_pwd = nil
 # log level
 # 0-trace, 1-info(app level), 2-warnings, 3-errors
 # for production set to 3
-MinSeverity  = 1
+MinSeverity  = 0
 
 # enable copy log messages to standard output, useful for debugging
 LogToOutput = 1

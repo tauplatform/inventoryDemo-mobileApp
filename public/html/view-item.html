@@ -1,0 +1,61 @@
+<div data-page="view-item" class="page">
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="center">View item</div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="list-block">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">UPC</div>
+                            <div>
+                                {{item.upc}}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">Product</div>
+                            <div>
+                                {{item.productName}}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">Qty</div>
+                            <div>
+                                {{item.quantity}}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">Photo</div>
+                            <div>
+                                <a href="view-photo.html" data-context='{"photoSrc": "{{item.photoSrc}}", "item": "{{item}}"}'>
+                                    <img src="{{item.photoSrc}}" class="photo-preview" style="width:auto; height:auto; max-width: 80%;">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+

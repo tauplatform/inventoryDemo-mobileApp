@@ -1,0 +1,29 @@
+<div data-page="items" class="page">
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="center">Items</div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="list-block">
+            <ul>
+                {{#each items}}
+                <li>
+                    <a href="#" class="item-link item-content view-item">
+                        <div class="item-inner" data-item-id="{{object}}">
+                            <div class="item-title">{{productName}}</div>
+                        </div>
+                    </a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+
+
