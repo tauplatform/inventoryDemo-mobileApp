@@ -20,7 +20,7 @@ var mainView = app.addView('.view-main', {
 });
 
 // main entry
-mainView.router.loadPage({url: "items.html"});
+mainView.router.loadPage({url: "login.html"});
 
 app.onPageBeforeAnimation("*", function (page) {
     console.log("page " + page.url + " before animation", page);
