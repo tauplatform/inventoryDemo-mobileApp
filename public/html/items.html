@@ -7,13 +7,17 @@
     </div>
 
     <div class="page-content">
-        <div class="list-block">
+        <div class="list-block media-list">
             <ul>
                 {{#each items}}
-                <li>
-                    <a href="#" class="item-link item-content view-item">
-                        <div class="item-inner" data-item-id="{{object}}">
-                            <div class="item-title">{{productName}}</div>
+                <li class="view-item" data-item-id="{{object}}">
+                    <a href="#" class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title-row">
+                                <div class="item-title">{{productName}}</div>
+                                <div class="item-after">{{quantity}} psc</div>
+                            </div>
+                            <div class="item-subtitle">{{upc}}</div>
                         </div>
                     </a>
                 </li>
