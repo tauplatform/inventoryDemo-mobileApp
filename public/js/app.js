@@ -106,6 +106,15 @@ app.onPageBeforeAnimation("items", function () {
         var item = getItem(id);
         mainView.router.loadPage({url: 'view-item.html', context: {item: item}, ignoreCache: true});
     });
+
+    $$('.swipeout').on('swipeout:deleted', function (e) {
+        var id = $$(this).data("item-id");
+        deleteItemById(id);
+    });
+
+    $$('.swipeout').on('swipeout', function (e) {
+        console.log('Item opened on: ' + e.detail.progress + '%');
+    });
 });
 
 app.onPageBeforeAnimation("new-item", function (page) {
@@ -245,6 +254,24 @@ var getItem = function (id) {
             success: function (data) {
                 item = JSON.parse(data);
                 item.photoSrc = Rho.Application.expandDatabaseBlobFilePath(item.photoUri);
+            },
+            error: function (error) {
+                console.log("error", error);
+            }
+        }
+    );
+    return item;
+};
+
+var deleteItemById = function (id) {
+    console.log("deleting item", id);
+    var item;
+    $$.ajax({
+            url: "/app/InventoryItem/delete/" + id,
+            async: false,
+            method: "GET",
+            success: function (data) {
+               console.log("item is deleted");
             },
             error: function (error) {
                 console.log("error", error);
