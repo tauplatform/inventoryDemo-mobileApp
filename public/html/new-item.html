@@ -3,7 +3,7 @@
     <div class="navbar">
         <div class="navbar-inner">
             <div class="left">
-                <a href="items.html" class="back link icon-only">
+                <a href="#" class="back link icon-only">
                     <i class="icon icon-back"></i>
                 </a>
             </div>
@@ -30,7 +30,7 @@
                         <div class="item-inner">
                             <div class="item-title label">Product</div>
                             <div class="item-input">
-                                <input id="product-name" type="text" placeholder="Enter product name">
+                                <input id="product-name" type="text" placeholder="Enter product name" autofocus>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                         <div class="item-inner">
                             <div class="item-title label">Qty</div>
                             <div class="item-input">
-                                <input id="qty" type="number" placeholder="Enter quantity">
+                                <input id="qty" type="number" placeholder="Enter quantity" value="1">
                             </div>
                         </div>
                     </div>
@@ -50,14 +50,11 @@
                         <div class="item-inner">
                             <div class="item-title label">Photo</div>
                             <div class="item-input">
-                                <div class="photo-uri" style="display:none">
-                                    <img src="">
+                                <div class="photo" style="display:none">
+                                    <img src="" style="width:auto; height:auto; max-width: 40%;">
                                     <input type="hidden" value="">
                                 </div>
-                                <button class="button button-raised take-picture">take a picture</button>
-                                <button style="display:none" class="button button-raised button-fill view-picture">
-                                    view picture
-                                </button>
+                                <div class="photo-hint">Press PTT button for taking a picture</div>
                             </div>
                         </div>
                     </div>

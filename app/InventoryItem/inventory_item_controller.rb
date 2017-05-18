@@ -14,7 +14,6 @@ class InventoryItemController < Rho::RhoController
 
   def item
     item = InventoryItem.find(@params['id'])
-    puts "#{item}"
     render :string => item.to_json
   end
 

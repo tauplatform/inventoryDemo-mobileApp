@@ -1,14 +1,18 @@
 var app = new Framework7({
     modalTitle: "Inventory Demo",
+    //material: true,
     pushState: true,
     template7Pages: true,
     precompileTemplates: false,
     template7Data: {
         'url:items.html': function () {
-            return {items: getItems()};
+            return {
+                items: getItems()
+            };
         }
     }
 });
+
 
 // Export selectors engine
 var $$ = Dom7;
@@ -16,7 +20,7 @@ var $$ = Dom7;
 // Add view
 var mainView = app.addView('.view-main', {
     // Because we use fixed-through navbar we can enable dynamic navbar
-    //dynamicNavbar: true
+    // dynamicNavbar: true
 });
 
 // main entry
@@ -24,6 +28,13 @@ mainView.router.loadPage({url: "login.html"});
 
 app.onPageBeforeAnimation("*", function (page) {
     console.log("page " + page.url + " before animation", page);
+    $$(".back").on("click", function () {
+        mainView.router.back({url: page.fromPage.url, force: true, ignoreCache: true});
+    });
+});
+
+app.onPageBack("*", function (page) {
+    console.log("page " + page.url + " back", page);
 });
 
 
@@ -67,7 +78,19 @@ app.onPageBeforeAnimation("login", function () {
 app.onPageBeforeAnimation("items", function () {
     var scannerCallback = function (value) {
         console.log("items page > scanner callback", value);
-        mainView.router.loadPage({url: 'new-item.html', context: {upc: value.data}});
+
+        var items = getItems();
+        console.log(items);
+        var item = items.find(function (each) {
+            return each.upc === value.data
+        });
+        if (item != null) {
+            item.photoSrc = Rho.Application.expandDatabaseBlobFilePath(item.photoUri);
+            mainView.router.loadPage({url: 'view-item.html', context: {item: item}, ignoreCache: true});
+        }
+        else {
+            mainView.router.loadPage({url: 'new-item.html', context: {upc: value.data}, ignoreCache: true});
+        }
     };
 
     var scanners = Rho.Barcode.enumerate();
@@ -81,22 +104,41 @@ app.onPageBeforeAnimation("items", function () {
     $$(".view-item").on("click", function (e) {
         var id = $$(e.currentTarget).data("item-id");
         var item = getItem(id);
-        mainView.router.loadPage({url: 'view-item.html', context: {item: item}});
+        mainView.router.loadPage({url: 'view-item.html', context: {item: item}, ignoreCache: true});
     });
 });
 
-app.onPageBeforeAnimation("new-item", function () {
+app.onPageBeforeAnimation("new-item", function (page) {
 
-    Rho.Barcode.disable();
+    var backUrl = page.fromPage.url;
+    var quantity = 1;
+    var upc = page.context.upc;
+
+    var scannerCallback = function (value) {
+        console.log("items page > scanner callback", value);
+        if (value.data === upc) {
+            quantity = quantity + 1;
+            $$("#qty").val(quantity);
+        }
+
+    };
+
+    var scanners = Rho.Barcode.enumerate();
+    var scanner = scanners.find(function (each) {
+        return each.friendlyName === "2D Barcode Imager";
+    });
+    if (scanner != null) {
+        scanner.enable({}, scannerCallback);
+    }
 
     var cameraCallback = function (value) {
         console.log("camera callback", value);
         if (value.status === "ok") {
             var filename = value.imageUri;
-            // $$("#photo").find("img").attr("src", filename);
-            $$(".photo-uri").find("input").val(filename);
-            $$(".view-picture").css("display", "initial");
-            $$(".take-picture").css("display", "none");
+            $$(".photo").find("img").attr("src", filename);
+            $$(".photo").find("input").val(filename);
+            $$(".photo").css("display", "initial");
+            $$(".photo-hint").css("display", "none");
         }
     };
 
@@ -107,30 +149,25 @@ app.onPageBeforeAnimation("new-item", function () {
             fileName: photoFilename,
             desiredWidth: 480,
             desiredHeight: 800,
-            enableEditing: false
+            enableEditing: false,
+            useSystemViewfinder: false
         };
         camera.takePicture(options, cameraCallback);
     };
 
     function captureKeyCallback(result) {
+        // 66 - touch button
         if (result.keyValue !== 66) {
             return;
         }
-        var item = {};
-        item.upc = $$("#upc").val();
-        item.productName = $$("#product-name").val();
-        var qty = Number.parseInt($$("#qty").val());
-        qty = Number.isNaN(qty) ? 0 : qty;
-        item.quantity = $$("#qty").val();
-        item.photoUri = $$("#photo-uri").val();
-        saveItem(item);
+        saveItem(filledItem());
     }
 
     // taking photo
     function triggerCallback(result) {
         // 103 - trigger button
         // 104 - PTT button
-        if (result.triggerFlag === 103) {
+        if (result.triggerFlag === 104) {
             takingPicture();
         }
         else {
@@ -138,39 +175,48 @@ app.onPageBeforeAnimation("new-item", function () {
         }
     }
 
-    // Saving the item by clicking on the touch button
-    // Rho.KeyCapture.captureKey(true, 66, captureKeyCallback);
-    //
-    // //
-    // Rho.KeyCapture.captureTrigger(triggerCallback);
+    Rho.KeyCapture.captureKey(true, 66, captureKeyCallback);
+    Rho.KeyCapture.captureTrigger(triggerCallback);
 
+    var filledItem = function () {
+        return {
+            upc: $$("#upc").val(),
+            productName: $$("#product-name").val(),
+            quantity: quantity,
+            photoUri: $$(".photo").find("input").val()
+        }
+    };
+
+    var saveItem = function(anItem){
+        console.log("saved item", anItem);
+        $$.ajax({
+            url: '/app/InventoryItem/create',
+            async: false,
+            method: "POST",
+            data: anItem,
+            success: function (data) {
+                mainView.router.back({url: backUrl, force: true, ignoreCache: true});
+            },
+            error: function (error) {
+                console.log("error", error);
+            }
+        });
+    };
 
     $$(".take-picture").on("click", function () {
         takingPicture();
     });
 
     $$(".save-item").on("click", function () {
-        var item = {};
-        item.upc = $$("#upc").val();
-        item.productName = $$("#product-name").val();
-        var qty = Number.parseInt($$("#qty").val());
-        qty = Number.isNaN(qty) ? 0 : qty;
-        item.quantity = $$("#qty").val();
-        item.photoUri = $$(".photo-uri").find("input").val();
-        $$.ajax({
-            url: '/app/InventoryItem/create',
-            async: false,
-            method: "POST",
-            data: item,
-            success: function (data) {
-                mainView.router.loadPage('items.html');
-            },
-            error: function (error) {
-                console.log("error", error);
-            }
-        });
+        saveItem(filledItem());
     });
 
+});
+
+
+app.onPageBack("new-item", function () {
+    Rho.KeyCapture.captureTrigger();
+    Rho.KeyCapture.captureKey(true, 66);
 });
 
 var getItems = function () {
@@ -207,11 +253,3 @@ var getItem = function (id) {
     );
     return item;
 };
-
-document.addEventListener("backbutton", onBackKeyDown, false);
-
-function onBackKeyDown() {
-    console.log("back button is pressed");
-    mainView.router.back();
-    return true;
-}
