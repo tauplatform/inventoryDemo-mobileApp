@@ -112,7 +112,7 @@ sync_poll_interval=0
 #wm_show_statusbar = 1
 
 # disable screen rotation (enabled by default) - disable possible for ANDROID and iPhone ONLY
-#disable_screen_rotation = 1
+disable_screen_rotation = 1
 
 # disable close app when pressing back on home screen on blackberry
 #bb_disable_closebyback = 0
