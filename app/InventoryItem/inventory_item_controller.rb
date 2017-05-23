@@ -43,26 +43,23 @@ class InventoryItemController < Rho::RhoController
     data['productName'] = @params['productName']
     data['quantity'] = @params['quantity']
     data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['photoUri'])
-    @inventoryItem = InventoryItem.create(data)
+    InventoryItem.create(data)
   end
 
   def update
-    @inventoryItem = InventoryItem.find(@params['id'])
+    item = InventoryItem.find(@params['id'])
     data = {}
-    data['upc'] = @params['inventoryItem']['upc']
-    data['productName'] = @params['inventoryItem']['productName']
-    data['quantity'] = @params['inventoryItem']['quantity']
-    #data['employeeId'] = @params['inventoryItem']['employeeId']
-    data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
-    #data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
-    @inventoryItem.update_attributes(data) if @inventoryItem
-    redirect :action => :index
+    data['upc'] = @params['upc']
+    data['productName'] = @params['productName']
+    data['quantity'] = @params['quantity']
+    data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['photoUri'])
+    item.update_attributes(data) if item
   end
 
   def delete
     puts "deleting item #{@params['id']}"
-    @inventoryItem = InventoryItem.find(@params['id'])
-    @inventoryItem.destroy if @inventoryItem
+    item = InventoryItem.find(@params['id'])
+    item.destroy if item
   end
 
 end

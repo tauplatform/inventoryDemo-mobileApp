@@ -1,4 +1,4 @@
-<div data-page="view-item" class="page">
+<div data-page="edit-item" class="page">
 
     <div class="navbar">
         <div class="navbar-inner">
@@ -7,7 +7,7 @@
                     <i class="icon icon-back"></i>
                 </a>
             </div>
-            <div class="center">View item</div>
+            <div class="center">Edit item</div>
             <div class="right"></div>
         </div>
     </div>
@@ -19,8 +19,8 @@
                     <div class="item-content">
                         <div class="item-inner">
                             <div class="item-title label">UPC</div>
-                            <div>
-                                {{item.upc}}
+                            <div class="item-input">
+                                <input id="upc" type="text" placeholder="Enter UPC" value="{{item.upc}}">
                             </div>
                         </div>
                     </div>
@@ -29,8 +29,8 @@
                     <div class="item-content">
                         <div class="item-inner">
                             <div class="item-title label">Product</div>
-                            <div>
-                                {{item.productName}}
+                            <div class="item-input">
+                                <input id="product-name" type="text" placeholder="Enter product name" autofocus value="{{item.productName}}">
                             </div>
                         </div>
                     </div>
@@ -39,8 +39,8 @@
                     <div class="item-content">
                         <div class="item-inner">
                             <div class="item-title label">Qty</div>
-                            <div class="quantity">
-                                {{item.quantity}}
+                            <div class="item-input">
+                                <input id="qty" type="number" placeholder="Enter quantity" value="{{item.quantity}}">
                             </div>
                         </div>
                     </div>
@@ -49,15 +49,20 @@
                     <div class="item-content">
                         <div class="item-inner">
                             <div class="item-title label">Photo</div>
-                            <div style="text-align: right">
-                                <a href="view-photo.html" data-context='{"photoSrc": "{{item.photoSrc}}", "item": "{{item}}"}'>
-                                    <img src="{{item.photoSrc}}" class="photo-preview" style="width:auto; height:auto; max-width: 80%;">
-                                </a>
+                            <div class="item-input">
+                                <div class="photo">
+                                    <img src="{{item.photoSrc}}" style="width:auto; height:auto; max-width: 40%;">
+                                    <input type="hidden" value="{{item.photoUri}}">
+                                </div>
+                                <div class="photo-hint">Press PTT button for taking a picture</div>
                             </div>
                         </div>
                     </div>
                 </li>
             </ul>
+        </div>
+        <div class="content-block">
+            <a href="#" class="button button-big button-fill button-raised color-teal save-item">save</a>
         </div>
     </div>
 </div>
