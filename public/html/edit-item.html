@@ -13,58 +13,65 @@
     </div>
 
     <div class="page-content">
-        <div class="list-block">
-            <ul>
-                <li>
-                    <div class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title label">UPC</div>
-                            <div class="item-input">
-                                <input id="upc" type="text" placeholder="Enter UPC" value="{{item.upc}}">
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title label">Product</div>
-                            <div class="item-input">
-                                <input id="product-name" type="text" placeholder="Enter product name" autofocus value="{{item.productName}}">
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title label">Qty</div>
-                            <div class="item-input">
-                                <input id="qty" type="number" placeholder="Enter quantity" value="{{item.quantity}}">
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title label">Photo</div>
-                            <div class="item-input">
-                                <div class="photo">
-                                    <img src="{{item.photoSrc}}" style="width:auto; height:auto; max-width: 40%;">
-                                    <input type="hidden" value="{{item.photoUri}}">
+        <form>
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">UPC</div>
+                                <div class="item-input">
+                                    <input id="upc" type="text" placeholder="Enter UPC" value="{{item.upc}} required">
                                 </div>
-                                <div class="photo-hint">Press PTT button for taking a picture</div>
                             </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">Product</div>
+                                <div class="item-input">
+                                    <input id="product-name" type="text" placeholder="Enter product name" autofocus
+                                           required
+                                           value="{{item.productName}}">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">Qty</div>
+                                <div class="item-input">
+                                    <input id="qty" type="number" placeholder="Enter quantity" required
+                                           value="{{item.quantity}}">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">Photo</div>
+                                <div class="item-input">
+                                    <div class="photo">
+                                        <img src="{{item.photoSrc}}" style="width:auto; height:auto; max-width: 40%;">
+                                        <input type="hidden" value="{{item.photoUri}}" required>
+                                    </div>
+                                    <div class="photo-hint">Press PTT button for taking a picture</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
         <div class="content-block">
             <a href="#" class="button button-big button-fill button-raised color-teal save-item">save</a>
         </div>
     </div>
+
+</div>
 </div>
 
 

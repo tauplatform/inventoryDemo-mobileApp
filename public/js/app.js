@@ -209,15 +209,17 @@ app.onPageBeforeAnimation("new-item", function (aPage) {
     });
 
     $$(".save-item").on("click", function () {
-        var item = {
-            upc: $$("#upc").val(),
-            productName: $$("#product-name").val(),
-            quantity: quantity,
-            photoUri: $$(".photo").find("input").val()
+        var form = $$("form")[0];
+        if (form.reportValidity()) {
+            var item = {
+                upc: $$("#upc").val(),
+                productName: $$("#product-name").val(),
+                quantity: quantity,
+                photoUri: $$(".photo").find("input").val()
+            }
+            saveItem(item);
         }
-        saveItem(item);
     });
-
 });
 
 app.onPageBeforeAnimation("edit-item", function (aPage) {
@@ -309,10 +311,14 @@ app.onPageBeforeAnimation("edit-item", function (aPage) {
     });
 
     $$(".save-item").on("click", function () {
-        item.upc = $$("#upc").val();
-        item.productName = $$("#product-name").val();
-        item.photoUri = $$(".photo").find("input").val();
-        updateItem(item);
+        var form = $$("form")[0];
+
+        if (form.reportValidity()) {
+            item.upc = $$("#upc").val();
+            item.productName = $$("#product-name").val();
+            item.photoUri = $$(".photo").find("input").val();
+            updateItem(item);
+        }
     });
 
 });

@@ -15,7 +15,8 @@ class AppApplication < Rho::RhoApplication
     super
 
     Rho::ScreenOrientation.normal
-    Rho::WebView.fullScreen = true
+    Rho::ScreenOrientation.autoRotate = false
+    #Rho::WebView.fullScreen = true
 
     # Uncomment to set sync notification callback to /app/Settings/sync_notify.
     #Rho::RhoConnectClient.setObjectNotification("/app/Settings/sync_notify")
