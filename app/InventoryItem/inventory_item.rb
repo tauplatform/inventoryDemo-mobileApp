@@ -8,5 +8,4 @@ class InventoryItem
 
   #add model specific code here
   property :photoUri, :blob, :overwrite
-  property :signatureUri, :blob, :overwrite
 end

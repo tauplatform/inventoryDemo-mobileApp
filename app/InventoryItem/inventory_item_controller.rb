@@ -37,12 +37,12 @@ class InventoryItemController < Rho::RhoController
   end
 
   def create
-    puts "params #{@params}"
     data = {}
     data['upc'] = @params['upc']
     data['productName'] = @params['productName']
     data['quantity'] = @params['quantity']
     data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['photoUri'])
+    data['updatedAt'] = @params['updatedAt']
     InventoryItem.create(data)
   end
 
@@ -53,6 +53,7 @@ class InventoryItemController < Rho::RhoController
     data['productName'] = @params['productName']
     data['quantity'] = @params['quantity']
     data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['photoUri'])
+    data['updatedAt'] = @params['updatedAt']
     item.update_attributes(data) if item
   end
 

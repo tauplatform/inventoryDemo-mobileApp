@@ -28,15 +28,53 @@ app.scanner = scanners.find(function (each) {
     return each.friendlyName === "2D Barcode Imager";
 });
 
+app.saveItem = function (anItem, callback) {
+    var cb = callback || function(){};
+    var data = {
+        object: anItem.object,
+        upc: anItem.upc,
+        productName: anItem.productName,
+        quantity: anItem.quantity,
+        photoUri: anItem.photoUri,
+        updatedAt: new Date().toString()
+    };
+    var url;
+    if (data.object != null) {
+        console.log("Item is updating", data);
+        url = '/app/InventoryItem/update/' + data.object;
+    } else {
+        console.log("Item is creating", data);
+        url = "/app/InventoryItem/create"
+    }
+
+    $$.ajax({
+        url: url,
+        async: true,
+        method: "POST",
+        data: data,
+        success: callback,
+        error: function (error) {
+            console.log("error", error);
+        }
+    });
+
+};
+
 
 // main entry
-mainView.router.loadPage({url: "login.html"});
+//mainView.router.loadPage({url: "login.html"});
+mainView.router.loadPage({url: "items.html"});
 
 // Common page callbacks
 app.onPageBeforeAnimation("*", function (aPage) {
     $$(".back").on("click", function () {
         mainView.router.back({url: aPage.fromPage.url, force: true, ignoreCache: true});
     });
+});
+app.onPageBack("*", function (aPage) {
+    if (app.scanner != null) {
+        app.scanner.disable();
+    }
 });
 
 // Page callbacks for particular pages
@@ -188,22 +226,6 @@ app.onPageBeforeAnimation("new-item", function (aPage) {
     Rho.KeyCapture.captureKey(true, 66, captureKeyCallback);
     //Rho.KeyCapture.captureTrigger(triggerCallback);
 
-    var saveItem = function (anItem) {
-        $$.ajax({
-            url: '/app/InventoryItem/create',
-            async: false,
-            method: "POST",
-            data: anItem,
-            success: function (data) {
-                onPageLeave();
-                mainView.router.back({url: backUrl, force: true, ignoreCache: true});
-            },
-            error: function (error) {
-                console.log("error", error);
-            }
-        });
-    };
-
     $$(".take-picture").on("click", function () {
         takingPicture();
     });
@@ -215,9 +237,13 @@ app.onPageBeforeAnimation("new-item", function (aPage) {
                 upc: $$("#upc").val(),
                 productName: $$("#product-name").val(),
                 quantity: quantity,
-                photoUri: $$(".photo").find("input").val()
-            }
-            saveItem(item);
+                photoUri: $$(".photo").find("input").val(),
+                updatedAt: new Date()
+            };
+            app.saveItem(item, function () {
+                onPageLeave();
+                mainView.router.back({url: backUrl, force: true, ignoreCache: true});
+            });
         }
     });
 });
@@ -290,22 +316,6 @@ app.onPageBeforeAnimation("edit-item", function (aPage) {
     Rho.KeyCapture.captureKey(true, 66, captureKeyCallback);
     //Rho.KeyCapture.captureTrigger(triggerCallback);
 
-    var updateItem = function (anItem) {
-        $$.ajax({
-            url: '/app/InventoryItem/update/' + item.object,
-            async: false,
-            method: "POST",
-            data: anItem,
-            success: function (data) {
-                onPageLeave();
-                mainView.router.back({url: backUrl, force: true, ignoreCache: true});
-            },
-            error: function (error) {
-                console.log("error", error);
-            }
-        });
-    };
-
     $$(".take-picture").on("click", function () {
         takingPicture();
     });
@@ -317,7 +327,11 @@ app.onPageBeforeAnimation("edit-item", function (aPage) {
             item.upc = $$("#upc").val();
             item.productName = $$("#product-name").val();
             item.photoUri = $$(".photo").find("input").val();
-            updateItem(item);
+            item.updatedAt = new Date();
+            app.saveItem(item, function () {
+                onPageLeave();
+                mainView.router.back({url: backUrl, force: true, ignoreCache: true});
+            });
         }
     });
 
@@ -333,7 +347,8 @@ app.onPageBeforeAnimation("view-item", function (aPage) {
         if (value.data === item.upc) {
             item.quantity = item.quantity + 1;
             $$(".quantity").text(item.quantity);
-            updateItem(item);
+            item.updatedAt = new Date();
+            app.saveItem(item);
         }
     };
 
@@ -341,21 +356,6 @@ app.onPageBeforeAnimation("view-item", function (aPage) {
         app.scanner.enable({}, scannerCallback);
     }
 
-    var updateItem = function (anItem) {
-
-        $$.ajax({
-            url: '/app/InventoryItem/update/' + item.object,
-            async: false,
-            method: "POST",
-            data: anItem,
-            success: function (data) {
-                console.log("Item is updated");
-            },
-            error: function (error) {
-                console.log("error", error);
-            }
-        });
-    };
 });
 
 var getItems = function () {
@@ -370,6 +370,7 @@ var getItems = function () {
                     var qty = Number.parseInt(each.quantity);
                     each.quantity = Number.isNaN(qty) ? 0 : qty;
                     each.photoSrc = Rho.Application.expandDatabaseBlobFilePath(each.photoUri);
+                    each.updatedAt = new Date(each.updatedAt);
                 })
             },
             error: function (error) {
@@ -377,6 +378,10 @@ var getItems = function () {
             }
         }
     );
+    items.sort(function (a, b) {
+        return a.updatedAt >= b.updatedAt ? -1 : 1;
+    });
+    console.log(items);
     return items;
 };
 
