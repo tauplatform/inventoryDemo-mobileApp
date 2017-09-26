@@ -22,7 +22,7 @@ iphone:
     NSAppTransportSecurity:
       NSAllowsArbitraryLoads: true
   extensions:
-    - "barcode"
+    - barcode
 
 wp8:
   productid: '07c45400-ba39-0134-a27f-60f81db5e3c0'
@@ -35,7 +35,7 @@ android:
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
-    - enterprise-barcode
+    - barcode
 
 android_title: 0
 
@@ -54,7 +54,6 @@ win32:
 
 extensions:
   - rhoconnect-client
-  - barcode
   - mediacapture
   - signature
 
