@@ -1,0 +1,52 @@
+<div data-page="items" class="page navbar-fixed">
+
+    <a href="#" class="floating-button color-green">
+        <i class="material-icons">sync</i>
+    </a>
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="center">Items</div>
+            <div class="right">
+                <span class="right-side-panel">
+                       <i class="material-icons">more-vert</i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="list-block media-list">
+            <ul>
+                {{#each items}}
+                <li class="swipeout" data-item-id="{{object}}">
+                    <div class="swipeout-content">
+                        <a href="#" class="item-link item-content view-item" data-item-id="{{object}}">
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">{{productName}}</div>
+                                    <div class="item-after">{{quantity}} psc</div>
+                                </div>
+                                <div class="item-subtitle">{{upc}}</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="swipeout-actions-left">
+                        <!-- Swipeout actions links/buttons -->
+                        <a href="#" class="bg-lightblue edit-item" data-item-id="{{object}}">Edit</a>
+                    </div>
+                    <div class="swipeout-actions-right">
+                        <!-- Add this button and item will be deleted automatically -->
+                        <a href="#" class="swipeout-delete">Delete</a>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+
+

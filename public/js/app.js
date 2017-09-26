@@ -13,7 +13,6 @@ var app = new Framework7({
     }
 });
 
-
 // Export selectors engine
 var $$ = Dom7;
 
@@ -24,12 +23,19 @@ var mainView = app.addView('.view-main', {
 });
 
 var scanners = Rho.Barcode.enumerate();
+
+for (var i = 0; i < scanners.length; i++) {
+    console.log("friendlyName = " + scanners[i].friendlyName);
+    console.log("scannerType = " + scanners[i].scannerType);
+}
+
 app.scanner = scanners.find(function (each) {
-    return each.friendlyName === "2D Barcode Imager";
+    return (each.friendlyName === "2D Barcode Imager") || (each.friendlyName === "2D Imager");
 });
 
 app.saveItem = function (anItem, callback) {
-    var cb = callback || function(){};
+    var cb = callback || function () {
+        };
     var data = {
         object: anItem.object,
         upc: anItem.upc,
@@ -62,8 +68,8 @@ app.saveItem = function (anItem, callback) {
 
 
 // main entry
-//mainView.router.loadPage({url: "login.html"});
-mainView.router.loadPage({url: "items.html"});
+mainView.router.loadPage({url: "login.html"});
+//mainView.router.loadPage({url: "items.html"});
 
 // Common page callbacks
 app.onPageBeforeAnimation("*", function (aPage) {
@@ -90,7 +96,13 @@ app.onPageBeforeAnimation("login", function () {
             hideLoginFailedMessage();
             clearTimeout(timeoutId);
         }
-        var username = value.data;
+        console.log("value: " + JSON.stringify(value));
+        if (app.scanner.scannerType === "Camera") {
+            var username = value.barcode;
+        }
+        else {
+            var username = value.data;
+        }
         app.showPreloader("Logging in as " + username);
         Rho.RhoConnectClient.login(username, "", function (value) {
             app.hidePreloader();
@@ -115,8 +127,11 @@ app.onPageBeforeAnimation("items", function (aPage) {
 
     scannerCallback = function (value) {
         //TODO: Implement findItemByUPC at Item_Controller and use this method here
+
+        var barcode = value.data;
+
         var item = getItems().find(function (each) {
-            return each.upc === value.data
+            return each.upc === barcode
         });
 
         if (item != null) {
@@ -124,7 +139,7 @@ app.onPageBeforeAnimation("items", function (aPage) {
         }
         else {
             app.scanner.disable();
-            mainView.router.loadPage({url: 'new-item.html', context: {upc: value.data}, ignoreCache: true});
+            mainView.router.loadPage({url: 'new-item.html', context: {upc: barcode}, ignoreCache: true});
         }
     };
 
@@ -208,7 +223,8 @@ app.onPageBeforeAnimation("new-item", function (aPage) {
 
     function captureKeyCallback(result) {
         // 66 - touch button
-        if (result.keyValue !== 66) {
+        // 84 - P3 key on ET1
+        if ((result.keyValue !== 66) && (result.keyValue !== 84)) {
             return;
         }
         takingPicture();
@@ -223,7 +239,7 @@ app.onPageBeforeAnimation("new-item", function (aPage) {
         }
     }
 
-    Rho.KeyCapture.captureKey(true, 66, captureKeyCallback);
+    Rho.KeyCapture.captureKey(true, 'all', captureKeyCallback);
     //Rho.KeyCapture.captureTrigger(triggerCallback);
 
     $$(".take-picture").on("click", function () {
@@ -232,19 +248,21 @@ app.onPageBeforeAnimation("new-item", function (aPage) {
 
     $$(".save-item").on("click", function () {
         var form = $$("form")[0];
-        if (form.reportValidity()) {
-            var item = {
-                upc: $$("#upc").val(),
-                productName: $$("#product-name").val(),
-                quantity: quantity,
-                photoUri: $$(".photo").find("input").val(),
-                updatedAt: new Date()
-            };
-            app.saveItem(item, function () {
-                onPageLeave();
-                mainView.router.back({url: backUrl, force: true, ignoreCache: true});
-            });
+        if (form.reportValidity && !form.reportValidity()) {
+            return;
         }
+        var item = {
+            upc: $$("#upc").val(),
+            productName: $$("#product-name").val(),
+            quantity: quantity,
+            photoUri: $$(".photo").find("input").val(),
+            updatedAt: new Date()
+        };
+        app.saveItem(item, function () {
+            onPageLeave();
+            mainView.router.back({url: backUrl, force: true, ignoreCache: true});
+        });
+
     });
 });
 
