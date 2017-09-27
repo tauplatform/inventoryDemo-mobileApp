@@ -6,10 +6,6 @@ require 'helpers/browser_helper'
 class SettingsController < Rho::RhoController
   include BrowserHelper
 
-  def initialize
-    @barcode_scanner_property_name = 'barcodeScanner'
-  end
-
   def index
     @msg = @params['msg']
     render
@@ -17,6 +13,37 @@ class SettingsController < Rho::RhoController
 
   def do_back
     Rho::WebView.navigateBack()
+  end
+
+  def scanner_selection
+    @msg = @params['msg']
+    render :action => :scanner_selection
+  end
+
+  def scanners
+    Inventory::BarcodeHelper.available_scanners
+  end
+
+  def saved_scanner_identifier
+    Inventory::BarcodeHelper.saved_scanner_identifier
+  end
+
+  def saved_scanner_identifier?
+    Inventory::BarcodeHelper.saved_scanner_identifier?
+  end
+
+  def scanner_selected?(scanner)
+    Inventory::BarcodeHelper.scanner_selected? scanner
+  end
+
+  def do_select_scanner
+    identifier = @params['identifier']
+    selected_scanner = Inventory::BarcodeHelper.scanner_by_identifier identifier
+    Inventory::BarcodeHelper.select_scanner selected_scanner
+
+    html = render partial: 'scanner_item', collection: self.scanners
+    render string: ::JSON.generate({html: html})
+
   end
 
   def barcodeScannerChoosed(scanner)
@@ -53,7 +80,7 @@ class SettingsController < Rho::RhoController
     if @params['login'] and @params['password']
       begin
         @@login = @params['login']
-        @@password  = @params['password']
+        @@password = @params['password']
         @response['headers']['Wait-Page'] = 'true'
         render :action => :wait_login
       rescue Rho::RhoError => e
@@ -90,17 +117,17 @@ class SettingsController < Rho::RhoController
   end
 
   def execute_sync
-      puts "execute.sync !"
-      # executed from wait webpage - do not execute it manually !
-      Rho::RhoConnectClient.doSync
+    puts "execute.sync !"
+    # executed from wait webpage - do not execute it manually !
+    Rho::RhoConnectClient.doSync
   end
 
   def execute_login
-      # executed from wait_login webpage - do not execute it manually !
-      #puts "execute_login with ["+@@login.to_s+"]:["+@@password.to_s+"]"
-      Rho::RhoConnectClient.login(@@login, @@password, (url_for :action => :login_callback))
-      @@login = nil
-      @@password  = nil
+    # executed from wait_login webpage - do not execute it manually !
+    #puts "execute_login with ["+@@login.to_s+"]:["+@@password.to_s+"]"
+    Rho::RhoConnectClient.login(@@login, @@password, (url_for :action => :login_callback))
+    @@login = nil
+    @@password = nil
   end
 
   def do_quit
@@ -116,13 +143,13 @@ class SettingsController < Rho::RhoController
     puts(cmd)
     Rho::WebView.executeJavascript(cmd)
     if (@params["status"] == "error") && (@params["error_code"] == "7")
-        #user is not logged in
-        Rho::RhoConnectClient.logout
+      #user is not logged in
+      Rho::RhoConnectClient.logout
     end
   end
 
   def open_tau_website
-      Rho::System.openUrl("http://tau-technologies.com")
+    Rho::System.openUrl("http://tau-technologies.com")
   end
 
 end

@@ -1,0 +1,11 @@
+<% scanner = scanner_item %>
+<div class="list-group-item clearfix"><%= scanner.identifier %>
+  <span class="pull-right">
+    <% if scanner_selected? scanner %>
+    <span class="text-success">Selected</span>
+    <% else %>
+    <button class="btn btn-xs btn-primary" data-scanner-identifier="<%= scanner.identifier %>">Select</button>
+    <% end %>
+   </span>
+</div>
+
