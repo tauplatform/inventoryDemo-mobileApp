@@ -43,8 +43,8 @@ class SettingsController < Rho::RhoController
 
     html = render partial: 'scanner_item', collection: self.scanners
     render string: ::JSON.generate({html: html})
-
   end
+
 
   def barcodeScannerChoosed(scanner)
     puts "Rho::Barcode.getDefault.friendlyName #{Rho::Barcode.getDefault.friendlyName}"
