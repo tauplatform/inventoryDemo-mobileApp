@@ -1,14 +1,10 @@
-#sdk: "../rhodes"
-#sdk: "/Users/mva/.rvm/gems/ruby-1.9.3-p551/gems/rhodes-5.5.0.8"
-#sdk: "/Users/mva/projects/rhomobile/rhodes"
 sdkversion: 5.5.0
 name: inventoryDemo
-#app_type: rhoelements
 version: 1.0
 vendor: rhomobile
 build: debug
 applog: rholog.txt
-#javascript_application: true
+
 iphone:
   configuration: Release
   sdk: latest
@@ -31,13 +27,15 @@ wp8:
 
 android:
   manifest_template: 'AndroidManifest.erb'
-  version: 4.1.0
+  version: 6.0
+  abis:
+    - x86
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
     - barcode
-
-android_title: 0
+    #- enterprise-barcode
+  android_title: 0
 
 wm:
   extensions:
