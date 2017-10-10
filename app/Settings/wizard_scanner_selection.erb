@@ -29,8 +29,8 @@
             dataType: "json"
         });
         jqxhr.done(function (response) {
-            //$(".list-group-item .btn").on("click", selectButtonHandler);
             $(".list-group").html(response.html);
+            $(".list-group-item .btn").on("click", selectButtonHandler);
             $(".btn-continue").removeClass("disabled");
         }).always(function () {
             $(".page").trigger("spinnerOff");
