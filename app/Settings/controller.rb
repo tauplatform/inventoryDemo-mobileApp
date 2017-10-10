@@ -152,4 +152,12 @@ class SettingsController < Rho::RhoController
     Rho::System.openUrl("http://tau-technologies.com")
   end
 
+  def wizard_introduction
+    render :action => :wizard_introduction
+  end
+
+  def wizard_scanner_selection
+    render :action => :wizard_scanner_selection
+  end
+
 end

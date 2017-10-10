@@ -17,57 +17,7 @@
 </head>
 
 <body>
-
-<nav id="menu">
-  <div class="menu-list">
-
-    <% if Rho::RhoConnectClient.isLoggedIn %>
-        <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :logout %>">Log out</a>
-        <hr>
-        <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :do_sync %>">Sync</a>
-    <% else %>
-        <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :login %>">Log in</a>
-    <% end %>
-    <hr>
-    <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :index %>">Settings</a>
-    <hr>
-    <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :about %>">About</a>
-    <hr>
-    <a class="menu-list-item" href="<%= url_for :controller => :Settings, :action => :do_quit %>">Quit</a>
-  </div>
-</nav>
-
-
-<div id="panel" class="container-fluid">
-  <%= @content %>
-</div>
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div class="container text-center">
-    <img src="/public/images/logo.png" height="36px" with="36px">
-    <span>Inventory Demo by  <a href="/app/Settings/about"><strong>Tau-Technologies</strong></a></span>
-  </div>
-</nav>
-
-<script>
-    (function () {
-        var slideout = new Slideout({
-            'panel': document.getElementById('panel'),
-            'menu': document.getElementById('menu'),
-            'padding': 256,
-            'tolerance': 70
-        });
-
-        var menuButton = document.querySelector('#button-menu');
-        if (menuButton != null) {
-            document.querySelector('#button-menu').addEventListener('click', function () {
-                slideout.toggle();
-            });
-        }
-    })();
-</script>
-
-
+<%= @content %>
 </body>
 
 </html>
