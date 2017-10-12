@@ -12,27 +12,39 @@ class InventoryItemController < Rho::RhoController
     return false
   end
 
-  def barcode_scanner_callback
-    unless @params['data'].nil?
-      item = InventoryItem.find(:first, :conditions => {'upc' => @params['data']})
-      if item.nil?
-        WebView.navigate url_for :action => :new, :query => {:upc => @params['data']}
+  def scanner_callback
+    if scanner_camera?
+      if @params['status'] == 'ok'
+        upc = @params['barcode']
       else
-        WebView.navigate url_for :action => :show, :id => item.object
+        return
       end
+    else
+      upc = @params['data']
     end
+    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
+    item = InventoryItem.find(:first, :conditions => {:upc => upc})
+    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOff');")
+    if item.nil?
+      WebView.navigate url_for :action => :new, :query => {:upc => upc}
+    else
+      WebView.navigate url_for :action => :show, :id => item.object
+    end
+
   end
 
   def index
-    if Rho.const_defined?(:Barcode)
-      if self.hardware_scanner_selected?
-        Rho::Barcode.getDefault.enable({}, url_for(:action => :barcode_scanner_callback))
-      end
-    end
+    begin
+      scanner.enable({}, url_for(:action => :scanner_callback));
+    end unless scanner_camera?
 
     @inventoryItems = InventoryItem.find(:all)
     # @inventoryItems = (1..100).collect { |each| InventoryItem.new(:productName => each.to_s) }
     render
+  end
+
+  def scan_by_camera
+    Rho::Barcode.take({}, url_for(:action => :scanner_callback))
   end
 
   def do_back
