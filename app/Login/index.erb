@@ -1,0 +1,49 @@
+<%= render partial: 'partials/page_header', locals: {:title => 'Login'} %>
+
+<div class="page container-fluid">
+  <div class="text-center">
+    <h3>Scan your ID card</h3>
+
+    <div class="alert alert-warning hidden" role="alert"></div>
+
+    <div class="barcode-scan-image">
+      <img src="/public/images/barcode-scan.png" style="width: 50%; height: 50%">
+    </div>
+
+    <div class="btn-scan-wrapper">
+      <% if scanner_camera? %>
+          <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
+      <% end %>
+    </div>
+
+  </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var spinner;
+
+        $(".page").on("spinnerOn", function (event) {
+            spinner = new Spinner().spin();
+            $(".barcode-scan-image").append(spinner.el);
+        });
+
+        $(".page").on("spinnerOff", function (event) {
+            spinner.stop();
+        });
+
+        $("[data-action=scan]").on("click", function (event) {
+            $(".alert").addClass("hidden");
+            $.post("<%= url_for(:action => :scan_by_camera) %>", function (data) {
+                console.log("success", data);
+            });
+        });
+
+        $(".page").on("loginFeedback", function (event, message) {
+            $(".alert").removeClass("hidden").text(message);
+        });
+    });
+</script>
+
+
+
