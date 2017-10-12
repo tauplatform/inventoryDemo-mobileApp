@@ -1,22 +1,37 @@
-<div id="header">
-  <img id="button-menu" class="pull-left" src="/public/images/ic_menu_black_24dp_2x.png">
-  <span class="title pull-left">Items</span>
-  <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-sm pull-right">New</a>
-</div>
 
-<div class="input-group">
-  <input id="search" type="text" class="form-control" placeholder="Search for...">
-  <span class="input-group-btn">
+
+<%= render partial: 'partials/page_header', locals: {:title => 'Inventory Items', :main_menu => 123} %>
+
+<div class="page container-fluid">
+
+  <% if scanner_camera? %>
+      <div class="btn-scan-wrapper">
+        <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
+      </div>
+  <% end %>
+
+  <div class="input-group">
+    <input id="search" type="search" class="form-control" placeholder="Search for...">
+    <span class="input-group-btn">
     <button id="clear" class="btn btn-default" type="button">
       <span class="glyphicon glyphicon-remove"></span>
     </button>
   </span>
+  </div>
+
+  <div id="item-list">
+    <% if @inventoryItems.size != 0 %>
+        <div class="list-group">
+          <%= render partial: 'inventory_item', collection: @inventoryItems %>
+        </div>
+    <% else %>
+        <div class="alert alert-warning" role="alert"><h4>Items not found</h4></div>
+    <% end %>
+
+  </div>
+
 </div>
 
-<div>&nbsp;</div>
-<div id="item-list">
-  <%= render :partial => 'item_list', :locals => {:items => @inventoryItems} %>
-</div>
 
 <script>
     (function () {
@@ -50,4 +65,25 @@
             serverRequest("");
         });
     })();
+</script>
+
+<script>
+    var spinner;
+
+    $(".page").on("spinnerOn", function (event) {
+        spinner = new Spinner().spin();
+        $(".page").append(spinner.el);
+    });
+
+    $(".page").on("spinnerOff", function (event) {
+        spinner.stop();
+    });
+
+    $("[data-action=scan]").on("click", function (event) {
+        $(".alert").addClass("hidden");
+        $.post("<%= url_for(:action => :scan_by_camera) %>", function (data) {
+            console.log("success", data);
+        });
+    });
+
 </script>
