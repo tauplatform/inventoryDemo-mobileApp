@@ -1,5 +1,6 @@
 require 'rho/rhoapplication'
 require 'library_extensions/barcode'
+require 'library_extensions/rhocontroller'
 require 'library/Barcode_helper'
 
 class AppApplication < Rho::RhoApplication
