@@ -1,11 +1,17 @@
 .page {
-    margin-top:50px;
+    margin-top:70px;
 }
 
 
 
+.navbar-btn.btn-left {
+    margin-left: 15px;
+}
 
 
+.navbar-btn.btn-right {
+    margin-right: 15px;
+}
 
 
 
