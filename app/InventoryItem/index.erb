@@ -1,6 +1,15 @@
-
-
-<%= render partial: 'partials/page_header', locals: {:title => 'Inventory Items', :main_menu => 123} %>
+<%= render partial: 'partials/page_header',
+           locals: {
+               :title => 'Inventory Items',
+               :main_menu => [
+                   {:action => url_for(:controller => :Settings, :action => :do_sync), :title => 'Sync'},
+                   {:action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
+                   {:action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
+                   {:action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}
+               ],
+               :context_menu => [
+                   {:action => 'Sync', :title => 'Search'}
+               ]} %>
 
 <div class="page container-fluid">
 
@@ -27,11 +36,9 @@
     <% else %>
         <div class="alert alert-warning" role="alert"><h4>Items not found</h4></div>
     <% end %>
-
   </div>
 
 </div>
-
 
 <script>
     (function () {
@@ -85,5 +92,13 @@
             console.log("success", data);
         });
     });
+
+    $(".context-menu-btn").on("click", function () {
+        $("#main-menu").collapse("hide")
+    });
+    $(".main-menu-btn").on("click", function () {
+        $("#context-menu").collapse("hide")
+    });
+
 
 </script>

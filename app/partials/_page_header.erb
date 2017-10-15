@@ -1,15 +1,20 @@
 <nav class="navbar navbar-default navbar-fixed-top">
+  <div style="border: 1px solid darkgray">abc def</div>
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
 
+
       <% if main_menu %>
-          <button type="button" class="navbar-left navbar-toggle collapsed" style="float: left; margin-left: 10px;" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+          <div class="navbar-toggle main-menu-btn"  data-toggle="collapse" data-target="#main-menu" >
+            <i class="fa fa-bars fa-2x"></i>
+          </div>
+      <% end %>
+
+      <% if context_menu %>
+          <div class="navbar-toggle context-menu-btn"  data-toggle="collapse" data-target="#context-menu" >
+            <i class="fa fa-ellipsis-v fa-2x"></i>
+          </div>
       <% end %>
 
       <% if title %>
@@ -28,34 +33,28 @@
           <% if buttons[:right][:action] %>
               <a href="<%= buttons[:right][:action] %>" class="btn navbar-btn btn-right pull-right <%= buttons[:right][:classes] %>"><%= buttons[:right][:title] %></a>
           <% else %>
-              <button class="btn btn-default navbar-btn btn-right pull-right <%= buttons[:right][:classes] %>"><%= buttons[:right][:title] %></button>
+              <button class="btn navbar-btn btn-right pull-right <%= buttons[:right][:classes] %>"><%= buttons[:right][:title] %></button>
           <% end %>
       <% end %>
 
-      <p class="navbar-text pull-right">Signed in as Mark Otto</p>
-
     </div>
+
+
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <% if main_menu %>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <% puts "main_menu: #{main_menu.inspect}" %>
+        <div class="collapse navbar-collapse" id="main-menu">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Link 1<span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Link 2</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown
-                3
-                <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action 4</a></li>
-                <li><a href="#">Another action 5</a></li>
-                <li><a href="#">Something else here 6</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link 7</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">One more separated link 8</a></li>
-              </ul>
-            </li>
+            <%= render partial: 'menu_item', collection: main_menu %>
+          </ul>
+        </div>
+    <% end %>
+
+    <% if context_menu %>
+        <div class="collapse navbar-collapse" id="context-menu">
+          <ul class="nav navbar-nav">
+            <%= render partial: 'menu_item', collection: context_menu %>
           </ul>
         </div>
     <% end %>

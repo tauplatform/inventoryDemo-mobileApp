@@ -1,19 +1,35 @@
 .page {
-    margin-top:70px;
+    margin-top: 60px;
 }
 
 
 
 .navbar-btn.btn-left {
-    margin-left: 15px;
+    margin-left: 5px;
 }
 
 
 .navbar-btn.btn-right {
-    margin-right: 15px;
+    margin-right: 5px;
 }
 
+.navbar-toggle.main-menu-btn {
+    border: 0;
+    padding: 0;
+    left: 5px;
+    float: left!important;
+}
 
+.navbar-toggle.main-menu-btn:hover {
+    bacckground-color: inherited;
+}
+
+.navbar-toggle.context-menu-btn {
+    border: 0;
+    padding: 0;
+    margin-right:20px;
+    float: right!important;
+}
 
 
 
