@@ -1,0 +1,54 @@
+<div class="container-fluid">
+
+  <div class="row page-title">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <a href="<%= url_for :action => :index %>" class="btn btn-default btn-sm pull-left">Back</a>
+    </div>
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+      <h3 class="text-center"><%= @sync_event.createdAt %></h3>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <a href="<%= url_for :action => :edit, :id => @sync_event.object %>" class="btn btn-primary btn-sm pull-right">Edit</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <ul class="list-group">
+      
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <span pull-right><strong>CreatedAt</strong></span>
+              </div>
+              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                <%= @sync_event.createdAt %>
+              </div>
+            </div>
+          </li>
+      
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <span pull-right><strong>Type</strong></span>
+              </div>
+              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                <%= @sync_event.type %>
+              </div>
+            </div>
+          </li>
+      
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <span pull-right><strong>Extra</strong></span>
+              </div>
+              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                <%= @sync_event.extra %>
+              </div>
+            </div>
+          </li>
+      
+    </ul>
+  </div>
+
+</div>
