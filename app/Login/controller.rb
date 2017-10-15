@@ -10,7 +10,9 @@ class LoginController < Rho::RhoController
     begin
       scanner.enable({}, url_for(:action => :scanner_callback));
     end unless scanner_camera?
+    Rho::RhoConnectClient.login('Sara J. Connor', '', url_for(:action => :login_callback))
     render
+
   end
 
   def login_callback

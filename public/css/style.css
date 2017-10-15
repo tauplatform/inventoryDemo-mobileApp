@@ -1,5 +1,5 @@
 .page {
-    margin-top: 60px;
+    margin-top: 90px;
 }
 
 
@@ -18,19 +18,21 @@
     padding: 0;
     left: 5px;
     float: left!important;
+    color: #777;
 }
 
-.navbar-toggle.main-menu-btn:hover {
-    bacckground-color: inherited;
-}
 
 .navbar-toggle.context-menu-btn {
     border: 0;
     padding: 0;
     margin-right:20px;
     float: right!important;
+    color: #777;
 }
 
+.navbar-toggle:hover {
+    background-color: #dddddd;
+}
 
 
 /* obsoleted */

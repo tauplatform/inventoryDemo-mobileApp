@@ -2,13 +2,13 @@
            locals: {
                :title => 'Inventory Items',
                :main_menu => [
-                   {:action => url_for(:controller => :Settings, :action => :do_sync), :title => 'Sync'},
-                   {:action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
-                   {:action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
-                   {:action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}
+                   {:type => :action, :action => url_for(:controller => :Settings, :action => :do_sync), :role => 'sync', :title => 'Sync'},
+                   {:type => :action, :action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
+                   {:type => :action, :action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
+                   {:type => :action, :action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}
                ],
                :context_menu => [
-                   {:action => 'Sync', :title => 'Search'}
+                   {:type => :form, :id => 'search', :input => {:type => 'search', :placeholder => 'Search', :classes => ''}}
                ]} %>
 
 <div class="page container-fluid">
@@ -18,15 +18,6 @@
         <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
       </div>
   <% end %>
-
-  <div class="input-group">
-    <input id="search" type="search" class="form-control" placeholder="Search for...">
-    <span class="input-group-btn">
-    <button id="clear" class="btn btn-default" type="button">
-      <span class="glyphicon glyphicon-remove"></span>
-    </button>
-  </span>
-  </div>
 
   <div id="item-list">
     <% if @inventoryItems.size != 0 %>
@@ -99,6 +90,29 @@
     $(".main-menu-btn").on("click", function () {
         $("#context-menu").collapse("hide")
     });
+
+    $("#context-menu form#search").on("submit", function () {
+        var query = $("#context-menu form#search input[type=search]").val();
+        $.ajax({
+            type: "post",
+            dataType: "html",
+            url: "<%= url_for :action => :do_search %>",
+            cache: false,
+            data: {query: query}
+        })
+            .done(function (html) {
+                $("#item-list").html(html);
+            });
+
+    });
+
+    $("a[data-role=sync]").on("click", function(event){
+        event.preventDefault();
+        $("#main-menu").collapse("hide");
+        $.post("<%= url_for(:controller => :Settings, :action => :execute_sync) %>", function (data) {
+            console.log("success", data);
+        });
+    })
 
 
 </script>

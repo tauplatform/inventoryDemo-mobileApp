@@ -105,20 +105,24 @@ class SettingsController < Rho::RhoController
 
   def do_reset
     Rhom::Rhom.database_full_reset
-    Rho::RhoConnectClient.doSync
+    execute_sync
     @msg = "Database has been reset."
     redirect :action => :index, :query => {:msg => @msg}
   end
 
   def do_sync
     #Rho::RhoConnectClient.doSync
-    @msg = "Sync has been triggered."
-    redirect :action => :wait, :query => {:msg => @msg}
+    # @msg = "Sync has been triggered."
+    # redirect :action => :wait, :query => {:msg => @msg}
+    render
   end
 
   def execute_sync
-    puts "execute.sync !"
-    # executed from wait webpage - do not execute it manually !
+    data = {}
+    data[:created_at] = Time.now()
+    data[:state] = 'start'
+    event = SyncEvent.create(data)
+    event.notify_UI
     Rho::RhoConnectClient.doSync
   end
 
@@ -135,14 +139,25 @@ class SettingsController < Rho::RhoController
   end
 
   def sync_notify
-    puts("Settings.sync_notify params="+@params.to_json);
-    cmd = @params.to_json
-    # can not use gsub because _'_ is special command symbol for gsub !
-    cmd = cmd.split("'").join("\\'")
-    cmd = "addNotification('#{cmd}');"
-    puts(cmd)
-    Rho::WebView.executeJavascript(cmd)
-    if (@params["status"] == "error") && (@params["error_code"] == "7")
+
+    data = {}
+    data[:created_at] = Time.now()
+    data[:state] = @params['status']
+    data[:source_name] = @params['source_name']
+
+
+    if @params['status'] == 'in_progress' || @params['status'] == 'ok'
+      data[:extra] = @params['source_name']
+    end
+
+    if @params['status'] == 'error'
+      data[:error_code] = @params['error_code']
+    end
+
+    event = SyncEvent.create(data)
+    event.notify_UI
+
+    if (@params['status'] == 'error') && (@params['error_code'] == '7')
       #user is not logged in
       Rho::RhoConnectClient.logout
     end

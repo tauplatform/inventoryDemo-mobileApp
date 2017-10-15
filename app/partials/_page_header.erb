@@ -1,18 +1,22 @@
 <nav class="navbar navbar-default navbar-fixed-top">
-  <div style="border: 1px solid darkgray">abc def</div>
+  <div id="sync-status" class="container-fluid sync-status">
+    <div class="pull-left source-name"></div>
+    <div class="pull-right spinner hidden"><i class="fa fa-refresh fa-spin fa-fw"></i></div>
+    <div class="pull-right check hidden  text-success"><i class="fa fa-check fa-fw"></i></div>
+    <div class="pull-right warning hidden text-danger"><i class="fa fa-exclamation-triangle fa-fw"></i></div>
+    <div class="pull-right state"></div>
+  </div>
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-
-
       <% if main_menu %>
-          <div class="navbar-toggle main-menu-btn"  data-toggle="collapse" data-target="#main-menu" >
+          <div class="navbar-toggle main-menu-btn" data-toggle="collapse" data-target="#main-menu">
             <i class="fa fa-bars fa-2x"></i>
           </div>
       <% end %>
 
       <% if context_menu %>
-          <div class="navbar-toggle context-menu-btn"  data-toggle="collapse" data-target="#context-menu" >
+          <div class="navbar-toggle context-menu-btn" data-toggle="collapse" data-target="#context-menu">
             <i class="fa fa-ellipsis-v fa-2x"></i>
           </div>
       <% end %>
@@ -40,21 +44,27 @@
     </div>
 
 
-
     <!-- Collect the nav links, forms, and other content for toggling -->
     <% if main_menu %>
-        <% puts "main_menu: #{main_menu.inspect}" %>
         <div class="collapse navbar-collapse" id="main-menu">
-          <ul class="nav navbar-nav">
-            <%= render partial: 'menu_item', collection: main_menu %>
+          <ul class="nav navbar-nav navbar-left">
+            <%= render partial: 'main_menu_item', collection: main_menu %>
           </ul>
         </div>
     <% end %>
 
     <% if context_menu %>
         <div class="collapse navbar-collapse" id="context-menu">
-          <ul class="nav navbar-nav">
-            <%= render partial: 'menu_item', collection: context_menu %>
+          <ul class="nav navbar-nav navbar-right">
+            <% context_menu.each do |item| %>
+                <% if item[:type] == :action %>
+                    <%= render partial: 'context_action_menu_item', locals: {:menu_item => item} %>
+                <% end %>
+
+                <% if item[:type] == :form %>
+                    <%= render partial: 'context_form_menu_item', locals: {:menu_item => item} %>
+                <% end %>
+            <% end %>
           </ul>
         </div>
     <% end %>
