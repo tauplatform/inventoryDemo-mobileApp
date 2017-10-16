@@ -67,7 +67,8 @@ class InventoryItemController < Rho::RhoController
                                              } => query,
                                          },
                                          :op => 'OR')
-    render(partial: 'item_list', locals: {:items => @inventoryItems})
+    html = render(partial: 'item_list', locals: {:items => @inventoryItems})
+    render string: ::JSON.generate({html: html})
   end
 
   def show

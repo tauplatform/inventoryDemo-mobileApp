@@ -31,39 +31,7 @@
 
 </div>
 
-<script>
-    (function () {
-        var timeoutId;
-        var timeout = 500;
 
-        var serverRequest = function (query) {
-            $.ajax({
-                type: "post",
-                dataType: "html",
-                url: "<%= url_for :action => :do_search %>",
-                cache: false,
-                data: {query: query}
-            })
-                .done(function (html) {
-                    $("#item-list").html(html);
-                });
-        };
-
-        $("#search").bind("input", function (anEvent) {
-            if (timeoutId != null) {
-                clearTimeout(timeoutId);
-            }
-            timeoutId = setTimeout(function () {
-                serverRequest($(anEvent.target).val());
-            }, timeout);
-        });
-
-        $("#clear").on("click", function () {
-            $("#search").val("");
-            serverRequest("");
-        });
-    })();
-</script>
 
 <script>
     var spinner;
@@ -89,22 +57,23 @@
         $("#context-menu").collapse("hide")
     });
 
-    $("#context-menu form#search").on("submit", function () {
+    $("#context-menu form#search").on("submit", function (event) {
+        event.preventDefault();
+        $("#context-menu").collapse("hide");
         var query = $("#context-menu form#search input[type=search]").val();
         $.ajax({
-            type: "post",
-            dataType: "html",
             url: "<%= url_for :action => :do_search %>",
-            cache: false,
-            data: {query: query}
-        })
-            .done(function (html) {
-                $("#item-list").html(html);
-            });
+            data: {query: query},
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                $("#item-list").html(response.html);
+            }
+        });
 
     });
 
-    $("a[data-role=sync]").on("click", function(event){
+    $("a[data-role=sync]").on("click", function (event) {
         event.preventDefault();
         $("#main-menu").collapse("hide");
         $.post("<%= url_for(:controller => :Settings, :action => :execute_sync) %>");
