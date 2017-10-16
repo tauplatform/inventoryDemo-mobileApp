@@ -1,6 +1,6 @@
 <%= render partial: 'partials/page_header', locals: {:title => 'Login'} %>
 
-<div class="page container-fluid">
+<div class="page">
   <div class="text-center">
     <h3>Scan your ID card</h3>
 
@@ -34,9 +34,7 @@
 
         $("[data-action=scan]").on("click", function (event) {
             $(".alert").addClass("hidden");
-            $.post("<%= url_for(:action => :scan_by_camera) %>", function (data) {
-                console.log("success", data);
-            });
+            $.post("<%= url_for(:action => :scan_by_camera) %>");
         });
 
         $(".page").on("loginFeedback", function (event, message) {

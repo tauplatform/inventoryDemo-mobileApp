@@ -11,7 +11,7 @@
                    {:type => :form, :id => 'search', :input => {:type => 'search', :placeholder => 'Search', :classes => ''}}
                ]} %>
 
-<div class="page container-fluid">
+<div class="page">
 
   <% if scanner_camera? %>
       <div class="btn-scan-wrapper">
@@ -79,9 +79,7 @@
 
     $("[data-action=scan]").on("click", function (event) {
         $(".alert").addClass("hidden");
-        $.post("<%= url_for(:action => :scan_by_camera) %>", function (data) {
-            console.log("success", data);
-        });
+        $.post("<%= url_for(:action => :scan_by_camera) %>");
     });
 
     $(".context-menu-btn").on("click", function () {
@@ -109,9 +107,7 @@
     $("a[data-role=sync]").on("click", function(event){
         event.preventDefault();
         $("#main-menu").collapse("hide");
-        $.post("<%= url_for(:controller => :Settings, :action => :execute_sync) %>", function (data) {
-            console.log("success", data);
-        });
+        $.post("<%= url_for(:controller => :Settings, :action => :execute_sync) %>");
     })
 
 
