@@ -9,9 +9,7 @@ class SyncEvent
   #add model specific code here
 
   # code below is mix between business logic and UI logic. Please, avoid it
-
   def notify_UI
-    puts "sync event #{self.inspect}"
     if self.state == 'start'
       Rho::WebView.executeJavascript('$("body").trigger("onSyncStarted");')
     end

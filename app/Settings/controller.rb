@@ -47,7 +47,6 @@ class SettingsController < Rho::RhoController
 
 
   def barcodeScannerChoosed(scanner)
-    puts "Rho::Barcode.getDefault.friendlyName #{Rho::Barcode.getDefault.friendlyName}"
     if Rho::Config.isPropertyExists(@barcode_scanner_property_name)
       selected_name = Rho::Config.getPropertyString(@barcode_scanner_property_name)
       return scanner.friendlyName.to_s == selected_name ? 'selected' : ''
@@ -127,8 +126,6 @@ class SettingsController < Rho::RhoController
   end
 
   def execute_login
-    # executed from wait_login webpage - do not execute it manually !
-    #puts "execute_login with ["+@@login.to_s+"]:["+@@password.to_s+"]"
     Rho::RhoConnectClient.login(@@login, @@password, (url_for :action => :login_callback))
     @@login = nil
     @@password = nil
