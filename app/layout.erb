@@ -67,9 +67,6 @@
         $("#sync-status .warning").removeClass("hidden");
     });
 
-
-
-
     $(function (event) {
         $.post("<%= url_for(:controller => :SyncEvent, :action => :last_sync_event) %>");
     });
