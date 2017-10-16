@@ -1,4 +1,4 @@
-<%= render partial: 'partials/page_header', locals: {:title => 'Login'} %>
+<%= render partial: 'partials/page_header', locals: {:title => 'Inventory Demo', :nosyncbar => true} %>
 
 <div class="page">
   <div class="text-center">
@@ -7,12 +7,12 @@
     <div class="alert alert-warning hidden" role="alert"></div>
 
     <div class="barcode-scan-image">
-      <img src="/public/images/barcode-scan.png" style="width: 50%; height: 50%">
+      <img src="/public/images/barcode-scan.png">
     </div>
 
-    <div class="btn-scan-wrapper">
+    <div class="btn-space-wrapper">
       <% if scanner_camera? %>
-          <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
+          <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press For Scan</button>
       <% end %>
     </div>
 
@@ -21,19 +21,23 @@
 
 <script>
     $(document).ready(function () {
+        console.log("document.ready");
         var spinner;
+        var target = $(".barcode-scan-image")[0];
 
         $(".page").on("spinnerOn", function (event) {
             spinner = new Spinner().spin();
-            $(".barcode-scan-image").append(spinner.el);
+            target.appendChild(spinner.el);
         });
 
         $(".page").on("spinnerOff", function (event) {
             spinner.stop();
+            $(event.target).removeClass("disabled");
         });
 
         $("[data-action=scan]").on("click", function (event) {
             $(".alert").addClass("hidden");
+            $(event.target).addClass("disabled");
             $.post("<%= url_for(:action => :scan_by_camera) %>");
         });
 
