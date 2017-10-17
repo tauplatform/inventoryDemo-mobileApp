@@ -71,6 +71,12 @@ class InventoryItemController < Rho::RhoController
     render string: ::JSON.generate({html: html})
   end
 
+  def get_items
+    @inventoryItems = InventoryItem.find(:all)
+    html = render(partial: 'item_list', locals: {:items => @inventoryItems})
+    render string: ::JSON.generate({html: html})
+  end
+
   def show
     @inventoryItem = InventoryItem.find(@params['id'])
     if @inventoryItem

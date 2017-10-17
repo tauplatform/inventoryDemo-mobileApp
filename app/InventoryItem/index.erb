@@ -2,7 +2,7 @@
            locals: {
                :title => 'Inventory Items',
                :main_menu => [
-                   {:type => :action, :action => url_for(:controller => :Settings, :action => :do_sync), :role => 'sync', :title => 'Sync'},
+                   {:type => :action, :action => '', :role => 'sync', :title => 'Sync'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}
@@ -76,8 +76,19 @@
     $("a[data-role=sync]").on("click", function (event) {
         event.preventDefault();
         $("#main-menu").collapse("hide");
-        $.post("<%= url_for(:controller => :Settings, :action => :execute_sync) %>");
+        $.post("<%= url_for(:controller => :Settings, :action => :do_sync) %>");
     })
+
+    $("body").on("onSyncCompleted", function (event) {
+        $.ajax({
+            url: "<%= url_for :action => :get_items %>",
+            dataType: 'json',
+            success: function (response) {
+                $("#item-list").html(response.html);
+            }
+        });
+
+    });
 
 
 </script>

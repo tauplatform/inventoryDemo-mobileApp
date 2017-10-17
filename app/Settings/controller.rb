@@ -104,19 +104,12 @@ class SettingsController < Rho::RhoController
 
   def do_reset
     Rhom::Rhom.database_full_reset
-    execute_sync
+    do_sync
     @msg = "Database has been reset."
     redirect :action => :index, :query => {:msg => @msg}
   end
 
   def do_sync
-    #Rho::RhoConnectClient.doSync
-    # @msg = "Sync has been triggered."
-    # redirect :action => :wait, :query => {:msg => @msg}
-    render
-  end
-
-  def execute_sync
     data = {}
     data[:created_at] = Time.now()
     data[:state] = 'start'
