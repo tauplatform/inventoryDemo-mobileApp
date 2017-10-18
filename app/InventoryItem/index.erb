@@ -13,11 +13,18 @@
 
 <div class="page">
 
+  <% if self.class.query %>
+      <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
+  <% end %>
+
+
   <% if scanner_camera? %>
       <div class="btn-scan-wrapper">
         <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
       </div>
   <% end %>
+
+  <div class="alert-wrapper"></div>
 
   <div id="item-list">
     <% if @inventoryItems.size != 0 %>
@@ -36,6 +43,20 @@
 <script>
     var spinner;
 
+    var setDropHandlerButton = function () {
+        $(".filter-query [data-dismiss=alert]").on("click", function (event) {
+            //TODO: add spinner here
+            $.ajax({
+                url: "<%= url_for :action => :reset_filter %>",
+                dataType: 'json',
+                success: function (response) {
+                    //TODO: remove spinner here
+                    $("#item-list").html(response.items_html);
+                }
+            });
+        });
+    };
+
     $(".page").on("spinnerOn", function (event) {
         spinner = new Spinner().spin();
         $(".page").append(spinner.el);
@@ -50,11 +71,12 @@
         $.post("<%= url_for(:action => :scan_by_camera) %>");
     });
 
-    $(".context-menu-btn").on("click", function () {
-        $("#main-menu").collapse("hide")
-    });
     $(".main-menu-btn").on("click", function () {
         $("#context-menu").collapse("hide")
+    });
+
+    $(".context-menu-btn").on("click", function () {
+        $("#main-menu").collapse("hide")
     });
 
     $("#context-menu form#search").on("submit", function (event) {
@@ -62,15 +84,15 @@
         $("#context-menu").collapse("hide");
         var query = $("#context-menu form#search input[type=search]").val();
         $.ajax({
-            url: "<%= url_for :action => :do_search %>",
+            url: "<%= url_for :action => :do_filter %>",
             data: {query: query},
             dataType: 'json',
             success: function (response) {
-                console.log(response);
-                $("#item-list").html(response.html);
+                $("#item-list").html(response.items_html);
+                $(".alert-wrapper").html(response.filter_html);
+                setDropHandlerButton();
             }
         });
-
     });
 
     $("a[data-role=sync]").on("click", function (event) {
@@ -84,11 +106,12 @@
             url: "<%= url_for :action => :get_items %>",
             dataType: 'json',
             success: function (response) {
-                $("#item-list").html(response.html);
+                $("#item-list").html(response.items_html);
             }
         });
 
     });
 
+    setDropHandlerButton();
 
 </script>

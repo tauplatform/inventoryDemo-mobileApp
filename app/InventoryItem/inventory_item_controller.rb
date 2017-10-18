@@ -4,6 +4,12 @@ require 'helpers/browser_helper'
 class InventoryItemController < Rho::RhoController
   include BrowserHelper
 
+  @query = nil
+
+  class << self
+    attr_accessor :query
+  end
+
   def hardware_scanner_selected?
     if Rho.const_defined?(:Barcode)
       return false if Rho::System.platform == Rho::System::PLATFORM_IOS
@@ -38,8 +44,7 @@ class InventoryItemController < Rho::RhoController
       scanner.enable({}, url_for(:action => :scanner_callback));
     end unless scanner_camera?
 
-    @inventoryItems = InventoryItem.find(:all)
-    # @inventoryItems = (1..100).collect { |each| InventoryItem.new(:productName => each.to_s) }
+    @inventoryItems = find_items
     render
   end
 
@@ -51,30 +56,50 @@ class InventoryItemController < Rho::RhoController
     Rho::WebView.navigateBack()
   end
 
-  def do_search
-    query = "%#{@params['query']}%"
-    @inventoryItems = InventoryItem.find(:all,
-                                         :conditions => {
-                                             {
-                                                 :func => 'UPPER',
-                                                 :name => 'productName',
-                                                 :op => 'LIKE'
-                                             } => query,
-                                             {
-                                                 :func => 'UPPER',
-                                                 :name => 'upc',
-                                                 :op => 'LIKE'
-                                             } => query,
-                                         },
-                                         :op => 'OR')
-    html = render(partial: 'item_list', locals: {:items => @inventoryItems})
-    render string: ::JSON.generate({html: html})
+  def do_filter
+    self.class.query = @params['query']
+    get_items
+  end
+
+  def reset_filter
+    self.class.query = nil
+    get_items
   end
 
   def get_items
-    @inventoryItems = InventoryItem.find(:all)
-    html = render(partial: 'item_list', locals: {:items => @inventoryItems})
-    render string: ::JSON.generate({html: html})
+    @inventoryItems = find_items
+    items_html = render(partial: 'item_list', locals: {:find_items => @inventoryItems})
+    filter_html = render(partial: 'filter_alert', locals: {:query => self.class.query})
+    render string: ::JSON.generate({items_html: items_html, filter_html: filter_html})
+  end
+
+  def find_items
+    if self.class.query.nil?
+      return all_items
+    else
+      return filtered_items
+    end
+  end
+
+  def filtered_items
+    InventoryItem.find(:all,
+                       :conditions => {
+                           {
+                               :func => 'UPPER',
+                               :name => 'productName',
+                               :op => 'LIKE'
+                           } => "%#{self.class.query}%",
+                           {
+                               :func => 'UPPER',
+                               :name => 'upc',
+                               :op => 'LIKE'
+                           } => "%#{self.class.query}%",
+                       },
+                       :op => 'OR')
+  end
+
+  def all_items
+    InventoryItem.find(:all)
   end
 
   def show
