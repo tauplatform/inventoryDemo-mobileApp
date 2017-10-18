@@ -1,13 +1,24 @@
-<div id="header">
-  <a href="<%= url_for :action => :index %>" class="pull-left"><img src="/public/images/ic_arrow_back_black_24dp_2x.png"></a>
-  <span class="title pull-left">Reset Database</span>
-</div>
+<%= render partial: 'partials/page_header',
+           locals: {
+               :buttons => {
+                   :left => {:title => 'Cancel', :classes => 'btn-default btn-cancel', :action => url_for(:action => :index)}
+               }
+           }
+%>
+<div class="page">
 
-<div class="text-center alert alert-danger">
-  <h4 class="text-center">Are you sure?</h4>
-  <p>Resetting removes all objects from your device.</p>
-  <a href="<%= url_for :action => :do_reset %>" class="btn btn-danger btn-block">Yes, reset the database</a>
-</div>
+  <div class="page-title container-fluid">
+    <h3>Database Resetting</h3>
+  </div>
 
+  <div class="page-content">
+    <div class="text-center alert alert-danger">
+      <h4 class="text-center">Are you sure?</h4>
+      <p>Resetting removes all objects from your device.</p>
+      <a href="<%= url_for :action => :do_reset %>" class="btn btn-danger btn-block">Yes, reset the database</a>
+    </div>
+  </div>
+
+</div>
 
 
