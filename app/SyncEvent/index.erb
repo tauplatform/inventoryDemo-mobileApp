@@ -1,28 +1,28 @@
-<div class="container-fluid">
+<%= render partial: 'partials/page_header',
+           locals: {
+               :buttons => {
+                   :left => {:title => 'Back', :classes => 'btn-default btn-back', :action => url_for(:controller => :InventoryItem, :action => :index)}
+               }
+           }
+%>
 
-  <div class="row page-title">
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-      <a href="<%= Rho::Application.startURI %>" class="btn btn-default btn-sm pull-left">Home</a>
-    </div>
-    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-      <h3 class="text-center">SyncEvents</h3>
-    </div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-      <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-sm pull-right">New</a>
-    </div>
+<div class="page">
+
+  <div class="page-title container-fluid">
+    <h3>Sync History</h3>
   </div>
 
-  <div class="row">
-    <div class="list-group">
-      <% @sync_events.each do |sync_event| %>
-      
-          <a href="<%= url_for :action => :show, :id => sync_event.object %>" class="list-group-item">
-            <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
-            <%= sync_event.createdAt %>
-          </a>
-      
+  <div class="page-content">
+
+    <div id="item-list">
+      <% if @sync_events.size != 0 %>
+          <div class="list-group">
+            <%= render partial: 'sync_event', collection: @sync_events %>
+          </div>
+      <% else %>
+          <div class="alert alert-warning" role="alert"><h4>Sync events not found</h4></div>
       <% end %>
     </div>
-  </div>
 
+  </div>
 </div>
