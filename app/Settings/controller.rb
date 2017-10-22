@@ -136,10 +136,6 @@ class SettingsController < Rho::RhoController
     data[:source_name] = @params['source_name']
 
 
-    if @params['status'] == 'in_progress' || @params['status'] == 'ok'
-      data[:extra] = @params['source_name']
-    end
-
     if @params['status'] == 'error'
       data[:error_code] = @params['error_code']
     end
