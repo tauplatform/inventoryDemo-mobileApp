@@ -3,6 +3,7 @@
                :title => 'Inventory Items',
                :main_menu => [
                    {:type => :action, :action => '', :role => 'sync', :title => 'Sync'},
+                   {:type => :action, :action => url_for(:controller => :SyncEvent, :action => :index), :title => 'Sync history'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}
@@ -13,32 +14,33 @@
 
 <div class="page">
 
-  <% if self.class.query %>
-      <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
-  <% end %>
+  <div class="page-content">
 
-
-  <% if scanner_camera? %>
-      <div class="space-wrapper btn-scan-wrapper">
-        <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
-      </div>
-  <% end %>
-
-  <div class="alert-wrapper"></div>
-
-  <div id="item-list">
-    <% if @inventoryItems.size != 0 %>
-        <div class="list-group">
-          <%= render partial: 'inventory_item', collection: @inventoryItems %>
-        </div>
-    <% else %>
-        <div class="alert alert-warning" role="alert"><h4>Items not found</h4></div>
+    <% if self.class.query %>
+        <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
     <% end %>
+
+    <% if scanner_camera? %>
+        <div class="space-wrapper btn-scan-wrapper">
+          <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
+        </div>
+    <% end %>
+
+    <div class="alert-wrapper"></div>
+
+    <div id="item-list">
+      <% if @inventoryItems.size != 0 %>
+          <div class="list-group">
+            <%= render partial: 'inventory_item', collection: @inventoryItems %>
+          </div>
+      <% else %>
+          <div class="alert alert-warning" role="alert"><h4>Items not found</h4></div>
+      <% end %>
+    </div>
+
   </div>
 
 </div>
-
-
 
 <script>
     var spinner;
