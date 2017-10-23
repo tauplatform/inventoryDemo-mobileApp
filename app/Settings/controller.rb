@@ -113,6 +113,7 @@ class SettingsController < Rho::RhoController
     data = {}
     data[:created_at] = Time.now()
     data[:state] = 'start'
+    data[:source_name] = 'Sync'
     event = SyncEvent.create(data)
     event.notify_UI
     Rho::RhoConnectClient.doSync
@@ -126,27 +127,6 @@ class SettingsController < Rho::RhoController
 
   def do_quit
     Rho::Application.quit()
-  end
-
-  def sync_notify
-
-    data = {}
-    data[:created_at] = Time.now()
-    data[:state] = @params['status']
-    data[:source_name] = @params['source_name']
-
-
-    if @params['status'] == 'error'
-      data[:error_code] = @params['error_code']
-    end
-
-    event = SyncEvent.create(data)
-    event.notify_UI
-
-    if (@params['status'] == 'error') && (@params['error_code'] == '7')
-      #user is not logged in
-      Rho::RhoConnectClient.logout
-    end
   end
 
   def open_tau_website

@@ -14,7 +14,7 @@ class AppApplication < Rho::RhoApplication
 
     # we should remove all saved login info when application start - user should enter login info again
     Rho::RhoConnectClient.logout
-    Rho::RhoConnectClient.setNotification('*', "/app/Settings/sync_notify")
+    Rho::RhoConnectClient.setNotification('*', "/app/SyncEvent/sync_notify")
   end
 
   # on_ui_created will be invoked after application’s UI was created (usually on app start)
