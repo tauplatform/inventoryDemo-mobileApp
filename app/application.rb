@@ -17,5 +17,19 @@ class AppApplication < Rho::RhoApplication
     # we should remove all saved login info when application start - user should enter login info again
     Rho::RhoConnectClient.logout
     Rho::RhoConnectClient.setNotification('*', "/app/Settings/sync_notify")
+
+=begin
+    Rho::Application.setApplicationNotify( 
+        -> (x) {
+            if (x['applicationEvent']==Rho::Application::APP_EVENT_ACTIVATED)
+              timer = Rho::Timer.create
+              timer.start(5000, -> (x) {
+                Rho::Barcode.getDefault.enable({},'/app/InventoryItem/barcode_scanner_callback' )
+                timer.stop
+              })
+            end
+        } )
   end
+=end
+
 end

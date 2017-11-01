@@ -134,3 +134,5 @@ use_bb_full_browser=6
 
 # finger scroll activation on windows XP/7/8/8.1/10
 use_kinetic_scroll_on_windows = 1
+
+#Barcode.ReleaseEMDKOnPause = 1
