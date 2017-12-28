@@ -1,28 +1,29 @@
 <%= render partial: 'partials/page_header', locals: {:title => 'Inventory Demo', :nosyncbar => true} %>
 
 <div class="page">
-  <div class="text-center">
-    <h3>Scan your ID card</h3>
+  <div class="container" style="margin-left:10%; margin-right:10%">
+    <h3>Login</h3>
 
     <div class="alert alert-warning hidden" role="alert"></div>
 
-    <div class="barcode-scan-image">
-      <img src="/public/images/barcode-scan.png">
-    </div>
+    <form>
+      <div class="form-group">
+        <input type="text" class="form-control" id="login" name="login" placeholder="login">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+      </div>
 
-    <div class="space-wrapper">
-      <% if scanner_camera? %>
-          <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press For Scan</button>
-      <% end %>
-    </div>
-
+      <button type="submit" class="btn btn-primary btn-block">Log In</button>
+    </form>
   </div>
 </div>
+
 
 <script>
     $(document).ready(function () {
         var spinner;
-        var target = $(".barcode-scan-image")[0];
+        var target = $(".page")[0];
 
         $(".page").on("spinnerOn", function (event) {
             spinner = new Spinner().spin();
@@ -34,10 +35,15 @@
             $(event.target).removeClass("disabled");
         });
 
-        $("[data-action=scan]").on("click", function (event) {
+        $("form").on("submit", function (event) {
+            event.preventDefault();
             $(".alert").addClass("hidden");
             $(event.target).addClass("disabled");
-            $.post("<%= url_for(:action => :scan_by_camera) %>");
+            var login = event.currentTarget.login.value;
+            var password = event.currentTarget.password.value;
+            console.log("login", login);
+            console.log("password", password);
+            $.post("<%= url_for(:action => :do_login) %>", {login: login, password: password});
         });
 
         $(".page").on("loginFeedback", function (event, message) {

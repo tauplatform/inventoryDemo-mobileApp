@@ -7,10 +7,6 @@ class LoginController < Rho::RhoController
   include BrowserHelper
 
   def index
-    begin
-      scanner.enable({}, url_for(:action => :scanner_callback));
-    end unless scanner_camera?
-    #Rho::RhoConnectClient.login('Sara J. Connor', '', url_for(:action => :login_callback))
     render
   end
 
@@ -30,23 +26,12 @@ class LoginController < Rho::RhoController
     end
   end
 
-  def scanner_callback
-    if scanner_camera?
-      if @params['status'] == 'ok'
-        barcode = @params['barcode']
-      else
-        Rho::WebView.executeJavascript("$('.page').trigger('loginFeedback', ['Scan was cancelled']);")
-        return
-      end
-    else
-      barcode = @params['data']
-    end
+  def do_login
+    puts "@params #{@params}"
+    login = @params['login']
+    password = @params['password']
     Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
-    Rho::RhoConnectClient.login(barcode, '', url_for(:action => :login_callback))
-  end
-
-  def scan_by_camera
-    Rho::Barcode.take({}, url_for(:action => :scanner_callback))
+    Rho::RhoConnectClient.login(login, '', url_for(:action => :login_callback))
   end
 
 end

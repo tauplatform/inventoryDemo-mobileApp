@@ -17,24 +17,24 @@
   <div class="page-content">
 
     <% if self.class.query %>
-        <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
+      <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
     <% end %>
 
-    <% if scanner_camera? %>
-        <div class="space-wrapper btn-scan-wrapper">
-          <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
-        </div>
-    <% end %>
+
+    <div class="space-wrapper btn-scan-wrapper">
+      <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-lg btn-block" >New Item</a>
+    </div>
+
 
     <div class="alert-wrapper"></div>
 
     <div id="item-list">
       <% if @inventoryItems.size != 0 %>
-          <div class="list-group">
-            <%= render partial: 'inventory_item', collection: @inventoryItems %>
-          </div>
+        <div class="list-group">
+          <%= render partial: 'inventory_item', collection: @inventoryItems %>
+        </div>
       <% else %>
-          <div class="alert alert-warning" role="alert"><h4>Items not found</h4></div>
+        <div class="alert alert-warning" role="alert"><h4>Items not found</h4></div>
       <% end %>
     </div>
 

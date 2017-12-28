@@ -18,12 +18,10 @@ iphone:
     NSAppTransportSecurity:
       NSAllowsArbitraryLoads: true
   extensions:
-    - barcode
 
 wp8:
   productid: '07c45400-ba39-0134-a27f-60f81db5e3c0'
   extensions:
-    - enterprise-barcode
 
 android:
   manifest_template: 'AndroidManifest.erb'
@@ -34,13 +32,11 @@ android:
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
-    - barcode
-    #- enterprise-barcode
+
   android_title: 0
 
 wm:
   extensions:
-    - barcode
     - webkit
   #sdk: "MC3000c50b (ARMV4I)"
   #sdk: "Windows Mobile 6.5.3 Professional DTK (ARMV4I)"
@@ -49,11 +45,10 @@ win32:
   deployqt: 1
   deploymsvc: 1
   extensions:
-    - enterprise-barcode
+
 
 extensions:
   - rhoconnect-client
-  - mediacapture
   - signature
 
 rhobundle:
