@@ -120,9 +120,10 @@ class SettingsController < Rho::RhoController
   end
 
   def execute_login
-    Rho::RhoConnectClient.login(@@login, @@password, (url_for :action => :login_callback))
+    #Rho::RhoConnectClient.login(@@login, @@password, (url_for :action => :login_callback))
     @@login = nil
     @@password = nil
+    Rho::WebView.navigate Rho::Application.startURI
   end
 
   def do_quit
