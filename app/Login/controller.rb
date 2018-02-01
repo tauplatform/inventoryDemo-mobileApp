@@ -41,8 +41,9 @@ class LoginController < Rho::RhoController
     else
       barcode = @params['data']
     end
-    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
-    Rho::RhoConnectClient.login(barcode, '', url_for(:action => :login_callback))
+    Rho::WebView.navigate 'app/InventoryItem'
+    #Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
+    #Rho::RhoConnectClient.login(barcode, '', url_for(:action => :login_callback))
   end
 
   def scan_by_camera
