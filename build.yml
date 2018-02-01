@@ -60,17 +60,17 @@ rhobundle:
   exclude_items:
   - thumb.db
 
- sailfish:
-   configuration: Debug
-   target: 'arm'
-   device:
-     type: real
-     device_name: INOI R7 (ARM)
-     user: nemo
-     key: C:/SailfishOS/vmshare/ssh/private_keys/INOI_R7_(ARM)/nemo
-     password:
-     host: '192.168.1.66'
-   extensions: ["mediacapture", "barcode", "signature", "rhoconnect-client"]
+sailfish:
+  configuration: Debug
+  target: 'arm'
+  device:
+  type: real    
+    device_name: INOI R7 (ARM)
+    user: nemo
+    key: C:/SailfishOS/vmshare/ssh/private_keys/INOI_R7_(ARM)/nemo
+    password:
+    host: '192.168.1.66'
+  extensions: ["mediacapture", "barcode", "signature", "rhoconnect-client"]
 
- paths:
-   extensions: ["<you path here>/rhoconnect-client/ext"]
+paths:
+  extensions: ["<you path here>/rhoconnect-client/ext"]
