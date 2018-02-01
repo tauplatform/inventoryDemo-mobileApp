@@ -64,7 +64,7 @@ sailfish:
   configuration: Debug
   target: 'arm'
   device:
-  type: real    
+    type: real    
     device_name: INOI R7 (ARM)
     user: nemo
     key: C:/SailfishOS/vmshare/ssh/private_keys/INOI_R7_(ARM)/nemo
