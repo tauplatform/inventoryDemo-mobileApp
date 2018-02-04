@@ -91,10 +91,7 @@
 </div>
 
 <script>
-    var spinner;
     $(".btn-save").on("click", function (event) {
-        spinner = new Spinner().spin();
-        $(".page").append(spinner.el);
         $("form").submit();
     });
 

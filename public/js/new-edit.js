@@ -148,6 +148,7 @@ $(document).ready(function () {
 
     // User input validation
     (function () {
+        var target = $("form")[0];
         var validateUserInput = function (element) {
             toastr.remove();
             if ($(element).find("#inventoryItem\\[upc\\]").val() === "") {
@@ -178,16 +179,25 @@ $(document).ready(function () {
         };
 
         $("form").submit(function (e) {
+            $('.page').trigger('spinnerOn', [target]);
             e.preventDefault();
             var form = this;
             if (validateUserInput(form)) {
                 form.submit();
             }
+            $('.page').trigger('spinnerOff', [target]);
         });
 
-        $("#done-button").on("click", function () {
-            $("form").submit();
-        });
     })();
 
+    $(".page").on("spinnerOn", function (event, element) {
+        $(event.target).addClass("disabled");
+        spinner = new Spinner().spin();
+        element.appendChild(spinner.el);
+    });
+
+    $(".page").on("spinnerOff", function (event, element) {
+        spinner.stop();
+        $(event.target).removeClass("disabled");
+    });
 });
