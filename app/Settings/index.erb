@@ -13,20 +13,10 @@
 
   <div class="page-content">
     <% if @msg %>
-        <div class="alert alert-danger"><%= @msg %></div>
+      <div class="alert alert-danger"><%= @msg %></div>
     <% end %>
 
     <div class="list-group">
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <span pull-right>Client ID:</span>
-          </div>
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <%= Rhom::Rhom::client_id %>
-          </div>
-        </div>
-      </li>
       <a href="<%= url_for :action => :reset %>" class="list-group-item">
         <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
         Reset Database
@@ -35,21 +25,3 @@
   </div>
 
 </div>
-
-<script>
-    $(document).ready(function () {
-        $("#barcodeScanner").change(function () {
-            var value = $("#barcodeScanner").val();
-            Rho.Barcode.getDefault().disable();
-            var scanners = Rho.Barcode.enumerate();
-            for (var i = 0; i < scanners.length; i++) {
-                var scannerName = scanners[i].friendlyName != null ? scanners[i].friendlyName : "";
-                if (scannerName == value) {
-                    Rho.Barcode.setDefault(scanners[i]);
-                    break;
-                }
-            }
-            Rho.Config.setPropertyString("<%= @barcode_scanner_property_name %>", value, true);
-        });
-    })
-</script>

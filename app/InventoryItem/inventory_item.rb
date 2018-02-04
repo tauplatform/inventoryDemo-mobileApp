@@ -3,9 +3,6 @@
 class InventoryItem
   include Rhom::PropertyBag
 
-  # Uncomment the following line to enable sync with Report.
-   enable :sync
-
   #add model specific code here
   property :photoUri, :blob, :overwrite
   property :signatureUri, :blob, :overwrite

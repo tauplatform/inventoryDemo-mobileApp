@@ -2,8 +2,6 @@
            locals: {
                :title => 'Inventory Items',
                :main_menu => [
-                   {:type => :action, :action => '', :role => 'sync', :title => 'Sync'},
-                   {:type => :action, :action => url_for(:controller => :SyncEvent, :action => :index), :title => 'Sync history'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}

@@ -25,54 +25,6 @@
 <%= @content %>
 
 
-<script>
-    $("body").on("onSyncSourceInProgress", function (event, sourceName) {
-        $("#sync-status .source-name").text(sourceName);
-
-    });
-
-    $("body").on("onSyncSourceCompleted", function (event, sourceName) {
-        $("#sync-status .source-name").text("");
-    });
-
-
-    $("body").on("onSyncStarted", function (event) {
-        $("#sync-status .source-name").text("");
-        $("#sync-status .state").text("Syncing");
-        $("#sync-status .spinner").removeClass("hidden");
-        $("#sync-status .check").addClass("hidden");
-        $("#sync-status .warning").addClass("hidden");
-    });
-
-    $("body").on("onSyncCompleted", function (event, createdAt) {
-        $("#sync-status .source-name").text("");
-        $("#sync-status .state").text("Last Sync: " + createdAt);
-        $("#sync-status .spinner").addClass("hidden");
-        $("#sync-status .check").removeClass("hidden");
-        $("#sync-status .warning").addClass("hidden");
-    });
-
-    $("body").on("onSyncError", function (event) {
-        $("#sync-status .state").text("Sync error");
-        $("#sync-status .spinner").addClass("hidden");
-        $("#sync-status .check").addClass("hidden");
-        $("#sync-status .warning").removeClass("hidden");
-    });
-
-    $("body").on("onSyncHasNotHappenedYet", function (event) {
-        $("#sync-status .source-name").text("");
-        $("#sync-status .state").text("Sync is not happened yet");
-        $("#sync-status .spinner").addClass("hidden");
-        $("#sync-status .check").addClass("hidden");
-        $("#sync-status .warning").removeClass("hidden");
-    });
-
-    $(function (event) {
-        $.post("<%= url_for(:controller => :SyncEvent, :action => :last_sync_event) %>");
-    });
-
-</script>
-
 </body>
 
 </html>

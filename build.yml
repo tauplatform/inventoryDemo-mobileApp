@@ -48,7 +48,6 @@ win32:
 
 
 extensions:
-  - rhoconnect-client
   - signature
 
 rhobundle:
