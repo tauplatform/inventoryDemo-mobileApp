@@ -133,7 +133,7 @@ $(document).ready(function () {
                     $(id).removeClass("hidden");
 
                     var img_path;
-                    if (Rho.System.platform === Rho.System.PLATFORM_IOS) {
+                    if (Rho.System.platform === Rho.System.PLATFORM_IOS || Rho.System.platform === Rho.System.PLATFORM_SAILFISH) {
                         img_path = params.imageUri;
                     }
                     else {
