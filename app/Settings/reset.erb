@@ -7,16 +7,12 @@
 %>
 <div class="page">
 
-  <div class="page-title container-fluid">
-    <h3>Database Resetting</h3>
-  </div>
+  <h3>Database Resetting</h3>
 
-  <div class="page-content">
-    <div class="text-center alert alert-danger">
-      <h4 class="text-center">Are you sure?</h4>
-      <p>Resetting removes all objects from your device.</p>
-      <a href="<%= url_for :action => :do_reset %>" class="btn btn-danger btn-block">Yes, reset the database</a>
-    </div>
+  <div class="text-center alert alert-danger">
+    <h4 class="text-center">Are you sure?</h4>
+    <p>Resetting removes all objects from your device.</p>
+    <a href="<%= url_for :action => :do_reset %>" class="btn btn-danger btn-block">Yes, reset the database</a>
   </div>
 
 </div>

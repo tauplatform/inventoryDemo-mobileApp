@@ -42,7 +42,7 @@ class InventoryItemController < Rho::RhoController
   def index
     begin
       scanner.enable({}, url_for(:action => :scanner_callback));
-    end unless scanner_camera?
+    end unless has_scanner? && scanner_camera?
 
     @inventoryItems = find_items
     render

@@ -1,20 +1,15 @@
-<%= render partial: 'partials/page_header', locals: {:title => 'Inventory Demo', :nosyncbar => true} %>
-
 <div class="page">
-  <div class="text-center">
-    <h3>Scan your ID card</h3>
+  <div class="container-fluid">
+
+    <h2>Inventory-Demo</h2>
 
     <div class="alert alert-warning hidden" role="alert"></div>
 
-    <div class="barcode-scan-image">
-      <img src="/public/images/barcode-scan.png">
-    </div>
-
-    <div class="space-wrapper">
-      <% if scanner_camera? %>
-          <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press For Scan</button>
-      <% end %>
-    </div>
+    <% if Rho::System.isEmulator %>
+      <%= render partial: 'manual_login' %>
+    <% else %>
+      <%= render partial: 'scan_login' %>
+    <% end %>
 
   </div>
 </div>
@@ -22,7 +17,6 @@
 <script>
     $(document).ready(function () {
         var spinner;
-        var target = $(".barcode-scan-image")[0];
 
         $(".page").on("spinnerOn", function (event) {
             spinner = new Spinner().spin();
@@ -34,17 +28,8 @@
             $(event.target).removeClass("disabled");
         });
 
-        $("[data-action=scan]").on("click", function (event) {
-            $(".alert").addClass("hidden");
-            $(event.target).addClass("disabled");
-            $.post("<%= url_for(:action => :scan_by_camera) %>");
-        });
-
         $(".page").on("loginFeedback", function (event, message) {
             $(".alert").removeClass("hidden").text(message);
         });
     });
 </script>
-
-
-
