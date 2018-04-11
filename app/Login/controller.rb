@@ -7,27 +7,37 @@ class LoginController < Rho::RhoController
   include BrowserHelper
 
   def index
-    begin
-      scanner.enable({}, url_for(:action => :scanner_callback));
-    end unless scanner_camera?
-    #Rho::RhoConnectClient.login('Sara J. Connor', '', url_for(:action => :login_callback))
+    if has_scanner?
+      begin
+        scanner.enable({}, url_for(:action => :scanner_callback));
+      end unless scanner_camera?
+    end
+
     render
+  end
+
+  def do_manual_login
+    user = @params['user']
+    password = @params['password']
+    Rho::RhoConnectClient.login(user, password, url_for(:action => :login_callback))
   end
 
   def login_callback
     Rho::WebView.executeJavascript("$('.page').trigger('spinnerOff');")
+
     err_code = @params['error_code'].to_i
     if err_code == 0
       Rho::WebView.navigate 'app/InventoryItem'
-    else
-      if err_code == Rho::RhoError::ERR_CUSTOMSYNCSERVER
-        reason = @params['error_message']
-      end
-      if !reason || reason.length == 0
-        reason = Rho::RhoError.new(err_code).message
-      end
-      Rho::WebView.executeJavascript("$('.page').trigger('loginFeedback', [#{reason}]);")
+      return
     end
+
+    if @params.has_key? 'error_message' && @params['error_message'].length != 0
+      reason = @params['error_message']
+    else
+      reason = Rho::RhoError.new(err_code).message
+    end
+
+    Rho::WebView.executeJavascript("$('.page').trigger('loginFeedback', [\"#{reason}\"]);")
   end
 
   def scanner_callback
@@ -42,8 +52,8 @@ class LoginController < Rho::RhoController
       barcode = @params['data']
     end
     Rho::WebView.navigate 'app/InventoryItem'
-    #Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
-    #Rho::RhoConnectClient.login(barcode, '', url_for(:action => :login_callback))
+    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
+    Rho::RhoConnectClient.login(barcode, '', url_for(:action => :login_callback))
   end
 
   def scan_by_camera

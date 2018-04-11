@@ -1,0 +1,27 @@
+<%= render partial: 'partials/page_header', locals: {:title => 'Inventory Demo', :nosyncbar => true} %>
+
+<div class="text-center">
+  <h3>Scan your ID card</h3>
+
+  <div class="barcode-scan-image">
+    <img src="/public/images/barcode-scan.png">
+  </div>
+
+  <div class="space-wrapper">
+    <% if scanner_camera? %>
+      <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press For Scan</button>
+    <% end %>
+  </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("[data-action=scan]").on("click", function (event) {
+            $(".alert").addClass("hidden");
+            $(event.target).addClass("disabled");
+            $.post("<%= url_for(:action => :scan_by_camera) %>");
+        });
+    });
+</script>

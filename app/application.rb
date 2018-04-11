@@ -48,11 +48,8 @@ class AppApplication < Rho::RhoApplication
       return
     end if  Inventory::BarcodeHelper.scanner_not_selected_yet?
 
-    # begin
-    #   WebView.navigate Rho::Config.getPropertyString('start_path')
-    #   return
-    # end unless @@ui_created
-
+    # login_url = '/app/Login/'
+    # return Rho::WebView.navigate login_url
     super
   end
 
