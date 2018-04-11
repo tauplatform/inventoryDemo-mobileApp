@@ -1,17 +1,12 @@
-<%= render partial: 'partials/page_header', locals: {:title => 'Setup'} %>
+<div class="page">
 
-<div class="page container-fluid">
+  <h1>Inventory-Demo</h1>
+  <h4>Setting up Application</h4>
 
-  <div class="page-title">
-    <h4>Setting up Application</h4>
-  </div>
-
-  <div class="page-content">
-    <p class="setup-hint">
-      Before you can begin work with the application, you must configure it.
-    </p>
-    <a href="<%= url_for(:action => :wizard_scanner_selection) %>" class="btn btn-success btn-block">Continue</a>
-  </div>
+  <p class="setup-hint">
+    Before you can begin work with the application, you must configure it.
+  </p>
+  <a href="<%= url_for(:action => :wizard_scanner_selection) %>" class="btn btn-success btn-block">Continue</a>
 
 </div>
 
