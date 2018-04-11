@@ -1,13 +1,12 @@
 # logs and symlinks
 rholog.txt
+logcat.txt
 rholog-*
 sim-*
 
 # build output
 bin/
-public/api/generated/
-.cbc
-/bin/
-/rhosimulator/
-/project/iphone
+public/api/
+rhosimulator/
+project/
 

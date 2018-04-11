@@ -1,53 +1,117 @@
-<div id="header">
-  <img id="button-menu" class="pull-left" src="/public/images/ic_menu_black_24dp_2x.png">
-  <span class="title pull-left">Items</span>
-  <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-sm pull-right">New</a>
-</div>
+<%= render partial: 'partials/page_header',
+           locals: {
+               :title => 'Inventory Items',
+               :main_menu => [
+                   {:type => :action, :action => '', :role => 'sync', :title => 'Sync'},
+                   {:type => :action, :action => url_for(:controller => :SyncEvent, :action => :index), :title => 'Sync history'},
+                   {:type => :action, :action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
+                   {:type => :action, :action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
+                   {:type => :action, :action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}
+               ],
+               :context_menu => [
+                   {:type => :form, :id => 'search', :input => {:type => 'search', :placeholder => 'Search', :classes => ''}}
+               ]} %>
 
-<div class="input-group">
-  <input id="search" type="text" class="form-control" placeholder="Search for...">
-  <span class="input-group-btn">
-    <button id="clear" class="btn btn-default" type="button">
-      <span class="glyphicon glyphicon-remove"></span>
-    </button>
-  </span>
-</div>
+<div class="page">
 
-<div>&nbsp;</div>
-<div id="item-list">
-  <%= render :partial => 'item_list', :locals => {:items => @inventoryItems} %>
+
+  <% if self.class.query %>
+    <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
+  <% end %>
+
+  <% if has_scanner? && scanner_camera? %>
+    <div class="space-wrapper btn-scan-wrapper">
+      <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
+    </div>
+  <% end %>
+
+  <div class="alert-wrapper"></div>
+
+  <div id="item-list">
+    <% if @inventoryItems.size != 0 %>
+      <div class="list-group">
+        <%= render partial: 'inventory_item', collection: @inventoryItems %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning" role="alert"><h4>Items not found</h4></div>
+    <% end %>
+  </div>
+
+
 </div>
 
 <script>
-    (function () {
-        var timeoutId;
-        var timeout = 500;
+    var spinner;
 
-        var serverRequest = function (query) {
+    var setDropHandlerButton = function () {
+        $(".filter-query [data-dismiss=alert]").on("click", function (event) {
+            //TODO: add spinner here
             $.ajax({
-                type: "post",
-                dataType: "html",
-                url: "<%= url_for :action => :do_search %>",
-                cache: false,
-                data: {query: query}
-            })
-                .done(function (html) {
-                    $("#item-list").html(html);
-                });
-        };
+                url: "<%= url_for :action => :reset_filter %>",
+                dataType: 'json',
+                success: function (response) {
+                    //TODO: remove spinner here
+                    $("#item-list").html(response.items_html);
+                }
+            });
+        });
+    };
 
-        $("#search").bind("input", function (anEvent) {
-            if (timeoutId != null) {
-                clearTimeout(timeoutId);
+    $(".page").on("spinnerOn", function (event) {
+        spinner = new Spinner().spin();
+        $(".page").append(spinner.el);
+    });
+
+    $(".page").on("spinnerOff", function (event) {
+        spinner.stop();
+    });
+
+    $("[data-action=scan]").on("click", function (event) {
+        $(".alert").addClass("hidden");
+        $.post("<%= url_for(:action => :scan_by_camera) %>");
+    });
+
+    $(".main-menu-btn").on("click", function () {
+        $("#context-menu").collapse("hide")
+    });
+
+    $(".context-menu-btn").on("click", function () {
+        $("#main-menu").collapse("hide")
+    });
+
+    $("#context-menu form#search").on("submit", function (event) {
+        event.preventDefault();
+        $("#context-menu").collapse("hide");
+        var query = $("#context-menu form#search input[type=search]").val();
+        $.ajax({
+            url: "<%= url_for :action => :do_filter %>",
+            data: {query: query},
+            dataType: 'json',
+            success: function (response) {
+                $("#item-list").html(response.items_html);
+                $(".alert-wrapper").html(response.filter_html);
+                setDropHandlerButton();
             }
-            timeoutId = setTimeout(function () {
-                serverRequest($(anEvent.target).val());
-            }, timeout);
+        });
+    });
+
+    $("a[data-role=sync]").on("click", function (event) {
+        event.preventDefault();
+        $("#main-menu").collapse("hide");
+        $.post("<%= url_for(:controller => :Settings, :action => :do_sync) %>");
+    })
+
+    $("body").on("onSyncCompleted", function (event) {
+        $.ajax({
+            url: "<%= url_for :action => :get_items %>",
+            dataType: 'json',
+            success: function (response) {
+                $("#item-list").html(response.items_html);
+            }
         });
 
-        $("#clear").on("click", function () {
-            $("#search").val("");
-            serverRequest("");
-        });
-    })();
+    });
+
+    setDropHandlerButton();
+
 </script>

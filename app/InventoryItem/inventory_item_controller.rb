@@ -4,6 +4,12 @@ require 'helpers/browser_helper'
 class InventoryItemController < Rho::RhoController
   include BrowserHelper
 
+  @query = nil
+
+  class << self
+    attr_accessor :query
+  end
+
   def hardware_scanner_selected?
     if Rho.const_defined?(:Barcode)
       return false if Rho::System.platform == Rho::System::PLATFORM_IOS
@@ -12,50 +18,88 @@ class InventoryItemController < Rho::RhoController
     return false
   end
 
-  def barcode_scanner_callback
-    unless @params['data'].nil?
-      item = InventoryItem.find(:first, :conditions => {'upc' => @params['data']})
-      if item.nil?
-        WebView.navigate url_for :action => :new, :query => {:upc => @params['data']}
+  def scanner_callback
+    if scanner_camera?
+      if @params['status'] == 'ok'
+        upc = @params['barcode']
       else
-        WebView.navigate url_for :action => :show, :id => item.object
+        return
       end
+    else
+      upc = @params['data']
     end
+    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
+    item = InventoryItem.find(:first, :conditions => {:upc => upc})
+    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOff');")
+    if item.nil?
+      WebView.navigate url_for :action => :new, :query => {:upc => upc}
+    else
+      WebView.navigate url_for :action => :show, :id => item.object
+    end
+
   end
 
   def index
-    if Rho.const_defined?(:Barcode)
-      if self.hardware_scanner_selected?
-        Rho::Barcode.getDefault.enable({}, url_for(:action => :barcode_scanner_callback))
-      end
-    end
+    begin
+      scanner.enable({}, url_for(:action => :scanner_callback));
+    end unless has_scanner? && scanner_camera?
 
-    @inventoryItems = InventoryItem.find(:all)
-    # @inventoryItems = (1..100).collect { |each| InventoryItem.new(:productName => each.to_s) }
+    @inventoryItems = find_items
     render
+  end
+
+  def scan_by_camera
+    Rho::Barcode.take({}, url_for(:action => :scanner_callback))
   end
 
   def do_back
     Rho::WebView.navigateBack()
   end
 
-  def do_search
-    query = "%#{@params['query']}%"
-    @inventoryItems = InventoryItem.find(:all,
-                                         :conditions => {
-                                             {
-                                                 :func => 'UPPER',
-                                                 :name => 'productName',
-                                                 :op => 'LIKE'
-                                             } => query,
-                                             {
-                                                 :func => 'UPPER',
-                                                 :name => 'upc',
-                                                 :op => 'LIKE'
-                                             } => query,
-                                         },
-                                         :op => 'OR')
-    render(partial: 'item_list', locals: {:items => @inventoryItems})
+  def do_filter
+    self.class.query = @params['query']
+    get_items
+  end
+
+  def reset_filter
+    self.class.query = nil
+    get_items
+  end
+
+  def get_items
+    @inventoryItems = find_items
+    items_html = render(partial: 'item_list', locals: {:find_items => @inventoryItems})
+    filter_html = render(partial: 'filter_alert', locals: {:query => self.class.query})
+    render string: ::JSON.generate({items_html: items_html, filter_html: filter_html})
+  end
+
+  def find_items
+    if self.class.query.nil?
+      return all_items
+    else
+      return filtered_items
+    end
+  end
+
+  def filtered_items
+    InventoryItem.find(:all,
+                       :conditions => {
+                           {
+                               :func => 'UPPER',
+                               :name => 'productName',
+                               :op => 'LIKE'
+                           } => "%#{self.class.query}%",
+                           {
+                               :func => 'UPPER',
+                               :name => 'upc',
+                               :op => 'LIKE'
+                           } => "%#{self.class.query}%",
+                       },
+                       :op => 'OR')
+  end
+
+  def all_items
+    InventoryItem.find(:all)
   end
 
   def show

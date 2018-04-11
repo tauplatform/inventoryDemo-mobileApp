@@ -1,0 +1,35 @@
+<div class="page">
+  <div class="container-fluid">
+
+    <h2>Inventory-Demo</h2>
+
+    <div class="alert alert-warning hidden" role="alert"></div>
+
+    <% if Rho::System.isEmulator %>
+      <%= render partial: 'manual_login' %>
+    <% else %>
+      <%= render partial: 'scan_login' %>
+    <% end %>
+
+  </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var spinner;
+
+        $(".page").on("spinnerOn", function (event) {
+            spinner = new Spinner().spin();
+            target.appendChild(spinner.el);
+        });
+
+        $(".page").on("spinnerOff", function (event) {
+            spinner.stop();
+            $(event.target).removeClass("disabled");
+        });
+
+        $(".page").on("loginFeedback", function (event, message) {
+            $(".alert").removeClass("hidden").text(message);
+        });
+    });
+</script>

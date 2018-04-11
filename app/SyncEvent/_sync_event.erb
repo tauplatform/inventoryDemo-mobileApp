@@ -1,0 +1,7 @@
+<div class="container-fluid">
+  <div class="row <% if sync_event.error? %> text-danger <% end %>">
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-3"><%= sync_event.formatted_date_time %></div>
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-3"><%= sync_event.source_name %></div>
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-3"><%= sync_event.description %></div>
+  </div>
+</div>

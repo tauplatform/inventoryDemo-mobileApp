@@ -1,0 +1,46 @@
+<%= render partial: 'partials/page_header', locals: {:title => 'Inventory Demo', :nosyncbar => true} %>
+
+<div class="page">
+
+  <h4>Scanner Selection</h4>
+
+  <div class="alert alert-info" role="alert">Please select a barcode scanner before continue</div>
+  <h5>Available scanners</h5>
+  <div class="list-group">
+    <%= render partial: 'scanner_item', collection: scanners %>
+  </div>
+
+  <a href="<%= url_for(:controller => :Login, :action => :index) %>" class="btn btn-success btn-block btn-continue disabled">Continue</a>
+</div>
+
+<script>
+    var selectButtonHandler = function (event) {
+        $(".page").trigger("spinnerOn");
+        var identifier = $(event.target).data("scanner-identifier");
+        $.post('/app/Settings/do_select_scanner', {identifier: identifier})
+            .done(function (response) {
+                $(".list-group").html(response.html);
+                $(".list-group-item .btn").on("click", selectButtonHandler);
+                $(".btn-continue").removeClass("disabled");
+            })
+            .always(function () {
+                $(".page").trigger("spinnerOff");
+            });
+    };
+
+    $(".list-group-item .btn").on("click", selectButtonHandler);
+
+    var spinner;
+
+    $(".page").on("spinnerOn", function (event) {
+        spinner = new Spinner().spin();
+        $(".page").append(spinner.el);
+    });
+
+    $(".page").on("spinnerOff", function (event) {
+        if (spinner != null) {
+            spinner.stop();
+        }
+    });
+
+</script>

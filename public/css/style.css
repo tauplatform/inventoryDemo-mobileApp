@@ -1,3 +1,43 @@
+.page {
+    margin-top: 80px;
+}
+
+.navbar-btn.btn-left {
+    margin-left: 5px;
+}
+
+
+.navbar-btn.btn-right {
+    margin-right: 5px;
+}
+
+.navbar-toggle.main-menu-btn {
+    border: 0;
+    padding: 0;
+    left: 5px;
+    float: left!important;
+    color: #777;
+}
+
+
+.navbar-toggle.context-menu-btn {
+    border: 0;
+    padding: 0;
+    margin-right:20px;
+    float: right!important;
+    color: #777;
+}
+
+.navbar-toggle:hover {
+    background-color: #dddddd;
+}
+
+.space-wrapper {
+    margin: 1em;
+}
+
+/* obsoleted */
+
 #panel {
     margin-bottom: 70px;
 }

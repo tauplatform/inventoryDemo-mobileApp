@@ -1,6 +1,6 @@
-<% if items.size != 0 %>
+<% if find_items.size != 0 %>
     <div class="list-group">
-      <% items.each do |item| %>
+      <% find_items.each do |item| %>
           <a href="<%= url_for :action => :show, :id => item.object %>" class="list-group-item">
             <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true" style="margin-top: 1em"></span>
             <span class="pull-right" style="margin-top: 1em; margin-right: 1em"><%= item.quantity %> pcs</span>
