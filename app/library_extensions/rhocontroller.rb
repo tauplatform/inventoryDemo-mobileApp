@@ -1,7 +1,7 @@
 class Rho::RhoController
 
   def scanner
-    Rho::Barcode.getDefault()
+    Rho::BarcodeChainway.getDefault()
   end
 
   def scanner_camera?

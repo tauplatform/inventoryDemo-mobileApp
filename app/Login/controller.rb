@@ -57,7 +57,7 @@ class LoginController < Rho::RhoController
   end
 
   def scan_by_camera
-    Rho::Barcode.take({}, url_for(:action => :scanner_callback))
+    Rho::BarcodeChainway.take({}, url_for(:action => :scanner_callback))
   end
 
 end

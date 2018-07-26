@@ -14,7 +14,7 @@ module Inventory
     end
 
     def self.available_scanners
-      Rho::Barcode.enumerate
+      Rho::BarcodeChainway.enumerate
     end
 
     def self.scanner_selected?(scanner)
@@ -28,7 +28,7 @@ module Inventory
 
     def self.select_scanner(scanner)
       self.save_scanner_identifier scanner.identifier
-      Rho::Barcode.setDefault(scanner)
+      Rho::BarcodeChainway.setDefault(scanner)
     end
 
     def self.scanner_by_identifier(aString)
@@ -36,7 +36,7 @@ module Inventory
     end
 
     def self.has_selected_scanner?
-      self.saved_scanner_identifier? #&& (Rho::Barcode.getDefault.identifier == self.saved_scanner_identifier)
+      self.saved_scanner_identifier? #&& (Rho::BarcodeChainway.getDefault.identifier == self.saved_scanner_identifier)
     end
 
     def self.scanner_not_selected_yet?

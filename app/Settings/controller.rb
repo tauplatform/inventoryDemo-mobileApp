@@ -51,7 +51,7 @@ class SettingsController < Rho::RhoController
       selected_name = Rho::Config.getPropertyString(@barcode_scanner_property_name)
       return scanner.friendlyName.to_s == selected_name ? 'selected' : ''
     end
-    scanner.friendlyName== Rho::Barcode.getDefault.friendlyName ? 'selected' : ''
+    scanner.friendlyName== Rho::BarcodeChainway.getDefault.friendlyName ? 'selected' : ''
   end
 
   def logout

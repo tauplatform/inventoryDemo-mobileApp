@@ -1,4 +1,4 @@
-sdk: "../rhodes"
+sdk: "/Users/mva/projects/rhomobile/rhodes"
 sdkversion: 6.0.0
 name: inventoryDemo
 version: 1.0
@@ -35,7 +35,7 @@ android:
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
-    - barcode
+    - barcode-chainway
     #- enterprise-barcode
   android_title: 0
 
@@ -72,6 +72,6 @@ sailfish:
     #password: fxmnmzzcw
     host: '192.168.0.103'
   extensions: ["mediacapture", "barcode", "signature", "rhoconnect-client"]
-paths:
-  extensions: ["../rhoconnect-client/ext"]
 
+paths:
+  extensions: ["/Users/mva/projects/tauplatform/barcode-chainway/libs/barcode-chainway/ext/"]

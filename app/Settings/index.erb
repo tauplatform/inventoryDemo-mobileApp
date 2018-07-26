@@ -35,7 +35,7 @@
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
           <select id="barcodeScanner" class="form-control">
-            <% Rho::Barcode.enumerate.each do |scanner| %>
+            <% Rho::BarcodeChainway.enumerate.each do |scanner| %>
               <option value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>><%= "#{scanner.friendlyName}" %></option>
             <% end %>
           </select>

@@ -13,7 +13,7 @@ class InventoryItemController < Rho::RhoController
   def hardware_scanner_selected?
     if Rho.const_defined?(:Barcode)
       return false if Rho::System.platform == Rho::System::PLATFORM_IOS
-      return Rho::Barcode.getDefault.scannerType != 'Camera'
+      return Rho::BarcodeChainway.getDefault.scannerType != 'Camera'
     end
     return false
   end
@@ -49,7 +49,7 @@ class InventoryItemController < Rho::RhoController
   end
 
   def scan_by_camera
-    Rho::Barcode.take({}, url_for(:action => :scanner_callback))
+    Rho::BarcodeChainway.take({}, url_for(:action => :scanner_callback))
   end
 
   def do_back
@@ -163,7 +163,7 @@ class InventoryItemController < Rho::RhoController
   end
 
   def scan_barcode
-    Rho::Barcode.take({}, url_for(:action => :barcode_callback))
+    Rho::BarcodeChainway.take({}, url_for(:action => :barcode_callback))
   end
 
 end

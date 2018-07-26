@@ -1,0 +1,14 @@
+entry: Init_BarcodeChainway_extension
+javaentry: com.rho.barcodechainway.Barcode
+libraries: ["barcode-chainway"]
+
+android:
+  source_list: /ext/platform/android/ext_java.files
+  rhodes_listener: com.rho.barcodechainway.BarcodeFactoryRhoListener
+  exttype: rakefile
+  prebuilts: ext/platform/android/prebuilts
+  
+xml_api_paths: ext/barcode_chainway.xml
+
+platforms: ["android"]
+

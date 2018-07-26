@@ -1,5 +1,5 @@
 module Rho
-  class Barcode
+  class BarcodeChainway
     def identifier
       if self.scannerType.to_s.length != 0
         type = self.scannerType
