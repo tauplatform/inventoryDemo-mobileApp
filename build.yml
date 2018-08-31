@@ -1,4 +1,4 @@
-sdk: "../rhodes"
+#sdk: "../rhodes"
 sdkversion: 6.0.0
 name: inventoryDemo
 version: 1.0
