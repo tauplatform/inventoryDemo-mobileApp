@@ -3,7 +3,7 @@ sdkversion: 6.0.0
 name: inventoryDemo
 version: 1.0
 vendor: rhomobile
-build: debug
+build: release
 applog: rholog.txt
 
 iphone:
@@ -28,7 +28,7 @@ wp8:
 
 android:
   manifest_template: 'AndroidManifest.erb'
-  version: 6.0
+  #version: 6.0
   abis:
     - x86
     - arm
