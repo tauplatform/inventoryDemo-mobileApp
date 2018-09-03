@@ -1,7 +1,7 @@
 #sdk: "../rhodes"
 sdkversion: 6.0.0
 name: inventoryDemo
-version: 1.0
+version: 1.0.2
 vendor: rhomobile
 build: release
 applog: rholog.txt
