@@ -72,6 +72,6 @@ sailfish:
     #password: fxmnmzzcw
     host: '192.168.0.103'
   extensions: ["mediacapture", "barcode", "signature", "rhoconnect-client"]
-paths:
-  extensions: ["../rhoconnect-client/ext"]
+#paths:
+#  extensions: ["../rhoconnect-client/ext"]
 
