@@ -1,7 +1,7 @@
 #sdk: "../rhodes"
-sdkversion: 6.0.0
+sdkversion: 7.1.2
 name: inventoryDemo
-version: 1.0.2
+version: 1.0.3
 vendor: rhomobile
 build: release
 applog: rholog.txt
@@ -28,15 +28,19 @@ wp8:
 
 android:
   manifest_template: 'AndroidManifest.erb'
+
+  minSDK: 23
+  targetSDK: 29
   #version: 6.0
   abis:
     - x86
     - arm
+    - aarch64
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
-    - barcode
-    #- enterprise-barcode
+    #- barcode
+    - enterprise-barcode
   android_title: 0
 
 wm:
