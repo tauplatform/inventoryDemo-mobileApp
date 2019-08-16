@@ -74,4 +74,4 @@ sailfish:
   extensions: ["mediacapture", "barcode", "signature", "rhoconnect-client"]
 
 paths:
-  extensions: ["/Users/mva/projects/tauplatform/barcode-chainway/libs/barcode-chainway/ext/"]
+  extensions: ["../barcode-chainway/libs"]

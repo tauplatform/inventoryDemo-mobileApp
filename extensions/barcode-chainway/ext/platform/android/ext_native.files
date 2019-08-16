@@ -1,7 +1,0 @@
-ext/platform/android/generated/jni/BarcodeChainway.cpp
-ext/platform/android/generated/jni/barcodechainway_ruby_wrap.cpp
-ext/platform/android/generated/jni/barcodechainway_js_wrap.cpp
-ext/platform/android/jni/BarcodeChainway_impl.cpp
-ext/shared/generated/barcodechainway_api_init.cpp
-ext/shared/generated/barcodechainway_js_api.cpp
-ext/shared/generated/barcodechainway_ruby_api.c
