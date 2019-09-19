@@ -20,11 +20,19 @@ iphone:
       NSAllowsArbitraryLoads: true
   extensions:
     - barcode
+    - rhoconnect-client
+    - mediacapture
+    - signature
 
 wp8:
   productid: '07c45400-ba39-0134-a27f-60f81db5e3c0'
   extensions:
     - enterprise-barcode
+linux:
+  extensions:
+    - barcode
+    - rhoconnect-client
+    - mediacapture
 
 android:
   manifest_template: 'AndroidManifest.erb'
@@ -41,12 +49,18 @@ android:
   extensions:
     - barcode
     #- enterprise-barcode
+    - rhoconnect-client
+    - mediacapture
+    - signature
   android_title: 0
 
 wm:
   extensions:
     - barcode
     - webkit
+    - rhoconnect-client
+    - mediacapture
+    - signature
   #sdk: "MC3000c50b (ARMV4I)"
   #sdk: "Windows Mobile 6.5.3 Professional DTK (ARMV4I)"
 
@@ -55,11 +69,9 @@ win32:
   deploymsvc: 1
   extensions:
     - enterprise-barcode
-
-extensions:
-  - rhoconnect-client
-  - mediacapture
-  - signature
+    - rhoconnect-client
+    - mediacapture
+    - signature
 
 rhobundle:
   exclude_items:
