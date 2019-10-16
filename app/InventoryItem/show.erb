@@ -58,7 +58,7 @@
                 </div>
               </div>
           <% else %>
-              &lt;none&gt;
+            <div class="alert alert-warning">No Photo yet</div>
           <% end %>
         </div>
 
@@ -88,7 +88,7 @@
                 <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
               </div>
           <% else %>
-              &lt;none&gt;
+            <div class="alert alert-warning">No Signature yet</div>
           <% end %>
         </div>
 

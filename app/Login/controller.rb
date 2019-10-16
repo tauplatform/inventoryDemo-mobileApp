@@ -7,10 +7,11 @@ class LoginController < Rho::RhoController
   include BrowserHelper
 
   def index
-    if has_scanner?
+    if Inventory::BarcodeHelper.barcode_scanner_available? && Inventory::BarcodeHelper.has_selected_scanner?
       begin
         scanner.enable({}, url_for(:action => :scanner_callback));
       end unless scanner_camera?
+    else
     end
 
     render

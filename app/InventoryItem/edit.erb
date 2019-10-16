@@ -15,15 +15,19 @@
 
     <div class="form-group">
       <label for="inventoryItem[upc]">UPC</label>
-      <% if hardware_scanner_selected? %>
-        <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control" value="<%= @inventoryItem.upc %>"/>
-      <% else %>
-        <div class="input-group">
+      <% if has_scanner? %>
+        <% if hardware_scanner_selected? %>
           <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control" value="<%= @inventoryItem.upc %>"/>
-          <span class="input-group-btn">
+        <% else %>
+          <div class="input-group">
+            <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control" value="<%= @inventoryItem.upc %>"/>
+            <span class="input-group-btn">
             <button type="button" id="takeBarcodeBtn" class="btn btn-default "><span class="glyphicon glyphicon-barcode"></span></button>
           </span>
-        </div>
+          </div>
+        <% end %>
+      <% else %>
+        <input type="text" id="inventoryItem[upc]" name="inventoryItem[upc]" class="form-control" value="<%= @inventoryItem.upc %>"/>
       <% end %>
     </div>
 
@@ -40,28 +44,33 @@
     <div class="form-group">
       <label for="inventoryItem[photo]">Photos</label>
       <div id="inventoryItem[photo]" class="row">
-
-        <div id="photo" class="col-lg- col-md-4 col-sm-4 col-xs-4">
-          <div class="thumbnail">
-            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.photoUri) %>">
-            <input type="hidden" id="inventoryItem[photoUri]" name="inventoryItem[photoUri]" value="<%= @inventoryItem.photoUri %>"/>
-            <div class="caption">
-              <button id="deletePhotoBtn" type="button" class="btn btn-danger  btn-xs btn-block">Del</button>
+        <% if @inventoryItem.photoUri %>
+          <div id="photo" class="col-lg- col-md-4 col-sm-4 col-xs-4">
+            <div class="thumbnail">
+              <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.photoUri) %>">
+              <input type="hidden" id="inventoryItem[photoUri]" name="inventoryItem[photoUri]" value="<%= @inventoryItem.photoUri %>"/>
+              <div class="caption">
+                <button id="deletePhotoBtn" type="button" class="btn btn-danger  btn-xs btn-block">Del</button>
+              </div>
             </div>
           </div>
-        </div>
+        <% end %>
 
-        <div id="takePhotoBtn" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
-          <div class="thumbnail">
-            <img src="/public/images/camera.png">
+        <% if has_camera? %>
+          <div id="takePhotoBtn" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+            <div class="thumbnail">
+              <img src="/public/images/camera.png">
+            </div>
           </div>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-        <div id="choosePhotoBtn" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
-          <div class="thumbnail">
-            <img src="/public/images/gallery.png">
+          <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+          <div id="choosePhotoBtn" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 hidden">
+            <div class="thumbnail">
+              <img src="/public/images/gallery.png">
+            </div>
           </div>
-        </div>
+        <% else %>
+          <div class="alert alert-warning">The device has no capability to take a picture</div>
+        <% end %>
 
       </div>
     </div>
@@ -74,16 +83,21 @@
     <div class="form-group">
       <label for="inventoryItem[signature]">Signature</label>
       <div id="inventoryItem[signature]" class="row">
-        <div id="signatureControl" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-          <button type="button" id="takeSignatureBtn" class="btn btn-default btn-block">Sign it</button>
-        </div>
-
-        <div id="signature" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-          <div class="thumbnail">
-            <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
-            <input type="hidden" id="inventoryItem[signatureUri]" name="inventoryItem[signatureUri]" value="<%= @inventoryItem.signatureUri %>"/>
+        <% if has_signature? %>
+          <div id="signatureControl" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <button type="button" id="takeSignatureBtn" class="btn btn-default btn-block">Sign it</button>
           </div>
-        </div>
+        <% else %>
+          <div class="alert alert-warning">The device has no capability to get a signature</div>
+        <% end %>
+        <% if @inventoryItem.signatureUri %>
+          <div id="signature" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="thumbnail">
+              <img src="<%= Rho::Application.expandDatabaseBlobFilePath(@inventoryItem.signatureUri) %>">
+              <input type="hidden" id="inventoryItem[signatureUri]" name="inventoryItem[signatureUri]" value="<%= @inventoryItem.signatureUri %>"/>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </form>

@@ -11,7 +11,7 @@ class InventoryItemController < Rho::RhoController
   end
 
   def hardware_scanner_selected?
-    if Rho.const_defined?(:Barcode)
+    if has_scanner?
       return false if Rho::System.platform == Rho::System::PLATFORM_IOS
       return Rho::Barcode.getDefault.scannerType != 'Camera'
     end
@@ -40,9 +40,11 @@ class InventoryItemController < Rho::RhoController
   end
 
   def index
-    begin
-      scanner.enable({}, url_for(:action => :scanner_callback));
-    end unless has_scanner? && scanner_camera?
+    if has_scanner?
+      begin
+        scanner.enable({}, url_for(:action => :scanner_callback));
+      end unless scanner_camera?
+    end
 
     @inventoryItems = find_items
     render
@@ -136,8 +138,12 @@ class InventoryItemController < Rho::RhoController
     data['productName'] = @params['inventoryItem']['productName']
     data['quantity'] = @params['inventoryItem']['quantity']
     data['employeeId'] = @params['inventoryItem']['employeeId']
-    data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
-    data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
+    if @params['inventoryItem']['photoUri']
+      data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
+    end
+    if @params['inventoryItem']['signatureUri']
+      data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
+    end
     @inventoryItem = InventoryItem.create(data)
     redirect :action => :index
   end
@@ -150,8 +156,12 @@ class InventoryItemController < Rho::RhoController
     data['productName'] = @params['inventoryItem']['productName']
     data['quantity'] = @params['inventoryItem']['quantity']
     data['employeeId'] = @params['inventoryItem']['employeeId']
-    data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
-    data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
+    if @params['inventoryItem']['photoUri']
+      data['photoUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['photoUri'])
+    end
+    if @params['inventoryItem']['signatureUri']
+      data['signatureUri'] = Rho::Application.relativeDatabaseBlobFilePath(@params['inventoryItem']['signatureUri'])
+    end
     @inventoryItem.update_attributes(data) if @inventoryItem
     redirect :action => :index
   end

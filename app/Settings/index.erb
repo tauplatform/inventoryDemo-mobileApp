@@ -33,13 +33,21 @@
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
           <span pull-right>Barcode scanner:</span>
         </div>
+
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-          <select id="barcodeScanner" class="form-control">
-            <% Rho::Barcode.enumerate.each do |scanner| %>
-              <option value="<%= scanner.friendlyName %>" <%= barcodeScannerChoosed(scanner) %>><%= "#{scanner.friendlyName}" %></option>
-            <% end %>
-          </select>
+          <% if can_choose_scanner? %>
+            <select id="barcodeScanner" class="form-control">
+              <% Rho::Barcode.enumerate.each do |scanner| %>
+                <% puts "scanner #{scanner.getAllProperties}" %>
+                <% name = scanner.friendlyName != nil ? scanner.friendlyName : scanner.scannerType %>
+                <option value="<%= name %>" <%= barcodeScannerChoosed(scanner) %>><%= "#{name}" %></option>
+              <% end %>
+            </select>
+          <% else %>
+            <div class="alert alert-warning">The device doesn't have a barcode scanner</div>
+          <% end %>
         </div>
+
       </div>
     </li>
   </div>

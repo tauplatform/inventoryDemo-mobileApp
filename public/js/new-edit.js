@@ -58,7 +58,9 @@ $(document).ready(function () {
         }
     };
 
-    setCallbackForDefaultBarcodeScanner();
+    if (Rho.Barcode != null) {
+        setCallbackForDefaultBarcodeScanner();
+    }
 
     // Camera routines
     (function () {
@@ -167,13 +169,17 @@ $(document).ready(function () {
                 toastr.error("Field \"Employee ID\" must be filled", 'Error!');
                 return false;
             }
-            if ($(element).find("#inventoryItem\\[photoUri\\]").val() === "") {
-                toastr.error("A photo of product is required", 'Error!');
-                return false;
+            if (Rho.Camera != null) {
+                if ($(element).find("#inventoryItem\\[photoUri\\]").val() === "") {
+                    toastr.error("A photo of product is required", 'Error!');
+                    return false;
+                }
             }
-            if ($(element).find("#inventoryItem\\[signatureUri\\]").val() === "") {
-                toastr.error("A signature of the employee if required", 'Error!');
-                return false;
+            if (Rho.Signature != null) {
+                if ($(element).find("#inventoryItem\\[signatureUri\\]").val() === "") {
+                    toastr.error("A signature of the employee if required", 'Error!');
+                    return false;
+                }
             }
             return true;
         };
