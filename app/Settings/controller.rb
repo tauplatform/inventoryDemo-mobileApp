@@ -96,4 +96,9 @@ class SettingsController < Rho::RhoController
     render :action => :wizard_scanner_selection
   end
 
+  def can_choose_scanner?
+    puts "##### can_choose_scanner?? #{Inventory::BarcodeHelper.has_barcode_extension? &&  Inventory::BarcodeHelper.available_scanners.length != 0}"
+    return Inventory::BarcodeHelper.has_barcode_extension? &&  Inventory::BarcodeHelper.available_scanners.length != 0
+  end
+
 end

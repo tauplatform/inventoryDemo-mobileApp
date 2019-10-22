@@ -19,9 +19,15 @@
     <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
   <% end %>
 
-  <% if has_scanner? && scanner_camera? %>
+  <% if has_scanner? %>
+    <% if scanner_camera? %>
+      <div class="space-wrapper btn-scan-wrapper">
+        <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
+      </div>
+    <% end %>
+  <% else %>
     <div class="space-wrapper btn-scan-wrapper">
-      <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
+      <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-lg btn-block">New Item</a>
     </div>
   <% end %>
 

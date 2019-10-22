@@ -5,10 +5,10 @@
 
     <div class="alert alert-warning hidden" role="alert"></div>
 
-    <% if Rho::System.isEmulator %>
-      <%= render partial: 'manual_login' %>
-    <% else %>
+    <% if has_scanner? %>
       <%= render partial: 'scan_login' %>
+    <% else %>
+      <%= render partial: 'manual_login' %>
     <% end %>
 
   </div>

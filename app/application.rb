@@ -46,7 +46,7 @@ class AppApplication < Rho::RhoApplication
     begin
       WebView.navigate '/app/Settings/wizard_introduction'
       return
-    end if  Inventory::BarcodeHelper.scanner_not_selected_yet?
+    end if  Inventory::BarcodeHelper.should_barcode_be_choosed?
 
     # login_url = '/app/Login/'
     # return Rho::WebView.navigate login_url

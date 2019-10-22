@@ -42,5 +42,25 @@ module Inventory
     def self.scanner_not_selected_yet?
       !self.has_selected_scanner?
     end
+
+    def self.should_barcode_be_choosed?
+      unless self.barcode_scanner_available?
+        return false
+      end
+      !self.has_selected_scanner?
+    end
+
+    def self.barcode_scanner_available?
+      return self.has_barcode_extension? && self.has_selected_scanner?
+    end
+
+    def self.has_barcode_extension?
+      return Rho.const_defined?(:Barcode) && Rho::Barcode.constants.length != 0
+    end
+
+    def self.has_camera_extension?
+      return Rho.const_defined?(:Camera)
+    end
+
   end
 end

@@ -20,9 +20,9 @@ iphone:
       NSAllowsArbitraryLoads: true
   extensions:
     - barcode
-    - rhoconnect-client
     - mediacapture
     - signature
+    - rhoconnect-client
 
 wp8:
   productid: '07c45400-ba39-0134-a27f-60f81db5e3c0'
@@ -48,6 +48,9 @@ android:
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
     - barcode
+    - mediacapture
+    - signature
+    - rhoconnect-client
     #- enterprise-barcode
     - rhoconnect-client
     - mediacapture
@@ -69,9 +72,13 @@ win32:
   deploymsvc: 1
   extensions:
     - enterprise-barcode
+
+linux:
+  extensions:
     - rhoconnect-client
     - mediacapture
     - signature
+
 
 rhobundle:
   exclude_items:
@@ -89,5 +96,5 @@ sailfish:
     host: '192.168.0.103'
   extensions: ["mediacapture", "barcode", "signature", "rhoconnect-client"]
 #paths:
-#  extensions: ["../rhoconnect-client/ext"]
+# extensions: ["../rhoconnect-client/ext"]
 
