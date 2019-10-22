@@ -1,7 +1,7 @@
 #sdk: "../rhodes"
-sdkversion: 6.0.0
+sdkversion: 7.1.2
 name: inventoryDemo
-version: 1.0.2
+version: 1.0.3
 vendor: rhomobile
 build: release
 applog: rholog.txt
@@ -28,13 +28,22 @@ wp8:
   productid: '07c45400-ba39-0134-a27f-60f81db5e3c0'
   extensions:
     - enterprise-barcode
+linux:
+  extensions:
+    - barcode
+    - rhoconnect-client
+    - mediacapture
 
 android:
   manifest_template: 'AndroidManifest.erb'
+
+  minSDK: 23
+  targetSDK: 29
   #version: 6.0
   abis:
     - x86
     - arm
+    - aarch64
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
   extensions:
@@ -43,12 +52,18 @@ android:
     - signature
     - rhoconnect-client
     #- enterprise-barcode
+    - rhoconnect-client
+    - mediacapture
+    - signature
   android_title: 0
 
 wm:
   extensions:
     - barcode
     - webkit
+    - rhoconnect-client
+    - mediacapture
+    - signature
   #sdk: "MC3000c50b (ARMV4I)"
   #sdk: "Windows Mobile 6.5.3 Professional DTK (ARMV4I)"
 
@@ -61,6 +76,9 @@ win32:
 linux:
   extensions:
     - rhoconnect-client
+    - mediacapture
+    - signature
+
 
 rhobundle:
   exclude_items:
