@@ -11,10 +11,10 @@ class InventoryItemController < Rho::RhoController
   end
 
   def hardware_scanner_selected?
-    if has_scanner?
-      return false if Rho::System.platform == Rho::System::PLATFORM_IOS
-      return Rho::Barcode.getDefault.scannerType != 'Camera'
-    end
+    #if has_scanner?
+    #  return false if Rho::System.platform == Rho::System::PLATFORM_IOS
+    #  return Rho::Barcode.getDefault.scannerType != 'Camera'
+    #end
     return false
   end
 

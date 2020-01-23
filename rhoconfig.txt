@@ -15,7 +15,7 @@ rhobundle_zip_pwd = nil
 # log level
 # 0-trace, 1-info(app level), 2-warnings, 3-errors
 # for production set to 3
-MinSeverity  = 3
+MinSeverity  = 0
 
 # enable copy log messages to standard output, useful for debugging
 LogToOutput = 1
@@ -30,7 +30,7 @@ ExcludeLogCategories =
 MaxLogFileSize=0
 
 # turn on local http server traces, off by default
-#net_trace = 0
+net_trace = 1
 
 # timeout of network requests in seconds (30 by default)
 #net_timeout = 60
@@ -68,7 +68,7 @@ sync_poll_interval=0
 # Port of the local (embedded) HTTP server. This parameter is mainly for debug purposes.
 # If not specified, application will use dynamically selected one.
 # WARNING!!! Remove this parameter before put application to production.
-#local_server_port = 8080
+local_server_port = 5555
 
 # Address and port of proxy server. This settings uses Network module.
 # Do not include 'http://' while setting the http_proxy_host
