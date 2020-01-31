@@ -91,18 +91,21 @@
     $("a[data-role=sync]").on("click", function (event) {
         event.preventDefault();
         $("#main-menu").collapse("hide");
-        $.post("<%= url_for(:controller => :Settings, :action => :do_sync) %>");
-    });
-
-    $("body").on("onSyncCompleted", function (event) {
-        $.ajax({
-            url: "<%= url_for :action => :get_items %>",
-            dataType: 'json',
-            success: function (response) {
-                $("#item-list").html(response.items_html);
-            }
+        $.post("<%= url_for(:controller => :Settings, :action => :do_sync) %>", function(){
+            $("body").one("onSyncCompleted", function (event) {
+                console.log('refreshing item list')
+                $.ajax({
+                    url: "<%= url_for :action => :get_items %>",
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#item-list").html(response.items_html);
+                    }
+                });
+            });
         });
     });
+
+
 
     setDropHandlerButton();
 
