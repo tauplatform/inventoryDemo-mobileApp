@@ -114,7 +114,7 @@ module ApplicationHelper
     # TODO: escape carriage returns instead of removing them altoegether
     content = render(params).split('\'').join('\\\'').split(/[\r\n]/).join('')
     content = content.unpack("U*").collect {|s| (s > 127 ? "&##{s};" : s.chr) }.join("")
-    Rho::WebView.executeJavascript("Rho.insertAsyncPage('<div>#{content}</div>')", tab_index)
+      #Rho::WebView.executeJavascript("Rho.insertAsyncPage('<div>#{content}</div>')", tab_index)
   end
 
   def caller_request_hash_to_query
@@ -125,5 +125,5 @@ module ApplicationHelper
   def caller_request_query_to_hash
     @caller_request = Rho::JSON.parse(@params['caller_request']) if @params['caller_request']
   end
-  
+
 end

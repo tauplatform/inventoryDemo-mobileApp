@@ -6,7 +6,6 @@
                    {:type => :action, :action => url_for(:controller => :SyncEvent, :action => :index), :title => 'Sync history'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :index), :title => 'Settings'},
                    {:type => :action, :action => url_for(:controller => :Settings, :action => :logout), :title => 'Log Out'},
-                   {:type => :action, :action => url_for(:controller => :Settings, :action => :do_quit), :title => 'Quit'}
                ],
                :context_menu => [
                    {:type => :form, :id => 'search', :input => {:type => 'search', :placeholder => 'Search', :classes => ''}}
@@ -19,17 +18,10 @@
     <%= render partial: 'filter_alert', locals: {:query => self.class.query} %>
   <% end %>
 
-  <% if has_scanner? %>
-    <% if scanner_camera? %>
-      <div class="space-wrapper btn-scan-wrapper">
-        <button class="btn btn-primary btn-lg btn-block" data-action="scan">Press to scan</button>
-      </div>
-    <% end %>
-  <% else %>
-    <div class="space-wrapper btn-scan-wrapper">
-      <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-lg btn-block">New Item</a>
-    </div>
-  <% end %>
+
+  <div class="space-wrapper btn-scan-wrapper">
+    <a href="<%= url_for :action => :new %>" class="btn btn-primary btn-lg btn-block">New Item</a>
+  </div>
 
   <div class="alert-wrapper"></div>
 
@@ -65,16 +57,11 @@
 
     $(".page").on("spinnerOn", function (event) {
         spinner = new Spinner().spin();
-        $(".page").append(spinner.el);
+        event.target.appendChild(spinner.el);
     });
 
     $(".page").on("spinnerOff", function (event) {
         spinner.stop();
-    });
-
-    $("[data-action=scan]").on("click", function (event) {
-        $(".alert").addClass("hidden");
-        $.post("<%= url_for(:action => :scan_by_camera) %>");
     });
 
     $(".main-menu-btn").on("click", function () {
@@ -105,7 +92,7 @@
         event.preventDefault();
         $("#main-menu").collapse("hide");
         $.post("<%= url_for(:controller => :Settings, :action => :do_sync) %>");
-    })
+    });
 
     $("body").on("onSyncCompleted", function (event) {
         $.ajax({
@@ -115,7 +102,6 @@
                 $("#item-list").html(response.items_html);
             }
         });
-
     });
 
     setDropHandlerButton();

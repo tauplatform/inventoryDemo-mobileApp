@@ -28,34 +28,24 @@ class InventoryItemController < Rho::RhoController
     else
       upc = @params['data']
     end
-    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
+    #Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
     item = InventoryItem.find(:first, :conditions => {:upc => upc})
-    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOff');")
+    #Rho::WebView.executeJavascript("$('.page').trigger('spinnerOff');")
     if item.nil?
-      WebView.navigate url_for :action => :new, :query => {:upc => upc}
+      #WebView.navigate url_for :action => :new, :query => {:upc => upc}
     else
-      WebView.navigate url_for :action => :show, :id => item.object
+      #WebView.navigate url_for :action => :show, :id => item.object
     end
 
   end
 
   def index
-    if has_scanner?
-      begin
-        scanner.enable({}, url_for(:action => :scanner_callback));
-      end unless scanner_camera?
-    end
-
     @inventoryItems = find_items
     render
   end
 
-  def scan_by_camera
-    Rho::Barcode.take({}, url_for(:action => :scanner_callback))
-  end
-
   def do_back
-    Rho::WebView.navigateBack()
+    #Rho::WebView.navigateBack()
   end
 
   def do_filter
@@ -170,10 +160,6 @@ class InventoryItemController < Rho::RhoController
     @inventoryItem = InventoryItem.find(@params['id'])
     @inventoryItem.destroy if @inventoryItem
     redirect :action => :index
-  end
-
-  def scan_barcode
-    Rho::Barcode.take({}, url_for(:action => :barcode_callback))
   end
 
 end

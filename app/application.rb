@@ -44,7 +44,7 @@ class AppApplication < Rho::RhoApplication
     Rho::Log.warning('on_activate_app', 'APP')
 
     begin
-      WebView.navigate '/app/Settings/wizard_introduction'
+      #WebView.navigate '/app/Settings/wizard_introduction'
       return
     end if  Inventory::BarcodeHelper.should_barcode_be_choosed?
 

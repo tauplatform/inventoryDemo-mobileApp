@@ -24,11 +24,11 @@ class LoginController < Rho::RhoController
   end
 
   def login_callback
-    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOff');")
+    #Rho::WebView.executeJavascript("$('.page').trigger('spinnerOff');")
 
     err_code = @params['error_code'].to_i
     if err_code == 0
-      Rho::WebView.navigate 'app/InventoryItem'
+      #Rho::WebView.navigate 'app/InventoryItem'
       return
     end
 
@@ -38,7 +38,7 @@ class LoginController < Rho::RhoController
       reason = Rho::RhoError.new(err_code).message
     end
 
-    Rho::WebView.executeJavascript("$('.page').trigger('loginFeedback', [\"#{reason}\"]);")
+      #Rho::WebView.executeJavascript("$('.page').trigger('loginFeedback', [\"#{reason}\"]);")
   end
 
   def scanner_callback
@@ -46,19 +46,19 @@ class LoginController < Rho::RhoController
       if @params['status'] == 'ok'
         barcode = @params['barcode']
       else
-        Rho::WebView.executeJavascript("$('.page').trigger('loginFeedback', ['Scan was cancelled']);")
+        #Rho::WebView.executeJavascript("$('.page').trigger('loginFeedback', ['Scan was cancelled']);")
         return
       end
     else
       barcode = @params['data']
     end
-    Rho::WebView.navigate 'app/InventoryItem'
-    Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
-    Rho::RhoConnectClient.login(barcode, '', url_for(:action => :login_callback))
+    #Rho::WebView.navigate 'app/InventoryItem'
+    #Rho::WebView.executeJavascript("$('.page').trigger('spinnerOn');")
+    #Rho::RhoConnectClient.login(barcode, '', url_for(:action => :login_callback))
   end
 
   def scan_by_camera
-    Rho::Barcode.take({}, url_for(:action => :scanner_callback))
+    #Rho::Barcode.take({}, url_for(:action => :scanner_callback))
   end
 
 end

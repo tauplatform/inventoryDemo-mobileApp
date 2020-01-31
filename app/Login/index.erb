@@ -5,11 +5,7 @@
 
     <div class="alert alert-warning hidden" role="alert"></div>
 
-    <% if has_scanner? %>
-      <%= render partial: 'scan_login' %>
-    <% else %>
-      <%= render partial: 'manual_login' %>
-    <% end %>
+    <%= render partial: 'manual_login' %>
 
   </div>
 </div>
@@ -20,7 +16,7 @@
 
         $(".page").on("spinnerOn", function (event) {
             spinner = new Spinner().spin();
-            target.appendChild(spinner.el);
+            event.target.appendChild(spinner.el);
         });
 
         $(".page").on("spinnerOff", function (event) {

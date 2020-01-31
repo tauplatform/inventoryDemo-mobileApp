@@ -35,8 +35,7 @@ $(document).ready(function () {
             if (scanner.scannerType !== "Camera") {
                 scanner.disable();
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.error("The routines with Rho.Barcode has raised the error: " + e)
         }
     };
@@ -52,14 +51,15 @@ $(document).ready(function () {
                     scanner.take({}, barcodeCameraScannerCallback)
                 });
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.error("The routines with Rho.Barcode has raised the error: " + e)
         }
     };
 
-    if (Rho.Barcode != null) {
-        setCallbackForDefaultBarcodeScanner();
+    if (typeof Rho !== 'undefined') {
+        if (Rho.Barcode != null) {
+            setCallbackForDefaultBarcodeScanner();
+        }
     }
 
     // Camera routines
@@ -137,8 +137,7 @@ $(document).ready(function () {
                     var img_path;
                     if (Rho.System.platform === Rho.System.PLATFORM_IOS || Rho.System.platform === Rho.System.PLATFORM_SAILFISH) {
                         img_path = params.imageUri;
-                    }
-                    else {
+                    } else {
                         img_path = params.imageUri.slice(7);
                     }
                     $(id).find("img").attr("src", img_path);
@@ -169,16 +168,18 @@ $(document).ready(function () {
                 toastr.error("Field \"Employee ID\" must be filled", 'Error!');
                 return false;
             }
-            if (Rho.Camera != null) {
-                if ($(element).find("#inventoryItem\\[photoUri\\]").val() === "") {
-                    toastr.error("A photo of product is required", 'Error!');
-                    return false;
+            if (typeof Rho !== 'undefined') {
+                if (Rho.Camera != null) {
+                    if ($(element).find("#inventoryItem\\[photoUri\\]").val() === "") {
+                        toastr.error("A photo of product is required", 'Error!');
+                        return false;
+                    }
                 }
-            }
-            if (Rho.Signature != null) {
-                if ($(element).find("#inventoryItem\\[signatureUri\\]").val() === "") {
-                    toastr.error("A signature of the employee if required", 'Error!');
-                    return false;
+                if (Rho.Signature != null) {
+                    if ($(element).find("#inventoryItem\\[signatureUri\\]").val() === "") {
+                        toastr.error("A signature of the employee if required", 'Error!');
+                        return false;
+                    }
                 }
             }
             return true;

@@ -12,7 +12,7 @@ class SettingsController < Rho::RhoController
   end
 
   def do_back
-    Rho::WebView.navigateBack()
+    #Rho::WebView.navigateBack()
   end
 
   def scanner_selection
@@ -57,7 +57,7 @@ class SettingsController < Rho::RhoController
   def logout
     Rho::RhoConnectClient.logout
     @msg = "You have been logged out."
-    Rho::WebView.navigate Rho::Application.startURI
+    redirect Rho::Application.startURI
   end
 
   def reset

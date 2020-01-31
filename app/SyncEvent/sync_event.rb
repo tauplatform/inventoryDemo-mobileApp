@@ -11,23 +11,23 @@ class SyncEvent
   # code below is mix between business logic and UI logic. Please, avoid it
   def notify_UI
     if self.state == 'start'
-      Rho::WebView.executeJavascript('$("body").trigger("onSyncStarted");')
+      # Rho::WebView.executeJavascript('$("body").trigger("onSyncStarted");')
     end
 
     if self.state == 'in_progress'
-      Rho::WebView.executeJavascript("$('body').trigger('onSyncSourceInProgress', '#{self.source_name}');")
+      #Rho::WebView.executeJavascript("$('body').trigger('onSyncSourceInProgress', '#{self.source_name}');")
     end
 
     if self.state == 'ok'
-      Rho::WebView.executeJavascript("$('body').trigger('onSyncSourceCompleted', '#{self.source_name}');")
+      #Rho::WebView.executeJavascript("$('body').trigger('onSyncSourceCompleted', '#{self.source_name}');")
     end
 
     if self.state == 'complete'
-      Rho::WebView.executeJavascript("$('body').trigger('onSyncCompleted', '#{formatted_time}');")
+      #Rho::WebView.executeJavascript("$('body').trigger('onSyncCompleted', '#{formatted_time}');")
     end
 
     if self.state == 'error'
-      Rho::WebView.executeJavascript("$('body').trigger('onSyncError');")
+      #Rho::WebView.executeJavascript("$('body').trigger('onSyncError');")
     end
 
   end
@@ -61,25 +61,25 @@ class SyncEvent
   def error_description
     case self.error_code
       when '1'
-        return "#{error_code}: Network error"
+        return "Network error"
       when '2'
-        return "#{error_code}: Remote server error"
+        return "Remote server error"
       when '3'
-        return "#{error_code}: Runtime error"
+        return "Runtime error"
       when '4'
-        return "#{error_code}: Unexpected server response"
+        return "Unexpected server response"
       when '5'
-        return "#{error_code}: ERR_DIFFDOMAINSINSYNCSRC"
+        return "ERR_DIFFDOMAINSINSYNCSRC"
       when '6'
-        return "#{error_code}: No server response"
+        return "No server response"
       when '7'
-        return "#{error_code}: Client is not logged in. Please re-login !"
+        return "Client is not logged in. Please re-login !"
       when '8'
-        return "#{error_code}: Custom sync server error"
+        return "Custom sync server error"
       when '9'
-        return "#{error_code}: Unauthorized error"
+        return "Unauthorized error"
       else
-        return "#{error_code}: Unknown error"
+        return "Unknown error"
     end
   end
 

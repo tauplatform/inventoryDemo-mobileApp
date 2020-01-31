@@ -3,7 +3,7 @@ sdkversion: 7.1.2
 name: inventoryDemo
 version: 1.0.3
 vendor: rhomobile
-build: release
+build: debug
 applog: rholog.txt
 
 iphone:

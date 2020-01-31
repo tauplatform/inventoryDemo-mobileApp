@@ -21,6 +21,8 @@
   <script type="text/javascript" src="/public/libs/spinner/spinner.js"></script>
   <script type="text/javascript" src="/public/libs/toastr/toastr.min.js"></script>
 
+  <script type="text/javascript" src="/public/libs/poller/poller.js"></script>
+
 </head>
 
 <body>
@@ -31,16 +33,19 @@
 
 <script>
     $("body").on("onSyncSourceInProgress", function (event, sourceName) {
+        console.log("onSyncSourceInProgress");
         $("#sync-status .source-name").text(sourceName);
 
     });
 
     $("body").on("onSyncSourceCompleted", function (event, sourceName) {
+        console.log("onSyncSourceCompleted");
         $("#sync-status .source-name").text("");
     });
 
 
     $("body").on("onSyncStarted", function (event) {
+        console.log("onSyncStarted");
         $("#sync-status .source-name").text("");
         $("#sync-status .state").text("Syncing");
         $("#sync-status .spinner").removeClass("hidden");
@@ -49,6 +54,7 @@
     });
 
     $("body").on("onSyncCompleted", function (event, createdAt) {
+        console.log("onSyncCompleted");
         $("#sync-status .source-name").text("");
         $("#sync-status .state").text("Last Sync: " + createdAt);
         $("#sync-status .spinner").addClass("hidden");
@@ -56,14 +62,16 @@
         $("#sync-status .warning").addClass("hidden");
     });
 
-    $("body").on("onSyncError", function (event) {
-        $("#sync-status .state").text("Sync error");
+    $("body").on("onSyncError", function (event, description) {
+        console.log("onSyncError");
+        $("#sync-status .state").text("Sync error: " + description);
         $("#sync-status .spinner").addClass("hidden");
         $("#sync-status .check").addClass("hidden");
         $("#sync-status .warning").removeClass("hidden");
     });
 
     $("body").on("onSyncHasNotHappenedYet", function (event) {
+        console.log("onSyncHasNotHappenedYet");
         $("#sync-status .source-name").text("");
         $("#sync-status .state").text("Never synced yet");
         $("#sync-status .spinner").addClass("hidden");
@@ -72,8 +80,56 @@
     });
 
     $(function (event) {
-        $.post("<%= url_for(:controller => :SyncEvent, :action => :last_sync_event) %>");
+
+        var interval = setInterval(function () {
+
+            $.getJSON("<%= url_for(:controller => :State, :action => :state) %>")
+                .done(function (json) {
+
+                    console.log("Done json", json);
+
+                    if (json.rhoConnect.logged) {
+                        $('body').trigger('onRhoConnectLoggedIn');
+                    }
+
+                    if (json.rhoConnect.sync == null) {
+                        $('body').trigger('onSyncHasNotHappenedYet');
+                    } else {
+
+
+                        if (json.rhoConnect.sync.state == 'start') {
+                            $('body').trigger('onSyncStarted');
+                        }
+
+                        if (json.rhoConnect.sync.state == 'in_progress') {
+                            $('body').trigger('onSyncSourceInProgress', json.rhoConnect.sync.sourceName);
+                        }
+
+                        if (json.rhoConnect.sync.state == 'ok') {
+                            $('body').trigger('onSyncSourceCompleted', json.rhoConnect.sync.sourceName);
+                        }
+
+                        if (json.rhoConnect.sync.state == 'complete') {
+                            $('body').trigger('onSyncCompleted', json.rhoConnect.sync.timestamp);
+                        }
+
+                        if (json.rhoConnect.sync.state == 'error') {
+                            $('body').trigger('onSyncError', json.rhoConnect.sync.description);
+                        }
+                    }
+
+                })
+                .fail(function () {
+                    console.log("Fail");
+                })
+                .always(function () {
+                    console.log("Always");
+                });
+        }, 1000);
+
+
     });
+
 
 </script>
 

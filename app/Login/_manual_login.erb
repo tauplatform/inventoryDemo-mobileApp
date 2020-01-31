@@ -25,7 +25,22 @@
             var password = event.currentTarget.password.value;
             $(".alert").addClass("hidden");
             $(event.target).addClass("disabled");
-            $.post("<%= url_for(:action => :do_manual_login) %>", {user: user, password: password});
+
+            $(".page").trigger("spinnerOn");
+
+            $.post("<%= url_for(:action => :do_manual_login) %>", {user: user, password: password}, function () {
+                $("body").one("onRhoConnectLoggedIn", function (event, createdAt) {
+                    clearTimeout(timeout);
+                    window.location.href = '/app/InventoryItem'
+                });
+
+                var timeout = setTimeout(function () {
+                    $("body").off('onRhoConnectLoggedIn');
+                    alert('Cannot log in. Try again.')
+                }, 5000);
+            });
+
+
         });
     });
 </script>

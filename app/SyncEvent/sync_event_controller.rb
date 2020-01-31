@@ -14,7 +14,7 @@ class SyncEventController < Rho::RhoController
   def last_sync_event
     event = SyncEvent.find(:first, :order => 'created_at', :orderdir => 'DESC')
     begin
-      Rho::WebView.executeJavascript("$('body').trigger('onSyncHasNotHappenedYet');")
+      #Rho::WebView.executeJavascript("$('body').trigger('onSyncHasNotHappenedYet');")
       return
     end if event.nil?
 
@@ -22,6 +22,7 @@ class SyncEventController < Rho::RhoController
   end
 
   def sync_notify
+
     data = {}
     data[:created_at] = Time.now()
     data[:state] = @params['status']
