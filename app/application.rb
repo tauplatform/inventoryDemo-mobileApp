@@ -43,10 +43,9 @@ class AppApplication < Rho::RhoApplication
   def on_activate_app
     Rho::Log.warning('on_activate_app', 'APP')
 
-    begin
-      WebView.navigate '/app/Settings/wizard_introduction'
-      return
-    end if  Inventory::BarcodeHelper.should_barcode_be_choosed?
+    if Inventory::BarcodeHelper.has_barcode_extension? && !Inventory::BarcodeHelper.has_selected_scanner?
+        WebView.navigate '/app/Settings/wizard_introduction'
+    end
 
     # login_url = '/app/Login/'
     # return Rho::WebView.navigate login_url
