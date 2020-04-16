@@ -30,9 +30,11 @@ wp8:
     - enterprise-barcode
 linux:
   extensions:
-    - barcode
+    #- barcode
     - rhoconnect-client
-    - mediacapture
+    #- mediacapture
+    #- signature
+
 
 android:
   manifest_template: 'AndroidManifest.erb'
@@ -72,13 +74,6 @@ win32:
   deploymsvc: 1
   extensions:
     - enterprise-barcode
-
-linux:
-  extensions:
-    - rhoconnect-client
-    - mediacapture
-    - signature
-
 
 rhobundle:
   exclude_items:
