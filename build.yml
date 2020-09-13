@@ -57,6 +57,7 @@ android:
     - rhoconnect-client
     - mediacapture
     - signature
+    - oidc_native
   android_title: 0
 
 wm:

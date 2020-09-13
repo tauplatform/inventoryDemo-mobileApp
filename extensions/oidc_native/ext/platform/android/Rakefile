@@ -1,0 +1,1 @@
+require File.join( ENV['RHO_ROOT'], 'res', 'build-tools', 'helpers', 'ext', 'android', 'build_common.rb' )

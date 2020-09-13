@@ -1,0 +1,7 @@
+ext/platform/android/generated/jni/OidcNative.cpp
+ext/platform/android/generated/jni/oidcnative_ruby_wrap.cpp
+ext/platform/android/generated/jni/oidcnative_js_wrap.cpp
+ext/platform/android/jni/OidcNative_impl.cpp
+ext/shared/generated/oidcnative_api_init.cpp
+ext/shared/generated/oidcnative_js_api.cpp
+ext/shared/generated/oidcnative_ruby_api.c

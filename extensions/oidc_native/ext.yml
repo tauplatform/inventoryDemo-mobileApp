@@ -1,0 +1,16 @@
+entry: Init_OidcNative_extension
+javaentry: com.oidcnative.OidcNative
+libraries: ["OidcNative"]
+android:
+  source_list: ext/platform/android/ext_java.files
+  rhodes_listener: com.rho.oidcnative.OIDCRhoListener
+  exttype: rakefile
+wp8:
+  csharp_impl: yes
+  root_namespace: rho
+
+project_paths:
+  wp8: ext/platform/wp8/OidcNativeLib.vcxproj
+  wm: ext/platform/wm/OidcNative.vcproj
+  
+xml_api_paths: ext/OidcNative.xml

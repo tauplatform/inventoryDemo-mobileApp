@@ -1,0 +1,10 @@
+ext/platform/android/generated/src/com/rho/oidcnative/OidcNativeBase.java
+ext/platform/android/generated/src/com/rho/oidcnative/OidcNativeFactorySingleton.java
+ext/platform/android/generated/src/com/rho/oidcnative/OidcNativeSingletonBase.java
+ext/platform/android/generated/src/com/rho/oidcnative/IOidcNative.java
+ext/platform/android/generated/src/com/rho/oidcnative/IOidcNativeFactory.java
+ext/platform/android/generated/src/com/rho/oidcnative/IOidcNativeSingleton.java
+ext/platform/android/src/com/rho/oidcnative/OidcNative.java
+ext/platform/android/src/com/rho/oidcnative/OidcNativeFactory.java
+ext/platform/android/src/com/rho/oidcnative/OidcNativeSingleton.java
+ext/platform/android/src/com/rho/oidcnative/OIDCRhoListener.java
