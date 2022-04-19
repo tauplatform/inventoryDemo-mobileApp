@@ -1,8 +1,9 @@
 #sdk: "../rhodes"
-sdkversion: 7.1.2
+sdkversion: 7.5.0
 name: inventoryDemo
-version: 1.0.3
+version: 1.0.8
 vendor: rhomobile
+#build: debug
 build: release
 applog: rholog.txt
 
@@ -37,13 +38,17 @@ linux:
 
 
 android:
-  manifest_template: 'AndroidManifest.erb'
+  #manifest_template: 'AndroidManifest.erb'
 
-  minSDK: 23
-  targetSDK: 29
-  #version: 6.0
+    
+
+  build_bundle: 1
+
+  minSDK: 24
+  targetSDK: 31
+
   abis:
-    - x86
+    #- x86
     - arm
     - aarch64
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
@@ -54,7 +59,6 @@ android:
     - signature
     - rhoconnect-client
     #- enterprise-barcode
-    - rhoconnect-client
     - mediacapture
     - signature
   android_title: 0
