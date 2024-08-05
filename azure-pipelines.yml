@@ -1,0 +1,108 @@
+variables:
+- name: ruby_ver
+  value: 3.3.4
+
+- name: sdk_manager
+  value: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager
+
+- name: rho_branch
+  value: 7-6-stable
+
+- name: rhodes_clone_url
+  value: https://github.com/rhomobile/rhodes.git
+
+- name: rhoconnect_client_clone_url
+  value: https://github.com/rhomobile/rhoconnect-client.git
+
+- name: ndk_version
+  value: 27.0.12077973
+
+- name: ndk_home
+  value: $ANDROID_HOME/ndk/${{variables.ndk_version}}
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- checkout: self
+
+- task: UseRubyVersion@0
+  inputs:
+    versionSpec: ${{variables.ruby_ver}}
+    addToPath: true
+
+- task: UseAndroidSdk@2
+  inputs:
+    versionSpec: '34'
+    addToPath: true
+
+- task: UseAndroidNdk@2
+  inputs:
+    versionSpec: ${{variables.ndk_version}}
+    addToPath: true
+
+- task: UseJavaVersion@0
+  inputs:
+    version: '17'
+    arch: 'x64'
+
+- script: |
+    ${{variables.sdk_manager}} --install 'platform-tools'
+    ${{variables.sdk_manager}} --install 'ndk;${{ variables.ndk_version }}'
+  displayName: "Setup Android environment"
+
+- script: |
+    ${{variables.sdk_manager}} --list
+  displayName: "List installed Android packages"
+
+- script: |
+    git clone --branch ${{variables.rho_branch}} ${{variables.rhodes_clone_url}}
+    git clone --branch ${{variables.rho_branch}} ${{variables.rhoconnect_client_clone_url}}
+
+#patch build.yml with release keystore filename, password and alias located in the secure files and vars
+- script: |
+    cp ./rhodes/build.yml ./rhodes/build.yml.bak
+    echo "production:" >> ./rhodes/build.yml
+    echo "  certificate: $(rho-production-key.keystore)" >> ./rhodes/build.yml
+    echo "  password: $(rho-production-key-password)" >> ./rhodes/build.yml
+    echo "  alias: $(rho-production-key-alias)" >> ./rhodes/build.yml
+  displayName: "Patch build.yml with production keystore"
+
+- script: rake device:android:production --trace
+  workingDirectory: .
+  displayName: "Build Android production app"
+
+#publish to play store test track
+- task: PlayStorePublish@1
+  inputs:
+    serviceConnection: 'GooglePlayServiceConnection'
+    packageName: 'com.tautechnologies.inventorydemo'
+    track: 'internal'
+    releaseNotes: 'This release contains bug fixes and performance improvements.'
+    releaseName: '1.0.8.$(Build.BuildId)'
+#    releaseNotesFile: 'release-notes.txt'
+#    mappingFile: 'mapping.txt'
+    apkFiles: './bin/target/android/*.apk'
+#    mappingFiles: '**/*.txt'
+    useGradleWrapper: false
+#    gradleWrapperFile: 'rhodes/platform/android/gradlew'
+#    gradleOptions: '-Pandroid.injected.signing.store.file=$(rho-production-key.keystore) -Pandroid.injected.signing.store.password=$(rho-production-key-password) -Pandroid.injected.signing.key.alias=$(rho-production-key-alias) -Pandroid.injected.signing.key.password=$(rho-production-key-password)'
+    publishBundle: false
+    publishMappingFile: false
+    publishApp: true
+    publishMapping: false
+    publishReleaseNotes: true
+    publishReleaseName: true
+    publishReleaseNotesFile: true
+    publishMappingFile: true
+    publishMappingFiles: true
+    publishApk
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: './bin/target/android/*.apk'
+    ArtifactName: 'android-apk'
+    publishLocation: 'Container'
