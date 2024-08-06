@@ -1,7 +1,7 @@
-sdk: "./rhodes"
-sdkversion: 7.5.0
+sdk: "../rhodes"
+sdkversion: 7.7.0
 name: inventoryDemo
-version: 1.0.8
+version: 1.0.12
 vendor: rhomobile
 #build: debug
 build: release
@@ -48,6 +48,7 @@ android:
   targetSDK: 34
 
   abis:
+    - arm
     - aarch64
   # Note: in order to simplify debugging only app messages and system channels with priority informative and higher, and any errors are enabled by default
   logcatFilter: APP:I StrictMode:I DEBUG:I *:E
@@ -93,5 +94,5 @@ sailfish:
   extensions: ["mediacapture", "barcode", "signature", "rhoconnect-client"]
 
 paths:
-  extensions: ["./rhoconnect-client/ext"]
+  extensions: ["../rhoconnect-client/ext"]
 

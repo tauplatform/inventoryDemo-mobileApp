@@ -99,7 +99,7 @@ steps:
     publishReleaseNotesFile: true
     publishMappingFile: true
     publishMappingFiles: true
-    publishApk
+    publishApk: true
 
 - task: PublishBuildArtifacts@1
   inputs:
