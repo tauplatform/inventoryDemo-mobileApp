@@ -121,7 +121,7 @@ sync_poll_interval=0
 #bb_loadimages_async = 0
 
 # set to 0 to reset the bulksync_state and trigger a bulk sync the next time rhodes synchronizes
-#bulksync_state = 1
+bulksync_state = 1
 
 # hides forward button and animates back button transition
 jqtouch_mode=1

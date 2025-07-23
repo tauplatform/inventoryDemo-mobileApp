@@ -77,6 +77,7 @@ class SettingsController < Rho::RhoController
     data[:source_name] = 'Sync'
     event = SyncEvent.create(data)
     event.notify_UI
+    Rho::RhoConnectClient.bulksyncState = 1
     Rho::RhoConnectClient.doSync
   end
 
